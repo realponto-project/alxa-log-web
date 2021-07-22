@@ -1,0 +1,2 @@
+export const SET_COMPANY = 'SET_COMPANY'
+export const UNSET_COMPANY = 'UNSET_COMPANY'

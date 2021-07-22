@@ -1,0 +1,42 @@
+.bgModal {
+  align-items: center;
+  background-color: rgba(0, 0, 0, 0.7);
+  bottom: 0;
+  box-sizing: border-box;
+  color: 0000;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  left: 0;
+  position: fixed;
+  right: 0;
+  top: 0;
+  transition: all 0.5s ease-out;
+  visibility: hidden;
+  z-index: 1;
+  overflow: auto;
+  opacity: 0;
+}
+
+.modal {
+  background-color: #fff;
+  box-shadow: 0 0 10px rgba(0,0,0,.2);
+  height: 150%;
+  width: 100%;
+  box-sizing: border-box;
+  transform: translateY(840px);
+  overflow: auto;
+  padding: 16px;
+}
+
+.show {
+  transform: translateY(0px);
+  transition: transform 0.5s ease 0s;
+  overflow: hidden;
+  overflow-y: auto;
+}
+
+.bgModal.show {
+  opacity: 1;
+  visibility: visible;
+}

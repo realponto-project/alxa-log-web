@@ -1,0 +1,152 @@
+.contenttitlemain,
+.contentfootermain {
+  margin: 0 auto;
+  text-align: center;
+  color: #26282C
+}
+.contenttitlemain > h4,
+.contentfootermain > h6 {
+  color: #666;
+}
+.logocheck {
+  margin: 20px auto;
+  height: 50px;
+  width: 50px;
+  border-radius: 50%;
+  background: #57F9B9;
+  color: #fff;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  align-content: center;
+  justify-content: center;
+}
+.cardticket > * {
+  font-family: Arial, Helvetica, sans-serif;
+  color: #26282C
+}
+.cardticket {
+  text-align: center;
+  background: #fff;
+  overflow-x: hidden;
+}
+.cardheader,
+.cardcontent,
+.cardfooter {
+  text-align: center;
+}
+.cardheader > h3 {
+  margin: 25px 0;
+}
+.cardheader > p {
+  font-size: 0.8em;
+  margin-top: 14px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  align-content: center;
+  border-bottom: 1px solid #e7e7e7;
+  padding-bottom: 14px;
+  color: #333;
+}
+p.cardapproved {
+  border: none;
+  font-weight: 700;
+}
+.cardapprovedvalue {
+  font-size: 1.5em;
+}
+.cardcontent > p, 
+.cardcontent > h3 {
+  margin: 9px;
+}
+
+.cardcontent > p {
+  font-size: 0.9em;
+  color: #333;
+}
+p.cardcontentcondition {
+  font-size: 1.8em;
+  font-weight: 700;
+  color: #666;
+}
+p.cardcontentmessage {
+  color: #666;
+  font-weight: 700;
+  width: 90%;
+  margin: 0 auto;
+  font-size: 0.8em;
+}
+.cardapprovedvalue,
+.cardconditionvalue {
+   color: #46BDCE;
+}
+span.cardconditionvalue {
+  font-size: 1.4em;
+}
+span.textdefaulf {
+  font-weight: normal;
+  font-size: 0.6em;
+}
+.cardfooter > p {
+  font-size: .8em;
+  color: #333;
+  padding-bottom: 10px;
+  border-bottom: 1px solid #e7e7e7;
+}
+p.cardfooteralert {
+  border-bottom: none;
+}
+.cardfooterimage {
+  margin: auto;
+  width: 90%;
+  height: 70px;
+  background: url(https://image.freepik.com/free-vector/street-map-with-pin-routes_23-2147622544.jpg);
+  background-size: cover;
+}
+.rip {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  height: 35px;
+  position: relative;
+  box-shadow: 0 1px 0 0 #fff, 0 -1px 0 0 #fff;
+}
+
+
+.linedash  {
+  content: "";
+  border-bottom: 2px dashed #c7c7c7;
+  width: 90%;
+}
+.linesolid  {
+  content: "";
+  border-bottom: 1px solid #c7c7c7;
+  width: 90%;
+}
+.cardfooterbarcode {
+  text-align: center;
+}
+.cardfooterbarcode > img {
+  height: 50px;
+  width: 200px;
+}
+.logo {
+  width: 250px;
+}
+.btndefault {
+  border: none;
+  background: #D8252C;
+  color: #fff;
+  padding: 4px;
+  width: 150px;
+  cursor: pointer;
+  border-radius: 2px;
+}
+.btndefault:focus {
+  outline: none;
+}
+.btndefault:active {
+  opacity: .9;
+}

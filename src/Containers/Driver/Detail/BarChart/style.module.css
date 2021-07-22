@@ -1,0 +1,27 @@
+.spanCircle {
+  display: inline-block;
+  height: 19px;
+  width: 19px;
+  border-radius: 50%;
+  background-color: #575A89;
+  margin: 0;
+  padding: 0;
+}
+
+.barChartLegend {
+  color: #333333;
+  font-size: 14px;
+  margin: 0;
+  padding: 0 0 0 20px;
+  font-family: poppins;
+}
+
+.barChartTitle {
+  font-size: 20px !important;
+  color: #4A4A4A
+}
+
+.barChartLegends {
+  display: flex;
+  align-items: center;
+}

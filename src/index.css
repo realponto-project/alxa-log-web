@@ -1,0 +1,32 @@
+@import '~antd/dist/antd.css';
+
+body {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+* {
+  font-family: 'Lato', sans-serif !important;
+}
+
+@page {
+  size: A4;
+  margin: 10px 0;
+  padding: 30px;
+}
+
+@media print {
+  .ant-layout-sider, .ant-layout-sider-children {
+    display: none !important;
+  }
+
+  .ant-layout-content {
+    margin: 0 !important;
+    padding: 0 16px !important;
+  }
+
+  .print {
+    display: block !important;
+  }
+}

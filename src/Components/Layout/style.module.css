@@ -1,0 +1,8 @@
+@media print {
+  .ant-layout-sider, .ant-layout-sider-children {
+    display: none !important;
+  }
+  .print {
+    display: block !important;
+  }
+}

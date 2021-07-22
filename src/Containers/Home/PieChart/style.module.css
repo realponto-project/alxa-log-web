@@ -1,0 +1,36 @@
+.spanCircle {
+  display: inline-block;
+  height: 19px;
+  width: 19px;
+  border-radius: 50%;
+  background-color: #E6E6E6;
+  margin: 0;
+  padding: 0;
+}
+
+.pieChartLegend {
+  color: #333333;
+  font-size: 14px;
+  margin: 0;
+  padding: 0 0 0 20px;
+  font-family: poppins;
+}
+
+.pieChartTitle {
+  font-size: 20px !important;
+  color: #4A4A4A
+}
+
+.pieChartLegends {
+  display: flex;
+  align-items: center;
+}
+
+.totalValueSales {
+  color: #333;
+  top: 129px;
+  right: 145px;
+  font-size: 40px;
+  position: absolute;
+  font-weight: 600;
+}
