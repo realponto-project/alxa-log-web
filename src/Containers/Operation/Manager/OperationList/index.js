@@ -45,7 +45,7 @@ const OperationList = ({ datasource, handleClickEdit, loading, handleChangeTable
       />
     }>
       <Table 
-        pagination={{ pageSize: 20, total: datasource.count, current: offset }}
+        pagination={{ showSizeChanger: false, pageSize: 20, total: datasource.count, current: offset }}
         onChange={handleChangeTableEvent}
         columns={columns({ handleClickEdit, goToDetail })} 
         loading={loading}

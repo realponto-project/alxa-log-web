@@ -187,7 +187,7 @@ const Detail = ({
              { mode === 'table' 
                ? (
                 <Table 
-                  pagination={{ pageSize: 20, total: datasource.count, current: offset }}
+                  pagination={{ showSizeChanger: false, pageSize: 20, total: datasource.count, current: offset }}
                   columns={columns(gotoDetailOrder)} 
                   dataSource={datasource.rows} 
                   handleChangeTableEvent={handleChangeTableEvent}

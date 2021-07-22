@@ -26,7 +26,7 @@ const FleetList = ({ datasource, handleClickEdit, loading, handleChangeTableEven
       />
     }>
       <Table 
-        pagination={{ pageSize: 20, total: datasource.count, current: offset }}
+        pagination={{ showSizeChanger: false, pageSize: 20, total: datasource.count, current: offset }}
         onChange={handleChangeTableEvent}
         columns={columns({ handleClickEdit })} 
         loading={loading}

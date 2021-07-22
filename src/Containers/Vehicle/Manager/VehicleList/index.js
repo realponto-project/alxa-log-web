@@ -47,7 +47,7 @@ const VehicleList = ({ datasource, handleClickEdit, loading, handleChangeTableEv
       />
     }>
       <Table 
-        pagination={{ pageSize: 20, total: datasource.count, current: offset }}
+        pagination={{ showSizeChanger: false, pageSize: 20, total: datasource.count, current: offset }}
         onChange={handleChangeTableEvent}
         columns={columns({ handleClickEdit })} 
         loading={loading}
