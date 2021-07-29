@@ -126,7 +126,7 @@ const Manager = ({
       pathname,
       search: ''
     })
-    setoffset(0)
+    setoffset(1)
     getOperations({})
   }
 
