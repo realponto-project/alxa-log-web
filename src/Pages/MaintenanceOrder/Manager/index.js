@@ -7,6 +7,7 @@ import { getAll } from '../../../Services/Vehicle'
 import { getAll as getAllBranchs } from '../../../Services/Branch'
 import { getAll as getAllDrivers } from '../../../Services/Driver'
 import { getAll as getAllOperations } from '../../../Services/Operations'
+import qs from 'qs'
 
 import { 
   createMaintenanceOrder, 
@@ -14,6 +15,8 @@ import {
   updateMaintenanceOrder
 } from '../../../Services/MaintenanceOrders'
 import GAInitialize from '../../../utils/ga'
+import moment from 'moment'
+import 'moment/locale/pt-br'
 
 const Manager = ({
   history,
@@ -26,7 +29,20 @@ const Manager = ({
   const [offset, setoffset] = useState(1)
 
   const [maintenanceSelected, setMaintenanceSelected] = useState(null)
-  const [searchValue, setSearchValue] = useState(null)
+  const [searchValue, setSearchValue] = useState({
+    plate: null,
+    dates: [],
+    status: [],
+    services: [],
+    priorities: [],
+  })
+
+  const [checkBoxDefaultValues, setCheckBoxDefaultValues] = useState({
+    dates: [],
+    status: [],
+    services: [],
+    priorities: [],
+  })
 
   const [loading, setLoading] = useState(true)
   const { search, pathname } = useLocation()
@@ -39,14 +55,19 @@ const Manager = ({
     getAllOperation({ limit: 100000 })
     let query = {}
 
-    if(!search && localStorage.getItem('maintenanceSearch')) {
-      const searchValueLocal = localStorage.getItem('maintenanceSearch')
+    if(!search && localStorage.getItem('searchValue')) {
+      const searchValueLocal = localStorage.getItem('searchValue')
       history.push({
         pathname,
-        search:  `?plate=${searchValueLocal}`
+        search:  searchValueLocal
       })
-      setSearchValue(searchValueLocal)
-      query = { plate: searchValueLocal }
+      const searchParser = qs.parse(searchValueLocal)
+      setSearchValue(searchParser)
+      setCheckBoxDefaultValues({
+        ...searchParser, 
+        dates: searchParser.dates.length > 0 ? [moment(searchParser.dates[0]), moment(searchParser.dates[1])] : []
+      })
+      query = searchParser
     }
     getAllMaintenances(query)
   }, [])
@@ -138,27 +159,58 @@ const Manager = ({
   }
 
   const handleFilter = () => {
-    localStorage.setItem('maintenanceSearch', searchValue)
+    const queryFilters = qs.stringify(searchValue)
+    localStorage.setItem('searchValue', queryFilters)
     history.push({
       pathname,
-      search: `?plate=${searchValue}`
+      search: queryFilters
     })
-    getAllMaintenances({ plate: searchValue })
+
+    getAllMaintenances(searchValue)
   }
 
-  const handleFilterOnchange = value => {
-    setSearchValue(value.target.value)
+  const handleFilterOnchange = ({ target }) => {
+    const { name, value } = target
+    let values = value
+    if (name === 'dates' && value && value.length > 0) {
+      values = [new Date(value[0]).toISOString(), new Date(value[1]).toISOString()]
+      setCheckBoxDefaultValues({
+        ...checkBoxDefaultValues,
+        dates: value
+      })
+    }
+
+    if (name === 'plate') {
+      values = value.trim()
+    }
+
+    setSearchValue({
+      ...searchValue,
+      [name]: values
+    })
   }
 
-  const clearFilter = () => {
-    localStorage.removeItem('maintenanceSearch')
-    setSearchValue('')
+  const clearFilter = async () => {
+    localStorage.removeItem('searchValue')
+    setSearchValue({
+      plate: null,
+      dates: [],
+      status: [],
+      services: [],
+      priorities: [],
+    })
+    setCheckBoxDefaultValues({
+      dates: [],
+      status: [],
+      services: [],
+      priorities: [],
+    })
     history.push({
       pathname,
       search: ''
     })
     setoffset(0)
-    getAllMaintenances()
+    getAllMaintenances({})
   }
 
   const handleChangeTableEvent = ({ current }) => {
@@ -190,6 +242,7 @@ const Manager = ({
       handleChangeTableEvent={handleChangeTableEvent}
       offset={offset}
       gotoDetail={id => history.push(`/logged/maintenance-detail/${id}`)}
+      checkBoxDefaultValues={checkBoxDefaultValues}
     />
   )
 }
