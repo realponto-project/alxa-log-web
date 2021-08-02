@@ -1,14 +1,16 @@
 import React, { useEffect, useState } from 'react'
-import { getById } from '../../../Services/MaintenanceOrders'
+import { associateDriver, getById, updateAssociateDriver } from '../../../Services/MaintenanceOrders'
 import { withRouter } from 'react-router-dom'
 import { getAll as getAllDrivers } from '../../../Services/Driver'
 
 import MaintenanceDetail from '../../../Containers/Maintenance/Detail'
 import GAInitialize from '../../../utils/ga'
+import { message } from 'antd'
 
 const Detail = ({
   match
 }) => {
+  const [showModal, setShowModal] = useState(false)
   const [maintenanceOrder, setMaintenanceOrder] = useState({
     company: {
       name: '',
@@ -72,8 +74,29 @@ const Detail = ({
     }
   }
 
-  const handleSubmitDriver = (value) => console.log(value)
-  const handleSubmitUpdateDriver = (value) => console.log(value)
+  const handleSubmitDriver = async ({ driverId }) => {
+    try{
+      await associateDriver({ driverId, maintenanceOrderId: maintenanceOrder.id  }) 
+
+      message.success('Motorista associado com sucesso')
+      getOrder()
+      setShowModal(false)
+    }catch(err){
+      message.error('Houve um erro')
+    }
+  }
+
+  const handleSubmitUpdateDriver = async ({ driverId }) => {
+    try{
+      await updateAssociateDriver({ driverId, maintenanceOrderId: maintenanceOrder.id  }) 
+      
+      message.success('Motorista atualizado com sucesso')
+      getOrder()
+      setShowModal(false)
+    }catch(err){
+      message.error('Houve um erro')
+    }
+  }
 
   const getOrder = async() => {
     try {
@@ -86,6 +109,8 @@ const Detail = ({
 
   return (
     <MaintenanceDetail 
+      showModal={showModal}
+      setShowModal={setShowModal}
       maintenanceOrder={maintenanceOrder}
       driversSource={driversData.rows}
       handleSubmitDriver={handleSubmitDriver}

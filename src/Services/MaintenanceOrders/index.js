@@ -37,6 +37,14 @@ const getMaintenanceOperationId = async (params = {}) => {
   return await axiosIntance.get('/maintenance-orders-operation', { params })
 }
 
+const associateDriver = async (values) => {
+  return await axiosIntance.post('/associate-maintenance-orders', values)
+}
+
+const updateAssociateDriver = async (values) => {
+  return await axiosIntance.put('/associate-maintenance-orders', values)
+}
+
 export { 
   getAll, 
   getById,
@@ -46,5 +54,7 @@ export {
   getMobileQrCode,
   getByPlate,
   getMaintenanceCompanyId,
-  getMaintenanceOperationId
+  getMaintenanceOperationId,
+  associateDriver,
+  updateAssociateDriver
 }

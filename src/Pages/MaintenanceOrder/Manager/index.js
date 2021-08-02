@@ -65,7 +65,7 @@ const Manager = ({
       setSearchValue(searchParser)
       setCheckBoxDefaultValues({
         ...searchParser, 
-        dates: searchParser.dates.length > 0 ? [moment(searchParser.dates[0]), moment(searchParser.dates[1])] : []
+        dates: searchParser?.dates?.length > 0 ? [moment(searchParser.dates[0]), moment(searchParser.dates[1])] : []
       })
       query = searchParser
     }
