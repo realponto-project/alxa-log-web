@@ -83,6 +83,7 @@ const Detail = ({
       setShowModal(false)
     }catch(err){
       message.error('Houve um erro')
+      window.onerror(`createOutputDriver: ${error.error}`, window.location.href)
     }
   }
 
@@ -95,6 +96,7 @@ const Detail = ({
       setShowModal(false)
     }catch(err){
       message.error('Houve um erro')
+      window.onerror(`updateOutputDriver: ${error.error}`, window.location.href)
     }
   }
 
