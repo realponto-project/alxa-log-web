@@ -1,11 +1,13 @@
-import React from 'react'
-import { Row, Col, Card, Typography, Image, Tag, Timeline } from 'antd'
+import React, { useState } from 'react'
+import { Row, Col, Card, Typography, Image, Tag, Timeline, Button } from 'antd'
 import fuelSVG from './fuel.svg'
 import clockSVG from './clock.svg'
 import leafSVG from './leaf.svg'
 import diffTime from '../../../utils/permananceTime'
 import formattedDate from '../../../utils/parserDate'
 import { cnpj } from 'cpf-cnpj-validator'
+import DriverForm from './DriverForm'
+import Qrcode  from 'qrcode.react'
 
 const status = {
   low: 'Baixa',
@@ -46,8 +48,13 @@ const parseStatus = {
 
 const { Text, Title } = Typography 
 const Detail = ({
-  maintenanceOrder
+  maintenanceOrder,
+  driversSource,
+  handleSubmitDriver,
+  handleSubmitUpdateDriver,
 }) => {
+  const [showModal, setShowModal] = useState(false)
+
   return (
     <Row gutter={[8, 8]}>
       <Col span={24}>
@@ -106,13 +113,22 @@ const Detail = ({
         </Card>
       </Col>
 
-      <Col span={8}>
+      <Col span={3} style={{ textAlign: 'center' }}>
         <Card bordered={false}>
           <Row>
-            <Col span={16}>
+            <Col span={24}>
+              <Qrcode value={maintenanceOrder.id || ''} height={90} width={90} />
+            </Col>
+          </Row>
+        </Card>
+      </Col>
+      <Col span={7}>
+        <Card bordered={false}>
+          <Row>
+            <Col span={12}>
               <Title level={1}>{maintenanceOrder.supplies.length}</Title>
             </Col>
-            <Col span={8}>
+            <Col span={12}>
               <Row>
                 <Col span={24} style={{ textAlign: "center"}}>
                   <Image src={fuelSVG} alt='fuel' height={72} />
@@ -125,13 +141,13 @@ const Detail = ({
           </Row>
         </Card>
       </Col>
-      <Col span={8}>
+      <Col span={7}>
         <Card bordered={false}>
           <Row>
-            <Col span={16}>
+            <Col span={12}>
               <Title level={1}>{maintenanceOrder.maintenanceOrderEvents.length}</Title>
             </Col>
-            <Col span={8}>
+            <Col span={12}>
               <Row>
                 <Col span={24} style={{ textAlign: "center"}}>
                   <Image src={leafSVG} alt='fuel' height={72} />
@@ -144,13 +160,13 @@ const Detail = ({
           </Row>
         </Card>
       </Col>
-      <Col span={8}>
+      <Col span={7}>
         <Card bordered={false}>
           <Row>
-            <Col span={16}>
+            <Col span={12}>
               <Title level={1}>{diffTime(maintenanceOrder.createdAt, maintenanceOrder.updatedAt, maintenanceOrder.status)}</Title>
             </Col>
-            <Col span={8}>
+            <Col span={12}>
               <Row>
                 <Col span={24} style={{ textAlign: "center"}}>
                   <Image src={clockSVG} alt='fuel' />
@@ -190,8 +206,20 @@ const Detail = ({
       <Col span={12}>
         <Card bordered={false}>
           <Row gutter={[8, 8]}>
-            <Col span={24}>
+            <Col span={16}>
               <Title level={4}>Condutor #2</Title>
+            </Col>
+            <Col span={8} style={{ textAlign: 'right' }}>
+              { 
+              maintenanceOrder.maintenanceOrderDrivers.length === 2 && maintenanceOrder.status !== 'check-out' &&
+                <Button onClick={() => setShowModal(true)} >
+                  {
+                    maintenanceOrder.maintenanceOrderDrivers.length > 1 
+                    ? 'Editar'
+                    : 'Adicionar'
+                  }
+                </Button>
+              }
             </Col>
             <Col span={8}>
               <Text>Motorista da saída</Text><br />
@@ -276,6 +304,16 @@ const Detail = ({
                 </Row>
               </Col>
             ))}
+            { showModal && (
+              <DriverForm 
+                visible={showModal} 
+                driversSource={driversSource} 
+                handleCancel={() => setShowModal(false)}
+                handleSubmitDriver={handleSubmitDriver}
+                handleSubmitUpdateDriver={handleSubmitUpdateDriver}
+                order={maintenanceOrder}
+              />
+            )}
           </Row>
         </Card>
       </Col>

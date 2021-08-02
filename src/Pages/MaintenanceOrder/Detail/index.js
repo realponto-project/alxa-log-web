@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react'
 import { getById } from '../../../Services/MaintenanceOrders'
 import { withRouter } from 'react-router-dom'
+import { getAll as getAllDrivers } from '../../../Services/Driver'
 
 import MaintenanceDetail from '../../../Containers/Maintenance/Detail'
 import GAInitialize from '../../../utils/ga'
@@ -52,11 +53,27 @@ const Detail = ({
     createdAt: new Date(),
     updatedAt: new Date(),
   })
+  const [driversData, setDriversData] = useState({ rows: [] })
+
   GAInitialize(`/maintenance-order-detail/${match.params.id}`)
 
   useEffect(() => {
     getOrder()
+    getAllDriver({ limit: 100000 })
+
   }, [])
+
+  const getAllDriver = async (params = {}) => {
+    try {
+      const { data } = await getAllDrivers(params)
+      setDriversData(data)
+    } catch (error) {
+      window.onerror(`allDrivers: ${error.error}`, window.location.href)
+    }
+  }
+
+  const handleSubmitDriver = (value) => console.log(value)
+  const handleSubmitUpdateDriver = (value) => console.log(value)
 
   const getOrder = async() => {
     try {
@@ -68,7 +85,12 @@ const Detail = ({
   }
 
   return (
-    <MaintenanceDetail maintenanceOrder={maintenanceOrder} />
+    <MaintenanceDetail 
+      maintenanceOrder={maintenanceOrder}
+      driversSource={driversData.rows}
+      handleSubmitDriver={handleSubmitDriver}
+      handleSubmitUpdateDriver={handleSubmitUpdateDriver}
+    />
   )
 }
 
