@@ -14,15 +14,17 @@
     "classnames": "2.2.6",
     "cpf-cnpj-validator": "1.0.3",
     "js-brasil": "2.4.6",
+    "leaflet": "^1.7.1",
     "moment": "2.29.1",
     "pagarme": "4.15.3",
     "print-js": "1.6.0",
     "qrcode.react": "^1.0.1",
     "qs": "^6.10.1",
     "ramda": "0.27.1",
-    "react": "17.0.1",
-    "react-dom": "17.0.1",
+    "react": "^17.0.2",
+    "react-dom": "^17.0.2",
     "react-ga": "3.3.0",
+    "react-leaflet": "^3.2.1",
     "react-qr-reader": "2.2.1",
     "react-redux": "7.2.2",
     "react-router-dom": "5.2.0",
@@ -45,18 +47,11 @@
       "react-app/jest"
     ]
   },
-  "browserslist": {
-    "production": [
-      ">0.2%",
-      "not dead",
-      "not op_mini all"
-    ],
-    "development": [
-      "last 1 chrome version",
-      "last 1 firefox version",
-      "last 1 safari version"
-    ]
-  },
+  "browserslist": [
+    ">0.2%",
+    "not dead",
+    "not op_mini all"
+  ],
   "devDependencies": {
     "@storybook/addon-actions": "6.1.21",
     "@storybook/addon-essentials": "6.1.21",
