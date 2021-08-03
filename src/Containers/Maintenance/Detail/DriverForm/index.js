@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import { Button, Form, Input, Modal, Select, DatePicker } from 'antd'
 import { map } from 'ramda'
 
@@ -58,15 +58,18 @@ const DriverForm = ({
   const [form] = Form.useForm()
   const hasSecondDriver = order.maintenanceOrderDrivers.length > 1
 
+  useEffect(() => {
+    setFormSettings(formSettingsDriver(driversSource))
+  }, [driversSource])
+
   return (
     <Modal
       visible={visible}
       closable={false}
       footer={[
         <Button key="back" onClick={() => {
-          handleCancel(false)
+          handleCancel()
           form.resetFields()
-          setFormSettings(formSettingsDriver(driversSource))
         }}>
           Cancelar
         </Button>,
@@ -89,7 +92,6 @@ const DriverForm = ({
           } else {
             handleSubmitDriver(values)
           }
-          setFormSettings(formSettingsDriver(driversSource))
           form.resetFields()
         }}
         initialValues={hasSecondDriver ? { driverId: order.maintenanceOrderDrivers[1].driverId } : {} }

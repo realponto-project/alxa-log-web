@@ -1,13 +1,15 @@
 import React, { useState } from 'react'
 import { Row, Col, Card, Typography, Image, Tag, Timeline, Button } from 'antd'
+import Qrcode  from 'qrcode.react'
+import { cnpj } from 'cpf-cnpj-validator'
+import { EditOutlined, PlusOutlined } from '@ant-design/icons'
+
 import fuelSVG from './fuel.svg'
 import clockSVG from './clock.svg'
 import leafSVG from './leaf.svg'
 import diffTime from '../../../utils/permananceTime'
 import formattedDate from '../../../utils/parserDate'
-import { cnpj } from 'cpf-cnpj-validator'
 import DriverForm from './DriverForm'
-import Qrcode  from 'qrcode.react'
 
 const status = {
   low: 'Baixa',
@@ -52,8 +54,9 @@ const Detail = ({
   driversSource,
   handleSubmitDriver,
   handleSubmitUpdateDriver,
+  setShowModal,
+  showModal
 }) => {
-  const [showModal, setShowModal] = useState(false)
 
   return (
     <Row gutter={[8, 8]}>
@@ -211,12 +214,12 @@ const Detail = ({
             </Col>
             <Col span={8} style={{ textAlign: 'right' }}>
               { 
-              maintenanceOrder.maintenanceOrderDrivers.length === 2 && maintenanceOrder.status !== 'check-out' &&
-                <Button onClick={() => setShowModal(true)} >
+               maintenanceOrder.status !== 'check-out' &&
+                <Button onClick={() => setShowModal(true)} type='link'>
                   {
                     maintenanceOrder.maintenanceOrderDrivers.length > 1 
-                    ? 'Editar'
-                    : 'Adicionar'
+                    ? <EditOutlined />
+                    : <PlusOutlined />
                   }
                 </Button>
               }
@@ -304,16 +307,14 @@ const Detail = ({
                 </Row>
               </Col>
             ))}
-            { showModal && (
-              <DriverForm 
-                visible={showModal} 
-                driversSource={driversSource} 
-                handleCancel={() => setShowModal(false)}
-                handleSubmitDriver={handleSubmitDriver}
-                handleSubmitUpdateDriver={handleSubmitUpdateDriver}
-                order={maintenanceOrder}
-              />
-            )}
+            <DriverForm 
+              visible={showModal} 
+              driversSource={driversSource} 
+              handleCancel={() => setShowModal(false)}
+              handleSubmitDriver={handleSubmitDriver}
+              handleSubmitUpdateDriver={handleSubmitUpdateDriver}
+              order={maintenanceOrder}
+            />
           </Row>
         </Card>
       </Col>

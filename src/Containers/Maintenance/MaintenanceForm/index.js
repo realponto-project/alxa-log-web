@@ -132,7 +132,7 @@ const MaintenanceForm = ({
           setFormSettings(formSettingsVehicle(vehiclesSource))
           form.resetFields()
         }}
-        initialValues={{...maintenanceSelected, maintenanceDate: moment(maintenanceDate, "DD/MM/YYYY"), driverId: maintenanceSelected ? maintenanceSelected.maintenanceOrderDrivers[0].driver.id : null }}
+        initialValues={{...maintenanceSelected, driverId: maintenanceSelected ? maintenanceSelected.maintenanceOrderDrivers[0].driver.id : null }}
       >
         {map(renderFormItems, formSettings)}
       </Form>
