@@ -1,9 +1,10 @@
 import React, { useState } from 'react'
-import { Button, Card, Col, Input, Row, Typography } from 'antd'
-import { SearchOutlined, PlusOutlined } from '@ant-design/icons'
+import { Button, Card, Col, Input, Radio, Row, Typography } from 'antd'
+import { SearchOutlined, PlusOutlined, DatabaseOutlined, PushpinOutlined } from '@ant-design/icons'
 
 import VehicleForm from '../VehicleForm'
 import VehicleList from './VehicleList'
+import MyMap from './Map'
 
 const { Title } = Typography
 
@@ -23,7 +24,11 @@ const Manager = ({
   offset,
 }) => {
   const [showModal, setShowModal] = useState(false)
+  const [mode, setMode] = useState('table')
+  
   const openModal = () => setShowModal(true)
+
+  const handleChange = ({ target }) => setMode(target.value)
   
   const showModalEditVehicle = (value) => {
     handleSelectedVehicle(value)
@@ -76,19 +81,35 @@ const Manager = ({
           </Row>
         </Card>
       </Col>
-      
+
       <Col span={24}>
         <Card bordered={false}>
-          <VehicleList 
-            datasource={source} 
-            handleClickEdit={showModalEditVehicle}
-            loading={loading}
-            handleChangeTableEvent={handleChangeTableEvent}
-            offset={offset}
-          />
+          <Row>
+            <Col span={24} style={{ textAlign: 'right', marginBottom: '20px' }}>
+              <Radio.Group onChange={handleChange} value={mode}>
+                <Radio.Button value="table"><DatabaseOutlined /></Radio.Button>
+                <Radio.Button value="chart"><PushpinOutlined /></Radio.Button>
+              </Radio.Group>
+            </Col>
+            <Col span={24}>
+             { mode === 'table' 
+               ? (
+                <VehicleList 
+                  datasource={source} 
+                  handleClickEdit={showModalEditVehicle}
+                  loading={loading}
+                  handleChangeTableEvent={handleChangeTableEvent}
+                  offset={offset}
+                />
+               )
+              :(
+                <MyMap />
+              )}
+            </Col>
+          </Row>
         </Card>
       </Col>
-  
+      
       {
         showModal && (
           <VehicleForm
