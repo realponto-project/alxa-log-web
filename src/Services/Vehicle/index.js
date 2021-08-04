@@ -20,10 +20,15 @@ const getAllVehicleTypes = async () => {
   return await axiosIntance.get(`/vehicle-types`)
 }
 
+const getAllGeoLocation = async () => {
+  return await axiosIntance.get(`/vehicles-geolocation`)
+}
+
 export { 
   getAll, 
   getById,
   createVehicle, 
   updateVehicle, 
   getAllVehicleTypes,
+  getAllGeoLocation
 }
