@@ -12,7 +12,8 @@ import qs from 'qs'
 import { 
   createMaintenanceOrder, 
   getAll as getAllMaintenanceOrders, 
-  updateMaintenanceOrder
+  updateMaintenanceOrder,
+  updateMaintenanceOrderCancel
 } from '../../../Services/MaintenanceOrders'
 import GAInitialize from '../../../utils/ga'
 import moment from 'moment'
@@ -143,6 +144,17 @@ const Manager = ({
     }
   }
 
+  const handleCancelOrder = async (values) => {
+    try {
+      await updateMaintenanceOrderCancel(values)
+      getAllMaintenances()
+      success('Manuntenção cancelada com sucesso!')
+    } catch (error) {
+      errorMessage('Não foi realizar o cancelamento da manutenção!')
+      window.onerror(`updateMaintenanceOrder: ${error.error}`, window.location.href)
+    }
+  }
+
   const handleEdit = async (values) => {
     try {
       await updateMaintenanceOrder(values)
@@ -243,6 +255,7 @@ const Manager = ({
       offset={offset}
       gotoDetail={id => history.push(`/logged/maintenance-detail/${id}`)}
       checkBoxDefaultValues={checkBoxDefaultValues}
+      handleCancelOrder={handleCancelOrder}
     />
   )
 }

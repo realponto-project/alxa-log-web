@@ -13,6 +13,10 @@ const updateMaintenanceOrder = async (values) => {
   return await axiosIntance.put(`/maintenance-orders/${values.id}`, values)
 }
 
+const updateMaintenanceOrderCancel = async (values) => {
+  return await axiosIntance.put(`/maintenance-orders-cancel/${values.id}`, values)
+}
+
 const getById = async (id) => {
   return await axiosIntance.get(`/maintenance-orders/${id}`)
 }
@@ -56,5 +60,6 @@ export {
   getMaintenanceCompanyId,
   getMaintenanceOperationId,
   associateDriver,
-  updateAssociateDriver
+  updateAssociateDriver,
+  updateMaintenanceOrderCancel
 }

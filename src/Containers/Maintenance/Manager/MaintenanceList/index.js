@@ -1,8 +1,11 @@
 import React from 'react'
-import { Table, Button, Empty, ConfigProvider, Image, Space, Tag } from 'antd'
+import { Table, Button, Empty, ConfigProvider, Image, Space, Tag, Menu, Dropdown, Modal } from 'antd'
 import NoData from '../../../../Assets/noData.svg'
 import formattedDate from '../../../../utils/parserDate'
 import diffTime from '../../../../utils/permananceTime'
+import { ExclamationCircleOutlined } from '@ant-design/icons'
+
+const { confirm } = Modal
 
 import {
   parseStatus,
@@ -11,7 +14,13 @@ import {
   status
 } from '../../../../utils/maintenanceOrder'
 
-const columns = ({ handleClickEdit, handleShowVoucher, gotoDetail }) => [
+const menu = handleMenuClick => (
+  <Menu onClick={handleMenuClick}>
+    <Menu.Item key="1">Cancelar Solicitação</Menu.Item>
+  </Menu>
+)
+
+const columns = ({ handleClickEdit, handleShowVoucher, gotoDetail, handleMenuClick }) => [
   {
     title: 'Data da manutenção',
     dataIndex: 'maintenanceDate',
@@ -81,25 +90,55 @@ const columns = ({ handleClickEdit, handleShowVoucher, gotoDetail }) => [
       <Button type="link" onClick={() => handleShowVoucher(source)}>
         Voucher
       </Button>
+      <Dropdown.Button type="link" overlay={menu(handleMenuClick(id))} />
     </Space>
   }
 ]
 
-const MaintenanceList = ({ gotoDetail, datasource, handleClickEdit, loading, handleChangeTableEvent, handleShowVoucher, offset }) => {
+const MaintenanceList = ({ 
+  gotoDetail, 
+  datasource, 
+  handleClickEdit, 
+  loading, 
+  handleChangeTableEvent, 
+  handleShowVoucher, 
+  offset,
+  handleCancelOrder
+}) => {
+  const handleMenuClick = (id) => () => {
+    confirm({
+      title: 'Deseja cancelar a solicitação?',
+      icon: <ExclamationCircleOutlined />,
+      content: '',
+      okText: 'Cancelar',
+      okType: 'danger',
+      cancelText: 'Confirmar',
+      onOk() {
+        console.log('cancelar', id);
+      },
+      onCancel() {
+        handleCancelOrder({ id, status: 'cancel' });
+      },
+    });
+  }
+
   return (
-    <ConfigProvider renderEmpty={() => <Empty 
-        description="Não há dados" 
-        image={<Image width={85} src={NoData} preview={false} />}
-      />
-    }>
-      <Table 
-        pagination={{ showSizeChanger: false, total: datasource.count, current: offset }}
-        onChange={handleChangeTableEvent}
-        columns={columns({ handleClickEdit, handleShowVoucher, gotoDetail })} 
-        loading={loading}
-        dataSource={datasource.rows} 
-      />
-    </ConfigProvider>
+    <>
+      <ConfigProvider renderEmpty={() => <Empty 
+          description="Não há dados" 
+          image={<Image width={85} src={NoData} preview={false} />}
+        />
+      }>
+        <Table 
+          pagination={{ showSizeChanger: false, total: datasource.count, current: offset }}
+          onChange={handleChangeTableEvent}
+          columns={columns({ handleClickEdit, handleShowVoucher, gotoDetail, handleMenuClick })} 
+          loading={loading}
+          dataSource={datasource.rows} 
+          size="small"
+        />
+      </ConfigProvider>
+    </>
   )
 }
 
