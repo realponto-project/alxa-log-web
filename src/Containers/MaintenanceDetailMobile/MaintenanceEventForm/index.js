@@ -42,10 +42,6 @@ const renderFormItems = ({
   )
 }
 
-const checkout = {
-  'status': 'driverId',
-}
-
 const supply = {
   status: 'driverId',
   driverId: 'fuel',
@@ -56,7 +52,7 @@ const supply = {
 
 const formSettingsNextStep = {
   'check-in': {},
-  'check-out': checkout,
+  'check-out': {},
   'courtyard': {},
   'awaiting_repair': {},
   'dock': {},
