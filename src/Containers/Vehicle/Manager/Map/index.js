@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react'
-import { MapContainer,TileLayer, Marker, Popup, Circle, CircleMarker } from 'react-leaflet'
+import { MapContainer,TileLayer, Marker, Popup, CircleMarker } from 'react-leaflet'
 import 'leaflet/dist/leaflet.css'
 import leaflet from "leaflet";
 import useGeolocation from 'react-hook-geolocation'

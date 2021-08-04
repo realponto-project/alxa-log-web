@@ -1,10 +1,10 @@
 import React, { useEffect, useState } from 'react'
 import { message } from 'antd'
 import { withRouter } from 'react-router-dom'
-import { getById, updateEvents } from '../../Services/MaintenanceOrders'
-import MaintenanceDetailMobile from '../../Containers/MaintenanceDetailMobile'
-import { getAll } from '../../Services/Driver'
-import GAInitialize from '../../utils/ga'
+import { getById, updateEvents } from '../../../Services/MaintenanceOrders'
+import MaintenanceDetailMobile from '../../../Containers/Mobile/MaintenanceDetailMobile'
+import { getAll } from '../../../Services/Driver'
+import GAInitialize from '../../../utils/ga'
 
 const Manager = ({
   history,

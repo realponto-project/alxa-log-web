@@ -120,7 +120,7 @@ const Detail = ({
         <Card bordered={false}>
           <Row>
             <Col span={24}>
-              <Qrcode value={maintenanceOrder.id || ''} height={90} width={90} />
+              <Qrcode value={{ id: maintenanceOrder.id || '', origin: 'solicitation' }} height={90} width={90} />
             </Col>
           </Row>
         </Card>

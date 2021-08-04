@@ -1,7 +1,7 @@
 import React, { useState } from 'react'
 import { Button, Form, Input, Select, Typography, Row, Col, InputNumber } from 'antd'
 import { map } from 'ramda'
-import ModalMobile from '../../../Components/ModalMobile'
+import ModalMobile from '../../../../Components/ModalMobile'
 import formSettingsEvent from './formSettings' 
 import { CloseOutlined } from '@ant-design/icons'
 

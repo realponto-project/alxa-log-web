@@ -50,7 +50,8 @@ const Manager = ({
   handleChangeTableEvent,
   offset,
   gotoDetail,
-  checkBoxDefaultValues
+  checkBoxDefaultValues,
+  handleCancelOrder
 }) => {
   const [showModal, setShowModal] = useState(false)
   const [showVoucher, setShowVoucher] = useState(false)
@@ -203,6 +204,7 @@ const Manager = ({
             handleChangeTableEvent={handleChangeTableEvent}
             offset={offset}
             gotoDetail={gotoDetail}
+            handleCancelOrder={handleCancelOrder}
           />
         </Card>
       </Col>
