@@ -82,21 +82,6 @@ const MaintenanceEventForm = ({
     if (propName === 'status') {
       nextStep = formSettingsNextStep[value[propName]]
       setNextStepForm(nextStep)
-      if (value[propName] === 'check-out') {
-        form.setFieldsValue({
-          status: value[propName],
-          driver: '',
-          supplyType: '',
-          totalLiters:'',
-          km: '',
-        })
-        
-        setFormSettings(formSettings.map(item => (
-          item.name === propName || item.name === 'driverId'
-          ? {...item, show: true, options: item.name === 'driverId' ?  driversSource.map(parseOptionItem) : [] } 
-          : {...item, show: false }
-          )))
-        }
 
       if (value[propName] !== 'check-out' && value[propName] !== 'supply') {
         form.setFieldsValue({
