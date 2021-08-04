@@ -33,7 +33,7 @@ const renderFormItems = ({
     show && (
       <Form.Item key={name} label={label} name={name} rules={rules}>
         {typeInput === 'date' ? (
-          <DatePicker  format={format} />
+          <DatePicker format={format} />
         ): (
           <Component 
             showSearch
@@ -93,7 +93,7 @@ const MaintenanceForm = ({
     }
   }
 
-  const maintenanceDate = maintenanceSelected && maintenanceSelected.maintenanceDate ? new Date(maintenanceSelected.maintenanceDate) : new Date()
+  const maintenanceDate = maintenanceSelected && maintenanceSelected.maintenanceDate ? moment(maintenanceSelected.maintenanceDate) : undefined
 
   return (
     <Modal
@@ -132,7 +132,7 @@ const MaintenanceForm = ({
           setFormSettings(formSettingsVehicle(vehiclesSource))
           form.resetFields()
         }}
-        initialValues={{...maintenanceSelected, driverId: maintenanceSelected ? maintenanceSelected.maintenanceOrderDrivers[0].driver.id : null }}
+        initialValues={{...maintenanceSelected, maintenanceDate, driverId: maintenanceSelected ? maintenanceSelected.maintenanceOrderDrivers[0].driver.id : null }}
       >
         {map(renderFormItems, formSettings)}
       </Form>
