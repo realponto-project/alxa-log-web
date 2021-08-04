@@ -3,7 +3,7 @@ import { Button, Image, Row, Col, Input, Typography, List } from 'antd'
 import QrReader from 'react-qr-reader'
 import QrCode from './qrcode.png'
 import TypingPng from './typography.png'
-import Modal from '../../Components/ModalMobile'
+import Modal from '../../../Components/ModalMobile'
 import { CloseOutlined } from '@ant-design/icons'
 
 const { Title, Text } = Typography

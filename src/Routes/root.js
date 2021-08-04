@@ -8,12 +8,13 @@ import DriverManager from '../Pages/Driver/Manager'
 import VehicleTypeMananger from '../Pages/VehicleType/Manager'
 import BranchManager from '../Pages/Branch/Manager'
 import OperationManager from '../Pages/Operation/Manager'
-import MaintenanceManagerMobile from '../Pages/MaintenanceManagerMobile/Manager'
-import MaintenanceDetailMobile from '../Pages/MaintenanceDetailMobile'
+import MaintenanceManagerMobile from '../Pages/Mobile/MaintenanceManagerMobile/Manager'
+import MaintenanceDetailMobile from '../Pages/Mobile/MaintenanceDetailMobile'
 import MaintenanceDetail from '../Pages/MaintenanceOrder/Detail'
 import DriverDetail from '../Pages/Driver/Detail'
 import BranchDetail from '../Pages/Branch/Detail'
 import OperationDetail from '../Pages/Operation/Detail'
+import DriverAuthorizationQrcode from '../Pages/Mobile/DriverQrcodeAuthorization'
 
 const RootRoutes = [
   {
@@ -126,6 +127,13 @@ const RootRoutes = [
     path: '/logged/operation-detail/:id',
     exact: true,
     goBack: true,
+  },
+  {
+    component: DriverAuthorizationQrcode,
+    title: '',
+    path: '/authorization-qrcode',
+    exact: false,
+    goBack: false,
   },
 ]
 
