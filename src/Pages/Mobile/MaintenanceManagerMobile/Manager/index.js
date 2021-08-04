@@ -1,9 +1,9 @@
 import React, { useState } from 'react'
 import { message } from 'antd'
 import { withRouter } from 'react-router-dom'
-import { getByPlate } from '../../../Services/MaintenanceOrders'
-import ManagerContainer from '../../../Containers/MaintenanceManagerMobile'
-import GAInitialize from '../../../utils/ga'
+import { getByPlate } from '../../../../Services/MaintenanceOrders'
+import ManagerContainer from '../../../../Containers/Mobile/MaintenanceManagerMobile'
+import GAInitialize from '../../../../utils/ga'
 
 const Manager = ({
   history,
@@ -16,10 +16,16 @@ const Manager = ({
   const [showModalMobile, setShowModalMobile] = useState(false)
   GAInitialize(`/maintenance-order-mobile-read-qr-code`)
 
+  const authorizationDriver = (id) => {
+    console.log('driver authorization', id)
+  }
+
   const handleScan = data => {
-    if (data) {
-      return history.push(`/logged/mobile-maintenance-detail/${data}`)
+    if (data && data.origin === 'solicitation') {
+      return history.push(`/logged/mobile-maintenance-detail/${data.id}`)
     }
+
+    return authorizationDriver(data.id)
   }
 
   const handleChange = data => {

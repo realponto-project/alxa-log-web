@@ -63,7 +63,7 @@ const Voucher = ({
 
       <div className={styles.cardfooterbarcode}>
         <p>O qrcode da sua manuntenção é</p>
-        <Qrcode value={id} />
+        <Qrcode value={{ id, origin: 'solicitation' }} />
       </div>
 
     

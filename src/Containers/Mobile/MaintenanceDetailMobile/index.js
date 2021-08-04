@@ -2,8 +2,8 @@ import React from 'react'
 import { Button, Row, Col, Typography, Divider } from 'antd'
 import { LeftOutlined } from '@ant-design/icons'
 import MaintenanceEventForm from './MaintenanceEventForm'
-import diffTime from '../../utils/permananceTime'
-import formattedDate from '../../utils/parserDate'
+import diffTime from '../../../utils/permananceTime'
+import formattedDate from '../../../utils/parserDate'
 
 const { Title, Text } = Typography 
 const status = {
