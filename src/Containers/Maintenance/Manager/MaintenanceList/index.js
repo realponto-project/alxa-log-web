@@ -35,6 +35,12 @@ const columns = ({ handleClickEdit, handleShowVoucher, gotoDetail, handleMenuCli
     fixed: 'left',
   },
   {
+    title: 'Frota',
+    dataIndex: 'fleet',
+    key: 'fleet',
+    fixed: 'left',
+  },
+  {
     title: 'Motorista',
     dataIndex: 'maintenanceOrderDrivers',
     key: 'maintenanceOrderDrivers',
