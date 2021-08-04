@@ -90,7 +90,9 @@ const columns = ({ handleClickEdit, handleShowVoucher, gotoDetail, handleMenuCli
       <Button type="link" onClick={() => handleShowVoucher(source)}>
         Voucher
       </Button>
-      <Dropdown.Button type="link" overlay={menu(handleMenuClick(id))} />
+      {source.status === 'solicitation' && (
+        <Dropdown.Button type="link" overlay={menu(handleMenuClick(id))} />
+      )}
     </Space>
   }
 ]
