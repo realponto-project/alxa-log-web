@@ -93,9 +93,12 @@ const columns = ({ handleClickEdit, handleShowVoucher, gotoDetail, handleMenuCli
         </Button>
       )}
 
-      <Button type="link" onClick={() => handleShowVoucher(source)}>
-        Voucher
-      </Button>
+      {source.status !== 'check-out' && source.status !== 'cancel' && (
+        <Button type="link" onClick={() => handleShowVoucher(source)}>
+          Voucher
+        </Button>
+      )}
+
       {source.status === 'solicitation' && (
         <Dropdown.Button type="link" overlay={menu(handleMenuClick(id))} />
       )}
