@@ -18,6 +18,7 @@ const services = {
 }
 
 const parseStatus = {
+  'cancel': 'Cancelado',
   'solicitation': 'Solicitação',
   'check-in': 'Entrada',
   'avaiable': 'Liberado',

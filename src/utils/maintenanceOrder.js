@@ -10,6 +10,7 @@ const services = {
 }
 
 const parseStatusColor = {
+  'cancel': '#EA5656',
   'solicitation': '#5DA0FC',
   'check-in': '#268E86',
   'avaiable': '#F29F03',
@@ -23,6 +24,7 @@ const parseStatusColor = {
 }
 
 const parseStatus = {
+  'cancel': 'Cancelado',
   'solicitation': 'Solicitação',
   'check-in': 'Entrada',
   'avaiable': 'Liberado',
