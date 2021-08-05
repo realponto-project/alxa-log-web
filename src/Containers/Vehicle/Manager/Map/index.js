@@ -5,7 +5,7 @@ import leaflet from "leaflet";
 import useGeolocation from 'react-hook-geolocation'
 import { map } from 'ramda';
 
-import truckPin from './truckPin.png'
+import truckPin from './truckPin.svg'
 import { getAllGeoLocation } from '../../../../Services/Vehicle';
 
 const mapIcon = leaflet.icon({
