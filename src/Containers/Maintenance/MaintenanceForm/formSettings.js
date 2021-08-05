@@ -20,14 +20,6 @@ const formSettingsVehicle = vehiclesSource => [{
   options: vehiclesSource.map(item => ({ value: item.plate, label: item.plate }))
 },
 {
-  label: 'Frota',
-  name: 'fleet',
-  placeholder: '',
-  show: true,
-  typeInput: 'input',
-  options: []
-},
-{
   label: 'Motorista',
   name: 'driverId',
   rules,
