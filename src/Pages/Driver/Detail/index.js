@@ -9,7 +9,7 @@ import { getAll } from '../../../Services/Vehicle'
 import { getAll as getAllOperations } from '../../../Services/Operations'
 
 const Detail = ({
-  match
+  match, history
 }) => {
   const [driver, setDriver] = useState({
     companyId: null,
@@ -95,6 +95,10 @@ const Detail = ({
     }
   }
 
+  const goToApp = () => {
+    history.push('/logged/mobile-authorization')
+  }
+
   return (
     <DriverDetail
       driver={driver}
@@ -102,6 +106,7 @@ const Detail = ({
       operationsSource={operationsData.rows}
       handleSubmit={handleSubmit}
       chartData={chartData}
+      goToApp={goToApp}
     />
   )
 }
