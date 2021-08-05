@@ -74,7 +74,8 @@ const Detail = ({
   handleSubmit,
   chartData,
   goToApp,
-  handleSubmitAuthorization
+  handleSubmitAuthorization,
+  handleSubmitUpdateAuthorization
 }) => {
   const [showModal, setShowModal] = useState(false)
   const [showModalAuthorization, setShowModalAuthorization] = useState(false)
@@ -141,7 +142,10 @@ const Detail = ({
         <Card bordered={false}>
           <Row>
             <Col span={24} style={{ textAlign: 'right' }}>
-              <AuthorizationList/>
+              <AuthorizationList
+                datasource={driver.authorizations}
+                handleSubmitUpdateAuthorization={handleSubmitUpdateAuthorization}
+              />
             </Col>
           </Row>
         </Card>

@@ -5,7 +5,7 @@ import GAInitialize from '../../../utils/ga'
 
 import DriverDetail from '../../../Containers/Driver/Detail'
 import { getById, createDriverIncident, getIncidentsSummary } from '../../../Services/Driver'
-import { createAuthorization } from '../../../Services/Authorization'
+import { createAuthorization, updateAuthorization } from '../../../Services/Authorization'
 import { getAll } from '../../../Services/Vehicle'
 import { getAll as getAllOperations } from '../../../Services/Operations'
 
@@ -102,6 +102,15 @@ const Detail = ({
     }
   }
 
+  const handleSubmitUpdateAuthorization = async ({id, activated, driverId, operationId, vehicleId}) => {
+    try{
+      console.log({id, activated, driverId, operationId, vehicleId})
+      await updateAuthorization({id, activated, driverId, operationId, vehicleId}) 
+    }catch(err){
+      console.error(err)
+    }
+  }
+
   const summaryChartIncidents = async () => {
     try {
       const { data } = await getIncidentsSummary(match.params.id)
@@ -124,6 +133,7 @@ const Detail = ({
       chartData={chartData}
       goToApp={goToApp}
       handleSubmitAuthorization={handleSubmitAuthorization}
+      handleSubmitUpdateAuthorization={handleSubmitUpdateAuthorization}
     />
   )
 }
