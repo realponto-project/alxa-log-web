@@ -59,7 +59,7 @@ const Detail = ({
   showModal
 }) => {
   const checkIn = maintenanceOrder.maintenanceOrderEvents.find(item => item.status === 'check-in')
-  const permananceTimeDetail = checkIn ? diffTime(checkIn.createdAt, maintenanceOrder.updatedAt, maintenanceOrder.status) : '-'
+  const permananceTimeDetail = checkIn ? diffTime(checkIn.createdAt, maintenanceOrder.updatedAt, maintenanceOrder.status, true) : { time: '-', descriptionTime: '' }
   
   return (
     <Row gutter={[8, 8]}>
@@ -120,10 +120,10 @@ const Detail = ({
       </Col>
 
       <Col span={3} style={{ textAlign: 'center' }}>
-        <Card bordered={false}>
+        <Card bordered={false} bodyStyle={{ padding: "20px 0", height: "140px" }}>
           <Row>
             <Col span={24}>
-              <Qrcode value={{ id: maintenanceOrder.id || '', origin: 'solicitation' }} height={90} width={90} />
+              <Qrcode value={{ id: maintenanceOrder.id || '', origin: 'solicitation' }} style={{ maxHeight: "89px", width: "89px" }} />
             </Col>
           </Row>
         </Card>
@@ -170,7 +170,8 @@ const Detail = ({
         <Card bordered={false}>
           <Row>
             <Col span={12}>
-              <Title level={1}>{permananceTimeDetail}</Title>
+              <Title level={1}>{permananceTimeDetail.time}</Title>
+              <p level={1}>{permananceTimeDetail.descriptionTime}</p>
             </Col>
             <Col span={12}>
               <Row>
@@ -192,15 +193,15 @@ const Detail = ({
             <Col span={24}>
               <Title level={4}>Condutor #1</Title>
             </Col>
-            <Col span={8}>
+            <Col span={24}>
               <Text>Motorista da entrada</Text><br />
               <Text><strong>{maintenanceOrder.maintenanceOrderDrivers[0].driver.name}</strong></Text>
             </Col>
-            <Col span={8}>
+            <Col span={12}>
               <Text>CNH</Text><br />
               <Text><strong>{maintenanceOrder.maintenanceOrderDrivers[0].driver.driverLicense}</strong></Text>
             </Col>
-            <Col span={8}>
+            <Col span={12}>
               <Text>Telefone</Text><br />
               <Text><strong>{maintenanceOrder.maintenanceOrderDrivers[0].driver.phone}</strong></Text>
             </Col>
@@ -227,15 +228,15 @@ const Detail = ({
                 </Button>
               }
             </Col>
-            <Col span={8}>
+            <Col span={24}>
               <Text>Motorista da saída</Text><br />
               <Text><strong>{maintenanceOrder.maintenanceOrderDrivers.length > 1 && maintenanceOrder.maintenanceOrderDrivers[1].driver.name || '-'}</strong></Text>
             </Col>
-            <Col span={8}>
+            <Col span={12}>
               <Text>CNH</Text><br />
               <Text><strong>{maintenanceOrder.maintenanceOrderDrivers.length > 1 && maintenanceOrder.maintenanceOrderDrivers[1].driver.driverLicense || '-'}</strong></Text>
             </Col>
-            <Col span={8}>
+            <Col span={12}>
               <Text>Telefone</Text><br />
               <Text><strong>{maintenanceOrder.maintenanceOrderDrivers.length > 1 && maintenanceOrder.maintenanceOrderDrivers[1].driver.phone || '-'}</strong></Text>
             </Col>
