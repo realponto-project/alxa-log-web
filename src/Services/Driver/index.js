@@ -24,11 +24,11 @@ const getIncidentsSummary = async (id) => {
   return await axiosIntance.get(`/drivers-incidents/${id}`)
 }
 
-export { 
-  getAll, 
+export {
+  getAll,
   getById,
-  createDriver, 
+  createDriver,
   updateDriver,
   createDriverIncident,
-  getIncidentsSummary,
+  getIncidentsSummary
 }
