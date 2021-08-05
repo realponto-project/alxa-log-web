@@ -3,8 +3,12 @@ import DriverAuthorizationMobileContainer from '../../../Containers/Mobile/Drive
 
 const DriverAuthorizationMobile = () => {
 
+const isMobile = window.mobileCheck() ? true : false
+
   return(
-    <DriverAuthorizationMobileContainer />
+    <DriverAuthorizationMobileContainer
+      isMobile={isMobile}
+    />
   )
 }
 
