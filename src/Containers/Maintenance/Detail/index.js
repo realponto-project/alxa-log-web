@@ -251,7 +251,11 @@ const Detail = ({
               <Timeline>
                 {maintenanceOrder.maintenanceOrderEvents.map((item) => (
                   <Timeline.Item color="green" key={item.id}>
-                    <p>{parseStatus[item.status]} <br /> {formattedDate(item.createdAt, 'DD/MM/YYYY HH:mm')}</p>
+                    <Row>
+                      <Col span={12}>
+                        <p>{parseStatus[item.status]} - {item.user && item.user.name} <br /> {formattedDate(item.createdAt, 'DD/MMM/YYYY HH:mm')}</p>
+                      </Col>
+                    </Row>
                   </Timeline.Item>
                 ))}
               </Timeline>
