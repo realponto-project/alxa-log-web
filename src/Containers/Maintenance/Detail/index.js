@@ -58,7 +58,9 @@ const Detail = ({
   setShowModal,
   showModal
 }) => {
-
+  const checkIn = maintenanceOrder.maintenanceOrderEvents.find(item => item.status === 'check-in')
+  const permananceTimeDetail = checkIn ? diffTime(checkIn.createdAt, maintenanceOrder.updatedAt, maintenanceOrder.status) : '-'
+  
   return (
     <Row gutter={[8, 8]}>
       <Col span={24}>
@@ -168,7 +170,7 @@ const Detail = ({
         <Card bordered={false}>
           <Row>
             <Col span={12}>
-              <Title level={1}>{diffTime(maintenanceOrder.createdAt, maintenanceOrder.updatedAt, maintenanceOrder.status)}</Title>
+              <Title level={1}>{permananceTimeDetail}</Title>
             </Col>
             <Col span={12}>
               <Row>
