@@ -1,8 +1,7 @@
-import React, { useState } from 'react'
+import React from 'react'
 import { Row, Col, Card, Typography, Image, Tag, Timeline, Button } from 'antd'
 import Qrcode  from 'qrcode.react'
 import { cnpj } from 'cpf-cnpj-validator'
-import { EditOutlined, PlusOutlined } from '@ant-design/icons'
 
 import fuelSVG from './fuel.svg'
 import clockSVG from './clock.svg'
@@ -216,12 +215,12 @@ const Detail = ({
             </Col>
             <Col span={8} style={{ textAlign: 'right' }}>
               { 
-               maintenanceOrder.status !== 'check-out' &&
+               maintenanceOrder.status !== 'check-out' && maintenanceOrder.status !== 'cancel' &&
                 <Button onClick={() => setShowModal(true)} type='link'>
                   {
                     maintenanceOrder.maintenanceOrderDrivers.length > 1 
-                    ? <EditOutlined />
-                    : <PlusOutlined />
+                    ? 'Editar'
+                    : 'Adicionar'
                   }
                 </Button>
               }
