@@ -9,6 +9,7 @@ import styles from './style.module.css'
 const { RangePicker } = DatePicker
 const { Title } = Typography
 const statusFilters = [
+  { value: 'cancel', label: 'Cancelado' },
   { value: 'solicitation', label: 'Solicitação' },
   { value: 'check-in', label: 'Entrada' },
   { value: 'avaiable', label: 'Liberado' },
