@@ -5,8 +5,6 @@ import { cnpj } from 'cpf-cnpj-validator'
 
 import IncidentForm from './IncidentForm'
 import BarChart from './BarChart'
-import BarChart from './BarChart'
-import IncidentForm from './IncidentForm'
 import AuthorizationForm from './AuthorizationForm'
 import AuthorizationList from './Authorizations'
 import formattedDate from '../../../utils/parserDate'
