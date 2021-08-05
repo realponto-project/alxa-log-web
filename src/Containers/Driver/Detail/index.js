@@ -1,6 +1,6 @@
 import React, { useState } from 'react'
 import { Row, Col, Card, Typography, Table, Button, Radio, Tag } from 'antd'
-import { PlusOutlined, BarChartOutlined, DatabaseOutlined } from '@ant-design/icons'
+import { PlusOutlined, BarChartOutlined, DatabaseOutlined, PhoneOutlined } from '@ant-design/icons'
 import { cnpj } from 'cpf-cnpj-validator'
 
 import IncidentForm from './IncidentForm'
