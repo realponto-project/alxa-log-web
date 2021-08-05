@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react'
 import { useHistory } from 'react-router-dom'
 
 import DriverMobileContainer from '../../../Containers/Mobile/DriverMobile'
-import { getById, updateDriver } from '../../../Services/Driver'
+import { getById, updateDriverWithoutAuth } from '../../../Services/Driver'
 
 const DriverMobile = ({ match }) => {
   const [driver, setDriver] = useState(null)
@@ -18,7 +18,7 @@ const DriverMobile = ({ match }) => {
 
   const updatePhone = async (values) => {
     try {
-      await updateDriver({ ...values, id: match.params.id })
+      await updateDriverWithoutAuth(match.params.id, values)
       history.push(`/logged/mobile-driver-success/${match.params.id}`)
     } catch (error) {
       window.onerror(`updateDriver-phone: ${error.error}`, window.location.href)
