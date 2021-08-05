@@ -1,7 +1,7 @@
 import React, { useState } from 'react'
 import { Row, Col, Card, Typography, Table, Button, Radio, Tag } from 'antd'
 import BarChart from './BarChart'
-import { PlusOutlined, BarChartOutlined, DatabaseOutlined } from '@ant-design/icons'
+import { PlusOutlined, BarChartOutlined, DatabaseOutlined, PhoneOutlined } from '@ant-design/icons'
 import IncidentForm from './IncidentForm'
 import { cnpj } from 'cpf-cnpj-validator'
 import formattedDate from '../../../utils/parserDate'
@@ -67,7 +67,8 @@ const Detail = ({
   vehiclesSource,
   operationsSource,
   handleSubmit,
-  chartData
+  chartData,
+  goToApp
 }) => {
   const [showModal, setShowModal] = useState(false)
   const [mode, setMode] = useState('table')
@@ -86,16 +87,23 @@ const Detail = ({
               <Text>Nome</Text><br />
               <Text><strong>{driver.name || '-' }</strong></Text>
             </Col>
-            <Col span={8}>
+            <Col span={6}>
               <Text>CNH</Text><br />
               <Text><strong>{driver.driverLicense}</strong></Text>
             </Col>
 
-            <Col span={8}>
+            <Col span={6}>
               <Text>Telefone</Text><br />
               <Text>
                 {driver.phone}
               </Text>
+            </Col>
+
+            <Col span={4}>
+              <Text>App</Text><br />
+              <Button type="link" style={{padding: 0}} onClick={goToApp}>
+                <PhoneOutlined/>
+              </Button>
             </Col>
           </Row>
         </Card>
