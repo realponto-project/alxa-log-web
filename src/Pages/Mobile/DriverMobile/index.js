@@ -58,6 +58,9 @@ const DriverMobile = ({ match }) => {
     setPlate(null)
   }
 
+  const handleSelecOperation = ({ authorizationId }) =>
+    setAuthorizationId(authorizationId)
+
   return (
     <DriverMobileContainer
       driver={driver}
@@ -65,6 +68,7 @@ const DriverMobile = ({ match }) => {
       authorizations={authorizations}
       getAuthorization={getAuthorization}
       authorizationId={authorizationId}
+      handleSelecOperation={handleSelecOperation}
       plate={plate}
       restart={restart}
     />
