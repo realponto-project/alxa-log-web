@@ -1,9 +1,12 @@
 import React, { useState } from 'react'
 import { Row, Col, Card, Typography, Table, Button, Radio, Tag } from 'antd'
-import BarChart from './BarChart'
 import { PlusOutlined, BarChartOutlined, DatabaseOutlined, PhoneOutlined } from '@ant-design/icons'
-import IncidentForm from './IncidentForm'
 import { cnpj } from 'cpf-cnpj-validator'
+
+import IncidentForm from './IncidentForm'
+import BarChart from './BarChart'
+import AuthorizationForm from './AuthorizationForm'
+import AuthorizationList from './Authorizations'
 import formattedDate from '../../../utils/parserDate'
 
 const chartSettings = { 
@@ -68,9 +71,12 @@ const Detail = ({
   operationsSource,
   handleSubmit,
   chartData,
-  goToApp
+  goToApp,
+  handleSubmitAuthorization,
+  handleSubmitUpdateAuthorization
 }) => {
   const [showModal, setShowModal] = useState(false)
+  const [showModalAuthorization, setShowModalAuthorization] = useState(false)
   const [mode, setMode] = useState('table')
 
   const handleChange = ({ target }) => setMode(target.value)
@@ -104,6 +110,40 @@ const Detail = ({
               <Button type="link" style={{padding: 0}} onClick={goToApp}>
                 <PhoneOutlined/>
               </Button>
+            </Col>
+          </Row>
+        </Card>
+      </Col>
+
+      <Col span={24}>
+        <Card bordered={false}>
+          <Row>
+            <Col span={12}>
+              <Title style={{ marginBottom: 0 }} level={4}>
+                Adicione autorizações
+              </Title>
+              <p style={{ marginBottom: 0 }}>Crie e gerencie autorizações dos motoristas</p>
+            </Col>
+            <Col span={12} style={{ textAlign: 'right' }}>
+              <Button
+                onClick={() => setShowModalAuthorization(true)}
+                style={{ marginRight: '16px' }}
+                icon={<PlusOutlined />}>
+                Adicionar autorização
+              </Button>
+            </Col>
+          </Row>
+        </Card>
+      </Col>
+
+      <Col span={24}>
+        <Card bordered={false}>
+          <Row>
+            <Col span={24} style={{ textAlign: 'right' }}>
+              <AuthorizationList
+                datasource={driver.authorizations}
+                handleSubmitUpdateAuthorization={handleSubmitUpdateAuthorization}
+              />
             </Col>
           </Row>
         </Card>
@@ -163,6 +203,20 @@ const Detail = ({
             vehiclesSource={vehiclesSource}
             operationsSource={operationsSource}
             handleSubmit={handleSubmit}
+            vehiclesSource={vehiclesSource}
+            operationsSource={operationsSource}
+          />
+        )
+      }
+
+      {
+        showModalAuthorization && (
+          <AuthorizationForm
+            handleCancel={setShowModalAuthorization}
+            visible={showModalAuthorization}
+            vehiclesSource={vehiclesSource}
+            operationsSource={operationsSource}
+            handleSubmit={handleSubmitAuthorization}
             vehiclesSource={vehiclesSource}
             operationsSource={operationsSource}
           />

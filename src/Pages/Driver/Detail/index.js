@@ -5,6 +5,7 @@ import GAInitialize from '../../../utils/ga'
 
 import DriverDetail from '../../../Containers/Driver/Detail'
 import { getById, createDriverIncident, getIncidentsSummary } from '../../../Services/Driver'
+import { createAuthorization, updateAuthorization } from '../../../Services/Authorization'
 import { getAll } from '../../../Services/Vehicle'
 import { getAll as getAllOperations } from '../../../Services/Operations'
 
@@ -47,6 +48,7 @@ const Detail = ({
     try {
       const { data } = await getById(match.params.id)
       setDriver(data)
+      console.log('aquiiiiiiiiii',data)
     } catch (error) {
       window.onerror(`driverId: ${error.error}`, window.location.href)
     }
@@ -82,7 +84,30 @@ const Detail = ({
       success('Incidente criado com sucesso!')
     } catch (error) {
       window.onerror(`createIncident: ${error.error}`, window.location.href)
-      errorMessage('Não foi criar o incidente!')
+      errorMessage('Não foi possível criar incidente!')
+    }
+  }
+
+  const handleSubmitAuthorization = async (values) => {
+    try {
+      await createAuthorization({
+        ...values,
+        driverId: match.params.id,
+      })
+      getDriver()
+      success('Autorização criada com sucesso!')
+    } catch (error) {
+      window.onerror(`createAuthorization: ${error.error}`, window.location.href)
+      errorMessage('Não foi possível criar a autorização!')
+    }
+  }
+
+  const handleSubmitUpdateAuthorization = async ({id, activated, driverId, operationId, vehicleId}) => {
+    try{
+      console.log({id, activated, driverId, operationId, vehicleId})
+      await updateAuthorization({id, activated, driverId, operationId, vehicleId}) 
+    }catch(err){
+      console.error(err)
     }
   }
 
@@ -107,6 +132,8 @@ const Detail = ({
       handleSubmit={handleSubmit}
       chartData={chartData}
       goToApp={goToApp}
+      handleSubmitAuthorization={handleSubmitAuthorization}
+      handleSubmitUpdateAuthorization={handleSubmitUpdateAuthorization}
     />
   )
 }
