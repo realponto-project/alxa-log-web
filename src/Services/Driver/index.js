@@ -16,7 +16,7 @@ const updateDriver = async (values) => {
 
 const updateDriverWithoutAuth = async (id, values) => {
   return await axios.put(
-    `${process.env.REACT_APP_API_URL}/mobile-drivers/${id}`,
+    `${process.env.REACT_APP_API_URL}/mobile/drivers/${id}`,
     values
   )
 }

@@ -20,13 +20,13 @@ const MaintenanceManagerMobile = ({
   showModalMobile,
   setShowModalMobile,
   setSearchVehicle,
-  setSearchButton,
+  setSearchButton
 }) => {
   return (
-    <div style={{ overflow: "hidden", padding: "24px"}}>
+    <div style={{ overflow: 'hidden', padding: '24px' }}>
       <Row>
         <Col span={24}>
-          { enableQrCode ? (
+          {enableQrCode ? (
             <Row gutter={[16, 16]}>
               <Col span={24}>
                 <QrReader
@@ -37,22 +37,26 @@ const MaintenanceManagerMobile = ({
                 />
               </Col>
               <Col span={24}>
-                  <Title level={4}>
-                    Buscar com QR Code
-                  </Title>
-                  <Text>
-                    Pocisione a câmera para um códido (QR Code). A leitura é automática ou clique em "Digitar placa do veículo abaixo"
-                  </Text>
+                <Title level={4}>Buscar com QR Code</Title>
+                <Text>
+                  Pocisione a câmera para um códido (QR Code). A leitura é
+                  automática ou clique em "Digitar placa do veículo abaixo"
+                </Text>
               </Col>
               <Col span={24}>
-                <Button block size="large" onClick={() => { 
-                  setEnableQrCode(false);
-                  setShowModalMobile(true);
-                }}>Digitar placa do veículo</Button>
+                <Button
+                  block
+                  size="large"
+                  onClick={() => {
+                    setEnableQrCode(false)
+                    setShowModalMobile(true)
+                  }}>
+                  Digitar placa do veículo
+                </Button>
               </Col>
             </Row>
           ) : (
-            <Row gutter={[8, 8]} style={{ padding: "30px 0"}}>
+            <Row gutter={[8, 8]} style={{ padding: '30px 0' }}>
               <Col span={24}>
                 <Title level={3}>Buscar um Qr Code</Title>
               </Col>
@@ -60,59 +64,71 @@ const MaintenanceManagerMobile = ({
                 <List
                   itemLayout="horizontal"
                   dataSource={[
-                    { 
-                      title: "Ler QR code", 
-                      image: QrCode, 
-                      subtitle: "Use a câmera do celular", 
+                    {
+                      title: 'Ler QR code',
+                      image: QrCode,
+                      subtitle: 'Use a câmera do celular',
                       action: () => setEnableQrCode(true)
-                    }, 
-                    { 
-                      title: "Insira a placa do Veículo", 
-                      image: TypingPng, 
-                      subtitle: "Para pesquisar a ordem de manutenção", 
-                      action: () => { 
-                        setShowModalMobile(true); 
+                    },
+                    {
+                      title: 'Insira a placa do Veículo',
+                      image: TypingPng,
+                      subtitle: 'Para pesquisar a ordem de manutenção',
+                      action: () => {
+                        setShowModalMobile(true)
                       }
                     }
                   ]}
-                  renderItem={item => (
+                  renderItem={(item) => (
                     <List.Item>
                       <List.Item.Meta
-                        avatar={<Image src={item.image} width={50} height={50} preview={false} />}
+                        avatar={
+                          <Image
+                            src={item.image}
+                            width={50}
+                            height={50}
+                            preview={false}
+                          />
+                        }
                         title={<a onClick={item.action}>{item.title}</a>}
-                        description={<a onClick={item.action}>{item.subtitle}</a>}
+                        description={
+                          <a onClick={item.action}>{item.subtitle}</a>
+                        }
                       />
                     </List.Item>
                   )}
                 />
-                
               </Col>
             </Row>
-          )
-          }
+          )}
           {showModalMobile && (
             <Modal show={showModalMobile}>
               <Row gutter={[8, 16]}>
-                <Col span={24} style={{ textAlign: "right"}}>
-                  <Button type="link" style={{ color: "#333" }} onClick={() => {
-                    setShowModalMobile(false)
-                    setSearchVehicle('')
-                    setSearchButton(true)
-                  }}><CloseOutlined /></Button>
+                <Col span={24} style={{ textAlign: 'right' }}>
+                  <Button
+                    type="link"
+                    style={{ color: '#333' }}
+                    onClick={() => {
+                      setShowModalMobile(false)
+                      setSearchVehicle('')
+                      setSearchButton(true)
+                    }}>
+                    <CloseOutlined />
+                  </Button>
                 </Col>
                 <Col span={24}>
-                  <Title level={4}>
-                    Buscar veículo pela placa
-                  </Title>
-                  <Text>
-                    Digite a placa do veículo no input abaixo
-                  </Text>
+                  <Title level={4}>Buscar veículo pela placa</Title>
+                  <Text>Digite a placa do veículo no input abaixo</Text>
                 </Col>
                 <Col span={24}>
                   <Input value={searchVehicle} onChange={handleChange} />
                 </Col>
                 <Col span={24}>
-                  <Button block size="large" onClick={handleClick} disabled={searchButton}>
+                  <Button
+                    block
+                    size="large"
+                    onClick={handleClick}
+                    disabled={searchButton}>
                     Pesquisar placa do veículo
                   </Button>
                 </Col>

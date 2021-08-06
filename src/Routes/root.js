@@ -10,7 +10,6 @@ import BranchManager from '../Pages/Branch/Manager'
 import OperationManager from '../Pages/Operation/Manager'
 import MaintenanceManagerMobile from '../Pages/Mobile/MaintenanceManagerMobile/Manager'
 import MaintenanceDetailMobile from '../Pages/Mobile/MaintenanceDetailMobile'
-import DriverAuthorizationMobile from '../Pages/Mobile/DriverAuthorizationMobile'
 import DriverOperationMobile from '../Pages/Mobile/DriverOperationMobile'
 import DriverMobile from '../Pages/Mobile/DriverMobile'
 import DriverMobileSuccess from '../Pages/Mobile/DriverMobileSuccess'
@@ -75,13 +74,6 @@ const RootRoutes = [
     path: '/logged/driver/manager',
     exact: true,
     goBack: false
-  },
-  {
-    component: DriverAuthorizationMobile,
-    title: '',
-    path: '/logged/mobile-authorization',
-    exact: true,
-    goBack: true
   },
   {
     component: DriverOperationMobile,

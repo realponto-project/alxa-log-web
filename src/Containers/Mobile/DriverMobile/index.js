@@ -1,16 +1,49 @@
-import React from 'react'
-import Qrcode from 'qrcode.react'
-import { Image, Button, Typography, Row, Col } from 'antd'
-import { isNil } from 'ramda'
+import React, { useState } from 'react'
+import { Image, Typography, Row, Col, Button, Radio, Form } from 'antd'
+import { isNil, length, map } from 'ramda'
 
-import LogoSvg from '../../../Assets/logo.svg'
 import noData from '../../../Assets/noData.svg'
 import UpdatePhoneSteps from './UpdatePhone'
-import Onboarding from './Onboarding'
+// import Onboarding from './Onboarding'
+import DriverAuthorizationMobileContainer from '../DriverAuthorizationMobile'
+import LogoSvg from '../../../Assets/logo.svg'
+import DriverAuthorizationQrcode from '../DriverAuthorizationQrcode'
 
-const { Text, Title } = Typography
+const { Title, Text } = Typography
 
-const DriverMobileContainer = ({ driver, updatePhone }) => {
+const MyRadioButton = ({ text, value, checked }) => (
+  <Radio.Button
+    style={{
+      width: '100%',
+      height: '100px',
+      display: 'flex',
+      justifyContent: 'center',
+      alignItems: 'center',
+      borderRadius: '10px',
+      marginBottom: '25px'
+    }}
+    value={value}>
+    <Title
+      style={{
+        padding: '0',
+        margin: '0',
+        color: checked ? '#1890ff' : 'black'
+      }}
+      level={2}>
+      {text}
+    </Title>
+  </Radio.Button>
+)
+
+const DriverMobileContainer = ({
+  driver,
+  updatePhone,
+  getAuthorization,
+  authorizations,
+  authorizationId,
+  restart,
+  plate
+}) => {
   if (isNil(driver)) {
     return (
       <Row
@@ -35,62 +68,76 @@ const DriverMobileContainer = ({ driver, updatePhone }) => {
     return <UpdatePhoneSteps driver={driver} updatePhone={updatePhone} />
   }
 
-  if (!driver.authorizationOnboarding) {
-    return <Onboarding />
+  // if (!driver.authorizationOnboarding) {
+  //   return <Onboarding />
+  // }
+
+  if (authorizationId) {
+    return (
+      <DriverAuthorizationQrcode
+        plate={plate}
+        driver={driver}
+        restart={restart}
+        authorizationId={authorizationId}
+      />
+    )
   }
 
-  return (
-    <Row
-      style={{
-        background: '#F2F2F3',
-        padding: '35px 35px',
-        minHeight: '100vh',
-        textAlign: 'center'
-      }}>
-      <Col span={24}>
-        <Image src={LogoSvg} alt="logo" preview={false} width={200} />
-      </Col>
+  if (length(authorizations) > 0) {
+    const [form] = Form.useForm()
 
-      <Col
-        span={24}
-        style={{
-          background: '#FFFF',
-          padding: '35px 15px 15px 0',
-          height: '290px',
-          margin: '0',
-          borderRadius: '11px',
-          textAlign: 'center'
-        }}>
-        <Row>
+    return (
+      <Form form={form}>
+        <Row
+          style={{
+            background: '#F2F2F3',
+            padding: '35px 35px',
+            minHeight: '100vh',
+            textAlign: 'center'
+          }}>
           <Col span={24}>
-            <Title style={{ padding: '0', margin: '0' }} level={5}>
-              Alexandre Soares
-            </Title>
-            <p style={{ color: '#8E8D92' }}>Autorização alxa log</p>
+            <Image src={LogoSvg} alt="logo" preview={false} width={200} />
           </Col>
+
           <Col span={24}>
-            <Qrcode value={{ id: 'abc1234', origin: 'authorization' }} />
+            <Form.Item shouldUpdate={true}>
+              {() => {
+                const { authorizationId } = form.getFieldsValue()
+                return (
+                  <Form.Item name="authorizationId">
+                    <Radio.Group style={{ width: '100%' }}>
+                      {map(({ operation }) => {
+                        return (
+                          <MyRadioButton
+                            value={operation.id}
+                            text={operation.name}
+                            checked={authorizationId === operation.id}
+                          />
+                        )
+                      }, authorizations)}
+                    </Radio.Group>
+                  </Form.Item>
+                )
+              }}
+            </Form.Item>
           </Col>
+
           <Col span={24}>
-            <Title level={3}>ABC1234</Title>
+            <Button
+              type="primary"
+              size="large"
+              htmlType="submit"
+              block
+              onClick={restart}>
+              Voltar
+            </Button>
           </Col>
         </Row>
-      </Col>
+      </Form>
+    )
+  }
 
-      <Col span={24}>
-        <Text>
-          Este é o seu Qr code de autorização, apresente o Qr code do veículo
-          que está dirigindo ou retirando
-        </Text>
-      </Col>
-
-      <Col span={24}>
-        <Button type="primary" size="large" htmlType="submit" block>
-          Voltar
-        </Button>
-      </Col>
-    </Row>
-  )
+  return <DriverAuthorizationMobileContainer handleSubmit={getAuthorization} />
 }
 
 export default DriverMobileContainer
