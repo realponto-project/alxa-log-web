@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React from 'react'
 import { Image, Typography, Row, Col, Button, Radio, Form } from 'antd'
 import { isNil, length, map } from 'ramda'
 
@@ -9,7 +9,7 @@ import DriverAuthorizationMobileContainer from '../DriverAuthorizationMobile'
 import LogoSvg from '../../../Assets/logo.svg'
 import DriverAuthorizationQrcode from '../DriverAuthorizationQrcode'
 
-const { Title, Text } = Typography
+const { Title } = Typography
 
 const MyRadioButton = ({ text, value, checked }) => (
   <Radio.Button
@@ -42,7 +42,8 @@ const DriverMobileContainer = ({
   authorizations,
   authorizationId,
   restart,
-  plate
+  plate,
+  handleSelecOperation
 }) => {
   if (isNil(driver)) {
     return (
@@ -87,7 +88,7 @@ const DriverMobileContainer = ({
     const [form] = Form.useForm()
 
     return (
-      <Form form={form}>
+      <Form form={form} onFinish={handleSelecOperation}>
         <Row
           style={{
             background: '#F2F2F3',
@@ -123,14 +124,21 @@ const DriverMobileContainer = ({
           </Col>
 
           <Col span={24}>
-            <Button
-              type="primary"
-              size="large"
-              htmlType="submit"
-              block
-              onClick={restart}>
-              Voltar
-            </Button>
+            <Row gutter={20}>
+              <Col span={12}>
+                <Button size="large" block onClick={restart}>
+                  Voltar
+                </Button>
+              </Col>
+
+              <Col span={12}>
+                <Form.Item>
+                  <Button type="primary" size="large" htmlType="submit" block>
+                    Ok
+                  </Button>
+                </Form.Item>
+              </Col>
+            </Row>
           </Col>
         </Row>
       </Form>
