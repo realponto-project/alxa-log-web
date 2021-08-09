@@ -5,29 +5,22 @@ import GAInitialize from '../../../utils/ga'
 import BranchDetail from '../../../Containers/Branch/Detail'
 import { getById, getSummary } from '../../../Services/Branch'
 import { getMaintenanceCompanyId } from '../../../Services/MaintenanceOrders'
+import { Form } from 'antd'
 
-const Detail = ({
-  match,
-  history,
-}) => {
+const Detail = ({ match, history }) => {
+  const [filterForm] = Form.useForm()
+  const [loading, setLoading] = useState(false)
   const [company, setCompany] = useState({
     name: '',
-    cnpj: '',
+    cnpj: ''
   })
   const [chartData, setChartData] = useState([])
-  const [offset, setoffset] = useState(1)
+  const [offset, setOffset] = useState(1)
+  const [query, setQuery] = useState({})
   const [datasource, setDatasource] = useState({ rows: [], count: 0 })
-
-  
   GAInitialize(`/branch/${match.params.id}`)
 
-  useEffect(() => {
-    getCompany()
-    summaryChart()
-    getAllMaintenanceCompany({ companyId: match.params.id })
-  }, [])
-
-  const getCompany = async() => {
+  const getCompany = async () => {
     try {
       const { data } = await getById(match.params.id)
       setCompany(data)
@@ -46,19 +39,33 @@ const Detail = ({
   }
 
   const getAllMaintenanceCompany = async (query) => {
+    setLoading(true)
     try {
       const { data } = await getMaintenanceCompanyId(query)
       setDatasource(data)
+      setLoading(false)
     } catch (error) {
+      setLoading(false)
       window.onerror(`MaintenanceCompany: ${error.error}`, window.location.href)
     }
-  } 
+  }
 
   const handleChangeTableEvent = ({ current }) => {
-    setoffset(current)
-    const query = { offset: (current - 1), companyId: match.params.id }
-    getAllMaintenanceCompany(query)
+    setOffset(current)
   }
+
+  useEffect(() => {
+    getCompany()
+    summaryChart()
+  }, [])
+
+  useEffect(() => {
+    getAllMaintenanceCompany({
+      ...query,
+      companyId: match.params.id,
+      offset: offset - 1
+    })
+  }, [offset, query])
 
   return (
     <BranchDetail
@@ -67,7 +74,18 @@ const Detail = ({
       handleChangeTableEvent={handleChangeTableEvent}
       offset={offset}
       datasource={datasource}
-      gotoDetailOrder={id => history.push(`/logged/maintenance-detail/${id}`)}
+      gotoDetailOrder={(id) => history.push(`/logged/maintenance-detail/${id}`)}
+      handleFilter={(values) => {
+        setQuery(values)
+        setOffset(1)
+      }}
+      clearFilter={() => {
+        setQuery({})
+        setOffset(1)
+        filterForm.resetFields()
+      }}
+      filterForm={filterForm}
+      loading={loading}
     />
   )
 }
