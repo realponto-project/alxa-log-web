@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useState } from 'react'
 import { Table, Empty, ConfigProvider, Image, Switch } from 'antd'
 import NoData from '../../../../Assets/noData.svg'
 
@@ -22,11 +22,16 @@ const columns = ({handleSubmitUpdateAuthorization}) => [
     dataIndex: 'activated',
     key: 'activated',
     fixed: 'left',
-    render: (_, source) => 
-      <Switch 
-        onChange={(activated) => handleSubmitUpdateAuthorization({...source, activated })} 
-        value={source.activated}
-      />
+    render: (_, source) => {
+      const [checked, setChecked] = useState(source.activated)
+      return (
+        <Switch 
+          checked={checked}
+          onChange={(activated) => handleSubmitUpdateAuthorization({...source, activated }, setChecked)} 
+          value={source.activated}
+        />
+      )
+    }
     },
 ]
 
