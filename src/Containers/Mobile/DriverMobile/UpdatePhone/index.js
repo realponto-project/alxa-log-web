@@ -45,7 +45,7 @@ const UpdatePhone = ({ driver, updatePhone }) => {
           Olá <Text strong>{driver.name}</Text>,
         </Text>
         <br />
-        <Text>Precisamos que você nos informe seu telafone.</Text>
+        <Text>Precisamos que você nos informe seu telefone.</Text>
       </Col>
 
       <Form
