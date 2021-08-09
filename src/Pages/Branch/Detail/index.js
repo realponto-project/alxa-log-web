@@ -63,7 +63,7 @@ const Detail = ({ match, history }) => {
     getAllMaintenanceCompany({
       ...query,
       companyId: match.params.id,
-      offset: (offset - 1) * 20
+      offset: offset - 1
     })
   }, [offset, query])
 
