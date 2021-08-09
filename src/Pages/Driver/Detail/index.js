@@ -102,10 +102,10 @@ const Detail = ({
     }
   }
 
-  const handleSubmitUpdateAuthorization = async ({id, activated, driverId, operationId, vehicleId}) => {
+  const handleSubmitUpdateAuthorization = async ({id, activated, driverId, operationId, vehicleId }, setChecked) => {
     try{
-      console.log({id, activated, driverId, operationId, vehicleId})
       await updateAuthorization({id, activated, driverId, operationId, vehicleId}) 
+      setChecked(activated)
     }catch(err){
       console.error(err)
     }
