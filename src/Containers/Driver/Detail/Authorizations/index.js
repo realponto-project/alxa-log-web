@@ -27,6 +27,8 @@ const columns = ({handleSubmitUpdateAuthorization}) => [
       return (
         <Switch 
           checked={checked}
+          checkedChildren="Ativo" 
+          unCheckedChildren="Inativo"
           onChange={(activated) => handleSubmitUpdateAuthorization({...source, activated }, setChecked)} 
           value={source.activated}
         />
