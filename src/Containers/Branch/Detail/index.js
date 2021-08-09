@@ -3,6 +3,7 @@ import {
   Row,
   Col,
   Card,
+  DatePicker,
   Typography,
   Tag,
   Radio,
@@ -12,7 +13,10 @@ import {
 } from 'antd'
 import BarChart from './BarChart'
 import { cnpj } from 'cpf-cnpj-validator'
-import { BarChartOutlined, DatabaseOutlined } from '@ant-design/icons'
+import {
+  BarChartOutlined,
+  DatabaseOutlined,
+} from '@ant-design/icons'
 import {
   parseStatus,
   parseStatusColor,
@@ -32,7 +36,9 @@ import AvailableSVG from './available.svg'
 import AvailableEmptySVG from './available-empty.svg'
 
 import styles from './style.module.css'
+import FilterMaintenence from '../../../Components/Filters/Maintenance'
 
+const { RangePicker } = DatePicker
 const { Text, Title } = Typography
 
 const columns = (gotoDetailOrder) => [
@@ -104,7 +110,11 @@ const Detail = ({
   handleChangeTableEvent,
   offset,
   datasource,
-  gotoDetailOrder
+  gotoDetailOrder,
+  clearFilter,
+  handleFilter,
+  filterForm,
+  loading
 }) => {
   const [mode, setMode] = useState('table')
 
@@ -248,6 +258,19 @@ const Detail = ({
         </div>
       </Col>
 
+      {mode === 'table' && (
+        <Col span={24}>
+          <Card bordered={false}>
+            <Col span={24}>
+              <FilterMaintenence
+                form={filterForm}
+                handleFilter={handleFilter}
+                clearFilter={clearFilter}
+              />
+            </Col>
+          </Card>
+        </Col>
+      )}
       <Col span={24}>
         <Card bordered={false}>
           <Row>
@@ -270,6 +293,7 @@ const Detail = ({
                     total: datasource.count,
                     current: offset
                   }}
+                  loading={loading}
                   columns={columns(gotoDetailOrder)}
                   dataSource={datasource.rows}
                   onChange={handleChangeTableEvent}
