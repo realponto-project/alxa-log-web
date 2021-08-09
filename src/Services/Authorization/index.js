@@ -1,3 +1,5 @@
+import axios from 'axios'
+
 import axiosIntance from '../../utils/axiosInstance'
 
 const createAuthorization = async (values) => {
@@ -12,7 +14,20 @@ const getById = async (id) => {
   return await axiosIntance.get(`/authorizations/${id}`)
 }
 
+const getAllAuthorizations = async (params) => {
+  return await axios.get(
+    `${process.env.REACT_APP_API_URL}/mobile/authorization`,
+    { params }
+    )
+  }
+
+const createMaintenanceOrderByAuthorizationId = async (values) => {
+  return await axiosIntance.post('/maintenance-order-by-authorization', values)
+}
+
 export { 
+  getAllAuthorizations,
+  createMaintenanceOrderByAuthorizationId,
   createAuthorization,
   updateAuthorization,
   getById,
