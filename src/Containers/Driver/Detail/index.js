@@ -106,12 +106,18 @@ const Detail = ({
               <Title level={4}>Detalhes</Title>
             </Col>
             <Col span={8}>
-              <Text>Nome</Text><br />
-              <Text><strong>{driver.name || '-' }</strong></Text>
+              <Text>Nome</Text>
+              <br />
+              <Text>
+                <strong>{driver.name || '-'}</strong>
+              </Text>
             </Col>
             <Col span={6}>
-              <Text>CNH</Text><br />
-              <Text><strong>{driver.driverLicense}</strong></Text>
+              <Text>CNH</Text>
+              <br />
+              <Text>
+                <strong>{driver.driverLicense}</strong>
+              </Text>
             </Col>
 
             <Col span={6}>
