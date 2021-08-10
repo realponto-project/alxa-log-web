@@ -25,7 +25,7 @@ const DriverMobile = ({ match }) => {
   const updatePhone = async (values) => {
     try {
       await updateDriverWithoutAuth(match.params.id, values)
-      history.push(`/logged/mobile-driver-success/${match.params.id}`)
+      history.push(`/mobile-driver-success/${match.params.id}`)
     } catch (error) {
       window.onerror(`updateDriver-phone: ${error.error}`, window.location.href)
     }

@@ -95,7 +95,7 @@ const Detail = ({
 
   const handleChange = ({ target }) => setMode(target.value)
 
-  const link = `${origin}/#/logged/mobile-driver/${driver.id}`
+  const link = `${origin}/#/mobile-driver/${driver.id}`
 
   return (
     <Row gutter={[8, 8]}>

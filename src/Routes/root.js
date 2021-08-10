@@ -11,8 +11,6 @@ import OperationManager from '../Pages/Operation/Manager'
 import MaintenanceManagerMobile from '../Pages/Mobile/MaintenanceManagerMobile/Manager'
 import MaintenanceDetailMobile from '../Pages/Mobile/MaintenanceDetailMobile'
 import DriverOperationMobile from '../Pages/Mobile/DriverOperationMobile'
-import DriverMobile from '../Pages/Mobile/DriverMobile'
-import DriverMobileSuccess from '../Pages/Mobile/DriverMobileSuccess'
 import MaintenanceDetail from '../Pages/MaintenanceOrder/Detail'
 import DriverDetail from '../Pages/Driver/Detail'
 import BranchDetail from '../Pages/Branch/Detail'
@@ -107,20 +105,6 @@ const RootRoutes = [
     component: MaintenanceDetailMobile,
     title: '',
     path: '/logged/mobile-maintenance-detail/:id',
-    exact: true,
-    goBack: false
-  },
-  {
-    component: DriverMobile,
-    title: '',
-    path: '/logged/mobile-driver/:id',
-    exact: true,
-    goBack: false
-  },
-  {
-    component: DriverMobileSuccess,
-    title: '',
-    path: '/logged/mobile-driver-success/:id',
     exact: true,
     goBack: false
   },

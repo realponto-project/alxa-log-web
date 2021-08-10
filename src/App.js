@@ -6,6 +6,7 @@ import { persistStore, persistReducer } from 'redux-persist'
 import { PersistGate } from 'redux-persist/integration/react'
 import MaintenanceQrcode from './Pages/Mobile/MaintenanceQrcode'
 import DriverAuthorizationQrcode from './Pages/Mobile/DriverQrcodeAuthorization'
+import MobileDriver from './Pages/Mobile/DriverMobile'
 
 import storage from 'redux-persist/lib/storage'
 
@@ -31,6 +32,8 @@ const App = () => {
       <PersistGate loading={null} persistor={persistStore(store)}>
         <Switch>
           <Route path="/login" component={Login} />
+          <Route path="/mobile-driver/:id" component={MobileDriver} exact /> 
+          <Route path="/mobile-driver-success/:id" component={MobileDriver} exact /> 
           <Route path="/authorization-qrcode" component={DriverAuthorizationQrcode} /> 
           <Route path="/mobile-qrcode-detail/:id" component={MaintenanceQrcode} exact />
           <Route path="/logged" component={Logged} />

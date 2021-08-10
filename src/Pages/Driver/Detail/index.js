@@ -48,7 +48,6 @@ const Detail = ({
     try {
       const { data } = await getById(match.params.id)
       setDriver(data)
-      console.log('aquiiiiiiiiii',data)
     } catch (error) {
       window.onerror(`driverId: ${error.error}`, window.location.href)
     }
