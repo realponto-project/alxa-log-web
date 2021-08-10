@@ -129,18 +129,20 @@ const Detail = ({
             <Col span={4}>
               <Text>Link</Text>
               <br />
-              <Tooltip placement="bottom" title="Link copiado!" visible={copy}>
-                <Button
-                  style={{ paddingLeft: 0 }}
-                  type="link"
-                  onClick={() => {
-                    setCopy(true)
-                    navigator.clipboard.writeText(link)
-                    setTimeout(() => setCopy(false), 1000)
-                  }}>
-                  Copiar link
-                </Button>
-              </Tooltip>
+              {driver.id && (
+                <Tooltip placement="bottom" title="Link copiado!" visible={copy}>
+                  <Button
+                    style={{ paddingLeft: 0 }}
+                    type="link"
+                    onClick={() => {
+                      setCopy(true)
+                      navigator.clipboard.writeText(link)
+                      setTimeout(() => setCopy(false), 1000)
+                    }}>
+                    Copiar link
+                  </Button>
+                </Tooltip>
+              )}
             </Col>
           </Row>
         </Card>
