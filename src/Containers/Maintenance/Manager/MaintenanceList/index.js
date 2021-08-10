@@ -140,22 +140,19 @@ const MaintenanceList = ({
   }
 
   return (
-    <>
-      <ConfigProvider renderEmpty={() => <Empty 
-          description="Não há dados" 
-          image={<Image width={85} src={NoData} preview={false} />}
-        />
-      }>
-        <Table 
-          pagination={{ showSizeChanger: false, total: datasource.count, current: offset }}
-          onChange={handleChangeTableEvent}
-          columns={columns({ handleClickEdit, handleShowVoucher, gotoDetail, handleMenuClick })} 
-          loading={loading}
-          dataSource={datasource.rows} 
-          size="small"
-        />
-      </ConfigProvider>
-    </>
+    <ConfigProvider renderEmpty={() => <Empty 
+        description="Não há dados" 
+        image={<Image width={85} src={NoData} preview={false} />}
+      />
+    }>
+      <Table 
+        pagination={{ showSizeChanger: false, pageSize: 20, total: datasource.count, current: offset }}
+        onChange={handleChangeTableEvent}
+        columns={columns({ handleClickEdit, handleShowVoucher, gotoDetail })} 
+        loading={loading}
+        dataSource={datasource.rows} 
+      />
+    </ConfigProvider>
   )
 }
 
