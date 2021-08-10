@@ -188,6 +188,37 @@ const Detail = ({
           <Row>
             <Col span={12}>
               <Title style={{ marginBottom: 0 }} level={4}>
+                Adicione autorizações
+              </Title>
+              <p style={{ marginBottom: 0 }}>Crie e gerencie autorizações dos motoristas</p>
+            </Col>
+            <Col span={12} style={{ textAlign: 'right' }}>
+              <Button
+                onClick={() => setShowModalAuthorization(true)}
+                style={{ marginRight: '16px' }}
+                icon={<PlusOutlined />}>
+                Adicionar autorização
+              </Button>
+            </Col>
+          </Row>
+        </Card>
+      </Col>
+
+      <Col span={24}>
+        <Card bordered={false}>
+          <Row>
+            <Col span={24} style={{ textAlign: 'right' }}>
+              <AuthorizationList/>
+            </Col>
+          </Row>
+        </Card>
+      </Col>
+
+      <Col span={24}>
+        <Card bordered={false}>
+          <Row>
+            <Col span={12}>
+              <Title style={{ marginBottom: 0 }} level={4}>
                 Adicione incidentes
               </Title>
               <p style={{ marginBottom: 0 }}>
