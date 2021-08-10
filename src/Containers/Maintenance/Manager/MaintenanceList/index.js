@@ -148,7 +148,7 @@ const MaintenanceList = ({
       <Table 
         pagination={{ showSizeChanger: false, pageSize: 20, total: datasource.count, current: offset }}
         onChange={handleChangeTableEvent}
-        columns={columns({ handleClickEdit, handleShowVoucher, gotoDetail })} 
+        columns={columns({ handleClickEdit, handleShowVoucher, gotoDetail, handleMenuClick })} 
         loading={loading}
         dataSource={datasource.rows} 
       />
