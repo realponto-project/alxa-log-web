@@ -32,10 +32,10 @@ const App = () => {
       <PersistGate loading={null} persistor={persistStore(store)}>
         <Switch>
           <Route path="/login" component={Login} />
-          <Route path="/mobile-driver/:id" component={MobileDriver} exact /> 
-          <Route path="/mobile-driver-success/:id" component={MobileDriver} exact /> 
+          <Route path="/mobile-driver/:id" component={MobileDriver} /> 
+          <Route path="/mobile-driver-success/:id" component={MobileDriver} /> 
           <Route path="/authorization-qrcode" component={DriverAuthorizationQrcode} /> 
-          <Route path="/mobile-qrcode-detail/:id" component={MaintenanceQrcode} exact />
+          <Route path="/mobile-qrcode-detail/:id" component={MaintenanceQrcode} />
           <Route path="/logged" component={Logged} />
           <Redirect from="*" to="/login" />
         </Switch>
