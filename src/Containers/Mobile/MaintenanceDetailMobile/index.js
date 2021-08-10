@@ -2,8 +2,8 @@ import React from 'react'
 import { Button, Row, Col, Typography, Divider } from 'antd'
 import { LeftOutlined } from '@ant-design/icons'
 import MaintenanceEventForm from './MaintenanceEventForm'
-import diffTime from '../../utils/permananceTime'
-import formattedDate from '../../utils/parserDate'
+import diffTime from '../../../utils/permananceTime'
+import formattedDate from '../../../utils/parserDate'
 
 const { Title, Text } = Typography 
 const status = {
@@ -18,6 +18,7 @@ const services = {
 }
 
 const parseStatus = {
+  'cancel': 'Cancelado',
   'solicitation': 'Solicitação',
   'check-in': 'Entrada',
   'avaiable': 'Liberado',
@@ -38,6 +39,9 @@ const MaintenanceDetailMobile = ({
   showModal,
   setShowModal,
 }) => {
+  const checkIn = maintenanceOrder.maintenanceOrderEvents.find(item => item.status === 'check-in')
+  const permananceTimeDetail = checkIn ? diffTime(checkIn.createdAt, maintenanceOrder.updatedAt, maintenanceOrder.status) : '-'
+  
   return (
     <div style={{ overflow: "hidden"}}>
       <Row gutter={[8, 8]}>
@@ -80,7 +84,7 @@ const MaintenanceDetailMobile = ({
                 <Text style={{ color: "#FFFFFF" }}>Prioridade</Text>
               </Col>
               <Col span={8}>
-                <Text style={{ color: "#FFFFFF" }}><strong>{maintenanceOrder && diffTime(maintenanceOrder.createdAt, maintenanceOrder.updatedAt, maintenanceOrder.status)}</strong></Text>
+                <Text style={{ color: "#FFFFFF" }}><strong>{permananceTimeDetail}</strong></Text>
               </Col>
               <Col span={8}>
                 <Text style={{ color: "#FFFFFF" }}><strong>{maintenanceOrder && parseStatus[maintenanceOrder.status]}</strong></Text>

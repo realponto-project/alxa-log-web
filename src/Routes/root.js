@@ -8,12 +8,16 @@ import DriverManager from '../Pages/Driver/Manager'
 import VehicleTypeMananger from '../Pages/VehicleType/Manager'
 import BranchManager from '../Pages/Branch/Manager'
 import OperationManager from '../Pages/Operation/Manager'
-import MaintenanceManagerMobile from '../Pages/MaintenanceManagerMobile/Manager'
-import MaintenanceDetailMobile from '../Pages/MaintenanceDetailMobile'
+import MaintenanceManagerMobile from '../Pages/Mobile/MaintenanceManagerMobile/Manager'
+import MaintenanceDetailMobile from '../Pages/Mobile/MaintenanceDetailMobile'
+import DriverOperationMobile from '../Pages/Mobile/DriverOperationMobile'
+import DriverMobile from '../Pages/Mobile/DriverMobile'
+import DriverMobileSuccess from '../Pages/Mobile/DriverMobileSuccess'
 import MaintenanceDetail from '../Pages/MaintenanceOrder/Detail'
 import DriverDetail from '../Pages/Driver/Detail'
 import BranchDetail from '../Pages/Branch/Detail'
 import OperationDetail from '../Pages/Operation/Detail'
+import DriverAuthorizationQrcode from '../Pages/Mobile/DriverQrcodeAuthorization'
 
 const RootRoutes = [
   {
@@ -55,78 +59,106 @@ const RootRoutes = [
     component: Home,
     title: 'DASHBOARD',
     path: '/logged/dashboard',
-    exact: true,
+    exact: true
   },
   {
     component: MaintenanceManager,
     title: 'MANUTENÇÃO',
     path: '/logged/maintenance/manager',
     exact: true,
-    goBack: false,
+    goBack: false
   },
   {
     component: DriverManager,
     title: 'MOTORISTA',
     path: '/logged/driver/manager',
     exact: true,
-    goBack: false,
+    goBack: false
+  },
+  {
+    component: DriverOperationMobile,
+    title: '',
+    path: '/logged/mobile-operation',
+    exact: true,
+    goBack: true
   },
   {
     component: VehicleTypeMananger,
     title: 'TIPO VEÍCULO',
     path: '/logged/vehicle-type/manager',
     exact: true,
-    goBack: false,
+    goBack: false
   },
   {
     component: BranchManager,
     title: 'UNIDADE',
     path: '/logged/branch/manager',
     exact: true,
-    goBack: false,
+    goBack: false
   },
   {
     component: OperationManager,
     title: 'OPERAÇÃO',
     path: '/logged/operation/manager',
     exact: true,
-    goBack: false,
+    goBack: false
   },
   {
     component: MaintenanceDetailMobile,
     title: '',
     path: '/logged/mobile-maintenance-detail/:id',
     exact: true,
-    goBack: false,
+    goBack: false
+  },
+  {
+    component: DriverMobile,
+    title: '',
+    path: '/logged/mobile-driver/:id',
+    exact: true,
+    goBack: false
+  },
+  {
+    component: DriverMobileSuccess,
+    title: '',
+    path: '/logged/mobile-driver-success/:id',
+    exact: true,
+    goBack: false
   },
   {
     component: MaintenanceDetail,
     title: 'DETALHES DA MANUTENÇÃO',
     path: '/logged/maintenance-detail/:id',
     exact: true,
-    goBack: true,
+    goBack: true
   },
   {
     component: DriverDetail,
     title: 'DETALHES DO MOTORISTA',
     path: '/logged/driver-detail/:id',
     exact: true,
-    goBack: true,
+    goBack: true
   },
   {
     component: BranchDetail,
     title: 'DETALHES DA FILIAL',
     path: '/logged/branch-detail/:id',
     exact: true,
-    goBack: true,
+    goBack: true
   },
   {
     component: OperationDetail,
     title: 'DETALHES DA OPERAÇÃO',
     path: '/logged/operation-detail/:id',
     exact: true,
-    goBack: true,
+    goBack: true
   },
+  {
+    component: DriverAuthorizationQrcode,
+    title: '',
+    path: '/authorization-qrcode',
+    exact: false,
+    goBack: false
+  }
 ]
 
 export default RootRoutes

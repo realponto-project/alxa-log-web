@@ -1,8 +1,11 @@
 import React from 'react'
-import { Table, Button, Empty, ConfigProvider, Image, Space, Tag } from 'antd'
+import { Table, Button, Empty, ConfigProvider, Image, Space, Tag, Menu, Dropdown, Modal } from 'antd'
 import NoData from '../../../../Assets/noData.svg'
 import formattedDate from '../../../../utils/parserDate'
 import diffTime from '../../../../utils/permananceTime'
+import { ExclamationCircleOutlined } from '@ant-design/icons'
+
+const { confirm } = Modal
 
 import {
   parseStatus,
@@ -11,7 +14,13 @@ import {
   status
 } from '../../../../utils/maintenanceOrder'
 
-const columns = ({ handleClickEdit, handleShowVoucher, gotoDetail }) => [
+const menu = handleMenuClick => (
+  <Menu onClick={handleMenuClick}>
+    <Menu.Item key="1">Cancelar Solicitação</Menu.Item>
+  </Menu>
+)
+
+const columns = ({ handleClickEdit, handleShowVoucher, gotoDetail, handleMenuClick }) => [
   {
     title: 'Data da manutenção',
     dataIndex: 'maintenanceDate',
@@ -23,6 +32,12 @@ const columns = ({ handleClickEdit, handleShowVoucher, gotoDetail }) => [
     title: 'Placa Manutenção',
     dataIndex: 'plateCart',
     key: 'plateCart',
+    fixed: 'left',
+  },
+  {
+    title: 'Frota',
+    dataIndex: 'fleet',
+    key: 'fleet',
     fixed: 'left',
   },
   {
@@ -59,7 +74,13 @@ const columns = ({ handleClickEdit, handleShowVoucher, gotoDetail }) => [
     dataIndex: 'service',
     key: 'service',
     fixed: 'left',
-    render: (_, source) => diffTime(source.createdAt, source.updatedAt, source.status)
+    render: (_, source) => {
+      const checkIn = source.maintenanceOrderEvents.find(item => item.status === 'check-in')
+      if (checkIn) {
+        return diffTime(checkIn.createdAt, source.updatedAt, source.status)
+      }
+      return '-'
+    }
   },
   {
     title: ' ',
@@ -78,14 +99,46 @@ const columns = ({ handleClickEdit, handleShowVoucher, gotoDetail }) => [
         </Button>
       )}
 
-      <Button type="link" onClick={() => handleShowVoucher(source)}>
-        Voucher
-      </Button>
+      {source.status !== 'check-out' && source.status !== 'cancel' && (
+        <Button type="link" onClick={() => handleShowVoucher(source)}>
+          Voucher
+        </Button>
+      )}
+
+      {source.status === 'solicitation' && (
+        <Dropdown.Button type="link" overlay={menu(handleMenuClick(id))} />
+      )}
     </Space>
   }
 ]
 
-const MaintenanceList = ({ gotoDetail, datasource, handleClickEdit, loading, handleChangeTableEvent, handleShowVoucher, offset }) => {
+const MaintenanceList = ({ 
+  gotoDetail, 
+  datasource, 
+  handleClickEdit, 
+  loading, 
+  handleChangeTableEvent, 
+  handleShowVoucher, 
+  offset,
+  handleCancelOrder
+}) => {
+  const handleMenuClick = (id) => () => {
+    confirm({
+      title: 'Deseja cancelar a solicitação?',
+      icon: <ExclamationCircleOutlined />,
+      content: '',
+      okText: 'Cancelar',
+      okType: 'danger',
+      cancelText: 'Confirmar',
+      onOk() {
+        console.log('cancelar', id);
+      },
+      onCancel() {
+        handleCancelOrder({ id, status: 'cancel' });
+      },
+    });
+  }
+
   return (
     <ConfigProvider renderEmpty={() => <Empty 
         description="Não há dados" 

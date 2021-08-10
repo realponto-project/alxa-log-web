@@ -1,20 +1,23 @@
 import React, { useState } from 'react'
 import { Row, Col, Card, Typography, Table, Button, Radio, Tag } from 'antd'
-import BarChart from './BarChart'
-import { PlusOutlined, BarChartOutlined, DatabaseOutlined } from '@ant-design/icons'
-import IncidentForm from './IncidentForm'
+import { PlusOutlined, BarChartOutlined, DatabaseOutlined, PhoneOutlined, LinkOutlined } from '@ant-design/icons'
 import { cnpj } from 'cpf-cnpj-validator'
+
+import IncidentForm from './IncidentForm'
+import BarChart from './BarChart'
+import AuthorizationForm from './AuthorizationForm'
+import AuthorizationList from './Authorizations'
 import formattedDate from '../../../utils/parserDate'
 
-const chartSettings = { 
-  collision: 'Colisão', 
-  accident: 'Acidente', 
+const chartSettings = {
+  collision: 'Colisão',
+  accident: 'Acidente',
   vehicle_break_down: 'Veículo quebrado'
 }
 
 const colors = {
-  collision: '#5DA0FC', 
-  accident: '#268E86', 
+  collision: '#5DA0FC',
+  accident: '#268E86',
   vehicle_break_down: '#2D2D2D'
 }
 
@@ -24,7 +27,7 @@ const columns = [
     dataIndex: 'incidentDate',
     key: 'incidentDate',
     fixed: 'left',
-    render: field => formattedDate(field, 'DD/MM/YYYY')
+    render: (field) => formattedDate(field, 'DD/MM/YYYY')
   },
   {
     title: 'Veículo',
@@ -38,7 +41,9 @@ const columns = [
     dataIndex: 'incidentType',
     key: 'incidentType',
     fixed: 'left',
-    render: (incidentType) => <Tag color={colors[incidentType]}>{chartSettings[incidentType]}</Tag>
+    render: (incidentType) => (
+      <Tag color={colors[incidentType]}>{chartSettings[incidentType]}</Tag>
+    )
   },
   {
     title: 'Descrição do incidente',
@@ -55,24 +60,44 @@ const columns = [
     render: (_, source) => (
       <>
         {source.operation && source.operation.name} <br />
-        <small>{source.operation && source.operation.company && source.operation.company.name} / {cnpj.format(source.operation && source.operation.company && source.operation.company.document)}</small>
+        <small>
+          {source.operation &&
+            source.operation.company &&
+            source.operation.company.name}{' '}
+          /{' '}
+          {cnpj.format(
+            source.operation &&
+              source.operation.company &&
+              source.operation.company.document
+          )}
+        </small>
       </>
     )
-  },
+  }
 ]
 
-const { Text, Title } = Typography 
+const { Link, Text, Title } = Typography
+
 const Detail = ({
   driver,
   vehiclesSource,
   operationsSource,
   handleSubmit,
-  chartData
+  chartData,
+  goToApp,
+  handleSubmitAuthorization,
+  handleSubmitUpdateAuthorization
 }) => {
   const [showModal, setShowModal] = useState(false)
+  const [showModalAuthorization, setShowModalAuthorization] = useState(false)
   const [mode, setMode] = useState('table')
+  const { origin } = window.location
 
   const handleChange = ({ target }) => setMode(target.value)
+
+  console.log('origin', origin)
+  const link = `${origin}/#/logged/mobile-driver/${driver.id}`
+  console.log('link', link)
 
   return (
     <Row gutter={[8, 8]}>
@@ -83,19 +108,72 @@ const Detail = ({
               <Title level={4}>Detalhes</Title>
             </Col>
             <Col span={8}>
-              <Text>Nome</Text><br />
-              <Text><strong>{driver.name || '-' }</strong></Text>
+              <Text>Nome</Text>
+              <br />
+              <Text>
+                <strong>{driver.name || '-'}</strong>
+              </Text>
             </Col>
-            <Col span={8}>
-              <Text>CNH</Text><br />
-              <Text><strong>{driver.driverLicense}</strong></Text>
+            <Col span={6}>
+              <Text>CNH</Text>
+              <br />
+              <Text>
+                <strong>{driver.driverLicense}</strong>
+              </Text>
             </Col>
 
-            <Col span={8}>
-              <Text>Telefone</Text><br />
-              <Text>
-                {driver.phone}
-              </Text>
+            <Col span={6}>
+              <Text>Telefone</Text>
+              <br />
+              <Text>{driver.phone}</Text>
+            </Col>
+
+            <Col span={4}>
+              <Text>Link</Text>
+              <br />
+              <Link
+                href={link}
+                target="_blank"
+                copyable={{
+                  text: link,
+                  icon: [<LinkOutlined key="copy-icon" />]
+                }}>
+                Abrir app
+              </Link>
+            </Col>
+          </Row>
+        </Card>
+      </Col>
+
+      <Col span={24}>
+        <Card bordered={false}>
+          <Row>
+            <Col span={12}>
+              <Title style={{ marginBottom: 0 }} level={4}>
+                Adicione autorizações
+              </Title>
+              <p style={{ marginBottom: 0 }}>Crie e gerencie autorizações dos motoristas</p>
+            </Col>
+            <Col span={12} style={{ textAlign: 'right' }}>
+              <Button
+                onClick={() => setShowModalAuthorization(true)}
+                style={{ marginRight: '16px' }}
+                icon={<PlusOutlined />}>
+                Adicionar autorização
+              </Button>
+            </Col>
+          </Row>
+        </Card>
+      </Col>
+
+      <Col span={24}>
+        <Card bordered={false}>
+          <Row>
+            <Col span={24} style={{ textAlign: 'right' }}>
+              <AuthorizationList
+                datasource={driver.authorizations}
+                handleSubmitUpdateAuthorization={handleSubmitUpdateAuthorization}
+              />
             </Col>
           </Row>
         </Card>
@@ -108,7 +186,9 @@ const Detail = ({
               <Title style={{ marginBottom: 0 }} level={4}>
                 Adicione incidentes
               </Title>
-              <p style={{ marginBottom: 0 }}>Crie e gerencie incidentes dos motoristas</p>
+              <p style={{ marginBottom: 0 }}>
+                Crie e gerencie incidentes dos motoristas
+              </p>
             </Col>
             <Col span={12} style={{ textAlign: 'right' }}>
               <Button
@@ -127,19 +207,18 @@ const Detail = ({
           <Row>
             <Col span={24} style={{ textAlign: 'right', marginBottom: '20px' }}>
               <Radio.Group onChange={handleChange} value={mode}>
-                <Radio.Button value="table"><DatabaseOutlined /></Radio.Button>
-                <Radio.Button value="chart"><BarChartOutlined /></Radio.Button>
+                <Radio.Button value="table">
+                  <DatabaseOutlined />
+                </Radio.Button>
+                <Radio.Button value="chart">
+                  <BarChartOutlined />
+                </Radio.Button>
               </Radio.Group>
             </Col>
             <Col span={24}>
-             { mode === 'table' 
-               ? (
-                <Table 
-                  columns={columns} 
-                  dataSource={driver.driverIncidents} 
-                />
-               )
-              :(
+              {mode === 'table' ? (
+                <Table columns={columns} dataSource={driver.driverIncidents} />
+              ) : (
                 <BarChart data={chartData} />
               )}
             </Col>
@@ -155,6 +234,20 @@ const Detail = ({
             vehiclesSource={vehiclesSource}
             operationsSource={operationsSource}
             handleSubmit={handleSubmit}
+            vehiclesSource={vehiclesSource}
+            operationsSource={operationsSource}
+          />
+        )
+      }
+
+      {
+        showModalAuthorization && (
+          <AuthorizationForm
+            handleCancel={setShowModalAuthorization}
+            visible={showModalAuthorization}
+            vehiclesSource={vehiclesSource}
+            operationsSource={operationsSource}
+            handleSubmit={handleSubmitAuthorization}
             vehiclesSource={vehiclesSource}
             operationsSource={operationsSource}
           />

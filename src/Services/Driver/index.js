@@ -1,3 +1,5 @@
+import axios from 'axios'
+
 import axiosIntance from '../../utils/axiosInstance'
 
 const getAll = async (params = {}) => {
@@ -12,6 +14,13 @@ const updateDriver = async (values) => {
   return await axiosIntance.put(`/drivers/${values.id}`, values)
 }
 
+const updateDriverWithoutAuth = async (id, values) => {
+  return await axios.put(
+    `${process.env.REACT_APP_API_URL}/mobile/drivers/${id}`,
+    values
+  )
+}
+
 const getById = async (id) => {
   return await axiosIntance.get(`/drivers/${id}`)
 }
@@ -24,11 +33,12 @@ const getIncidentsSummary = async (id) => {
   return await axiosIntance.get(`/drivers-incidents/${id}`)
 }
 
-export { 
-  getAll, 
+export {
+  getAll,
   getById,
-  createDriver, 
+  createDriver,
   updateDriver,
   createDriverIncident,
   getIncidentsSummary,
+  updateDriverWithoutAuth
 }

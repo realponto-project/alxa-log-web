@@ -15,6 +15,7 @@ import {
 } from "recharts"
 
 const chartSettings = [
+  { label: 'cancel', value: 'Cancelado', color: '#EA5656' },
   { label: 'solicitation', value: 'Solicitação', color: '#5DA0FC' },
   { label: 'check-in', value: 'Entrada', color: '#268E86' },
   { label: 'dock', value: 'Doca', color: '#2D2D2D' },
