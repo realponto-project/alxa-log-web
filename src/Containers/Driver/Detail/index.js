@@ -208,7 +208,10 @@ const Detail = ({
         <Card bordered={false}>
           <Row>
             <Col span={24} style={{ textAlign: 'right' }}>
-              <AuthorizationList/>
+              <AuthorizationList
+                datasource={driver.authorizations}
+                handleSubmitUpdateAuthorization={handleSubmitUpdateAuthorization}
+              />
             </Col>
           </Row>
         </Card>
