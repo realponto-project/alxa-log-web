@@ -1,5 +1,5 @@
 import React, { useState } from 'react'
-import { Button, Form, Input,InputNumber, Modal, Select } from 'antd'
+import { Button, Form, Input, Modal, Select } from 'antd'
 import { map } from 'ramda'
 import {
   settingsNextStep,
@@ -9,7 +9,6 @@ import {
 
 const formItemsComponent = {
   input: Input,
-  inputNumber: InputNumber,
   select: Select
 }
 
@@ -104,9 +103,9 @@ const VehicleForm = ({
         validateTrigger="onChange"
         onFinish={values => {
           if (vehicleSelected) {
-            handleEdit({...vehicleSelected, ...values,  minKm: values.minKm * 1000})
+            handleEdit({...vehicleSelected, ...values})
           } else {
-            handleSubmit({...values, minKm: values.minKm * 1000})
+            handleSubmit(values)
           }
           handleSelectedVehicle(null)
           setFormSettings(formSettingsVehicle)
