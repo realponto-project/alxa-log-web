@@ -7,7 +7,7 @@ const DriverMobileSuccess = ({ match }) => {
   const history = useHistory()
 
   const goToDriverPage = () => {
-    history.push(`/logged/mobile-driver/${match.params.id}`)
+    history.push(`/mobile-driver/${match.params.id}`)
   }
 
   return <DriverMobileSuccessContainer goToDriverPage={goToDriverPage} />

@@ -1,6 +1,6 @@
 import React, { useState } from 'react'
-import { Row, Col, Card, Typography, Table, Button, Radio, Tag } from 'antd'
-import { PlusOutlined, BarChartOutlined, DatabaseOutlined, PhoneOutlined, LinkOutlined } from '@ant-design/icons'
+import { Row, Col, Card, Typography, Table, Button, Radio, Tag, Tooltip } from 'antd'
+import { PlusOutlined, BarChartOutlined, DatabaseOutlined } from '@ant-design/icons'
 import { cnpj } from 'cpf-cnpj-validator'
 
 import IncidentForm from './IncidentForm'
@@ -84,7 +84,6 @@ const Detail = ({
   operationsSource,
   handleSubmit,
   chartData,
-  goToApp,
   handleSubmitAuthorization,
   handleSubmitUpdateAuthorization
 }) => {
@@ -92,12 +91,11 @@ const Detail = ({
   const [showModalAuthorization, setShowModalAuthorization] = useState(false)
   const [mode, setMode] = useState('table')
   const { origin } = window.location
+  const [copy, setCopy] = useState(false)
 
   const handleChange = ({ target }) => setMode(target.value)
 
-  console.log('origin', origin)
-  const link = `${origin}/#/logged/mobile-driver/${driver.id}`
-  console.log('link', link)
+  const link = `${origin}/#/mobile-driver/${driver.id}`
 
   return (
     <Row gutter={[8, 8]}>
@@ -123,6 +121,13 @@ const Detail = ({
             </Col>
 
             <Col span={6}>
+              <Text>Telefone</Text><br />
+              <Text>
+                <strong>{driver.driverLicense}</strong>
+              </Text>
+            </Col>
+
+            <Col span={6}>
               <Text>Telefone</Text>
               <br />
               <Text>{driver.phone}</Text>
@@ -131,15 +136,54 @@ const Detail = ({
             <Col span={4}>
               <Text>Link</Text>
               <br />
-              <Link
-                href={link}
-                target="_blank"
-                copyable={{
-                  text: link,
-                  icon: [<LinkOutlined key="copy-icon" />]
-                }}>
-                Abrir app
-              </Link>
+              {driver.id && (
+                <Tooltip placement="bottom" title="Link copiado!" visible={copy}>
+                  <Button
+                    style={{ paddingLeft: 0 }}
+                    type="link"
+                    onClick={() => {
+                      setCopy(true)
+                      navigator.clipboard.writeText(link)
+                      setTimeout(() => setCopy(false), 1000)
+                    }}>
+                    Copiar link
+                  </Button>
+                </Tooltip>
+              )}
+            </Col>
+          </Row>
+        </Card>
+      </Col>
+
+      <Col span={24}>
+        <Card bordered={false}>
+          <Row>
+            <Col span={12}>
+              <Title style={{ marginBottom: 0 }} level={4}>
+                Adicione autorizações
+              </Title>
+              <p style={{ marginBottom: 0 }}>Crie e gerencie autorizações dos motoristas</p>
+            </Col>
+            <Col span={12} style={{ textAlign: 'right' }}>
+              <Button
+                onClick={() => setShowModalAuthorization(true)}
+                style={{ marginRight: '16px' }}
+                icon={<PlusOutlined />}>
+                Adicionar autorização
+              </Button>
+            </Col>
+          </Row>
+        </Card>
+      </Col>
+
+      <Col span={24}>
+        <Card bordered={false}>
+          <Row>
+            <Col span={24} style={{ textAlign: 'right' }}>
+              <AuthorizationList
+                datasource={driver.authorizations}
+                handleSubmitUpdateAuthorization={handleSubmitUpdateAuthorization}
+              />
             </Col>
           </Row>
         </Card>

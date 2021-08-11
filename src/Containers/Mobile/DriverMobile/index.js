@@ -69,10 +69,6 @@ const DriverMobileContainer = ({
     return <UpdatePhoneSteps driver={driver} updatePhone={updatePhone} />
   }
 
-  // if (!driver.authorizationOnboarding) {
-  //   return <Onboarding />
-  // }
-
   if (authorizationId) {
     return (
       <DriverAuthorizationQrcode
