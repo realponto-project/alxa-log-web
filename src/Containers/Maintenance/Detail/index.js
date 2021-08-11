@@ -218,7 +218,7 @@ const Detail = ({
           <Row>
             <Col span={12}>
               <Title level={1}>{permananceTimeDetail.time}</Title>
-              <p level={1}>{permananceTimeDetail.descriptionTime}</p>
+              <p level={1}><strong>{permananceTimeDetail.descriptionTime}</strong></p>
             </Col>
             <Col span={12}>
               <Row>
