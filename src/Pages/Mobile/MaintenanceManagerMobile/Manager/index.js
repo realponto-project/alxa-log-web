@@ -29,6 +29,8 @@ const Manager = ({ history }) => {
         window.location.href
       )
     }
+
+    return authorizationDriver(data.id)
   }
 
   const handleScan = (value) => {

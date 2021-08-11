@@ -5,7 +5,7 @@ import { useLocation, withRouter } from 'react-router-dom'
 import ManagerContainer from '../../../Containers/Vehicle/Manager'
 import { createVehicle, getAll, getAllVehicleTypes, updateVehicle } from '../../../Services/Vehicle'
 import { validateBr } from 'js-brasil'
-import { isEmpty } from 'ramda'
+import { isEmpty, pathOr } from 'ramda'
 import GAInitialize from '../../../utils/ga'
 
 const Manager = ({
@@ -53,7 +53,6 @@ const Manager = ({
     } catch (error) {
       setLoading(false)
       window.onerror(`allVehicles: ${error.error}`, window.location.href)
-
     }
   }
 
@@ -94,7 +93,8 @@ const Manager = ({
   }
 
   const handleSelectedVehicle = vehicle => {
-    setVehicleSelected(vehicle)
+    const minKm = pathOr(null, ['minKm'], vehicle)
+    setVehicleSelected({...vehicle, minKm: minKm/1000})
   }
 
   const handleFilter = () => {

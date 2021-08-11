@@ -3,6 +3,7 @@ import {
   Row,
   Col,
   Card,
+  DatePicker,
   Typography,
   Tag,
   Radio,
@@ -12,7 +13,10 @@ import {
 } from 'antd'
 import BarChart from './BarChart'
 import { cnpj } from 'cpf-cnpj-validator'
-import { BarChartOutlined, DatabaseOutlined } from '@ant-design/icons'
+import {
+  BarChartOutlined,
+  DatabaseOutlined,
+} from '@ant-design/icons'
 import {
   parseStatus,
   parseStatusColor,
@@ -34,6 +38,7 @@ import AvailableEmptySVG from './available-empty.svg'
 import styles from './style.module.css'
 import FilterMaintenence from '../../../Components/Filters/Maintenance'
 
+const { RangePicker } = DatePicker
 const { Text, Title } = Typography
 
 const columns = (gotoDetailOrder) => [
