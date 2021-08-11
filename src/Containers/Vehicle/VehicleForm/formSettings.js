@@ -40,7 +40,16 @@ const formSettingsVehicle = [{
   show: false,
   typeInput: 'select',
   options: [],
-}]
+},
+{
+  label: 'Km próxima manutenção',
+  name: 'minKm',
+  placeholder: '',
+  show: false,
+  typeInput: 'inputNumber',
+  options: [],
+}
+]
 
 const parseOptionItem = ({ id, name }) => ({ value: id, label: name })
 
@@ -55,6 +64,7 @@ const formSettingsVehicleEdit = (vehicleTypesSource) => formSettingsVehicle.map(
 const settingsNextStep = {
   plate: 'fleet',
   fleet: 'vehicleTypeId',
+  vehicleTypeId: 'minKm'
 }
 
 export {

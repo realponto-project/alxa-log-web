@@ -121,6 +121,13 @@ const Detail = ({
             </Col>
 
             <Col span={6}>
+              <Text>Telefone</Text><br />
+              <Text>
+                <strong>{driver.driverLicense}</strong>
+              </Text>
+            </Col>
+
+            <Col span={6}>
               <Text>Telefone</Text>
               <br />
               <Text>{driver.phone}</Text>
@@ -143,6 +150,40 @@ const Detail = ({
                   </Button>
                 </Tooltip>
               )}
+            </Col>
+          </Row>
+        </Card>
+      </Col>
+
+      <Col span={24}>
+        <Card bordered={false}>
+          <Row>
+            <Col span={12}>
+              <Title style={{ marginBottom: 0 }} level={4}>
+                Adicione autorizações
+              </Title>
+              <p style={{ marginBottom: 0 }}>Crie e gerencie autorizações dos motoristas</p>
+            </Col>
+            <Col span={12} style={{ textAlign: 'right' }}>
+              <Button
+                onClick={() => setShowModalAuthorization(true)}
+                style={{ marginRight: '16px' }}
+                icon={<PlusOutlined />}>
+                Adicionar autorização
+              </Button>
+            </Col>
+          </Row>
+        </Card>
+      </Col>
+
+      <Col span={24}>
+        <Card bordered={false}>
+          <Row>
+            <Col span={24} style={{ textAlign: 'right' }}>
+              <AuthorizationList
+                datasource={driver.authorizations}
+                handleSubmitUpdateAuthorization={handleSubmitUpdateAuthorization}
+              />
             </Col>
           </Row>
         </Card>
