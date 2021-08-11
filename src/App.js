@@ -4,6 +4,8 @@ import { createStore } from 'redux'
 import { Provider } from 'react-redux'
 import { persistStore, persistReducer } from 'redux-persist'
 import { PersistGate } from 'redux-persist/integration/react'
+import 'leaflet/dist/leaflet.css'
+
 import MaintenanceQrcode from './Pages/Mobile/MaintenanceQrcode'
 import DriverAuthorizationQrcode from './Pages/Mobile/DriverQrcodeAuthorization'
 import MobileDriver from './Pages/Mobile/DriverMobile'

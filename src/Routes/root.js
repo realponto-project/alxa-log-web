@@ -1,21 +1,24 @@
-import UpdateMyPassword from '../Pages/UpdateMyPassword'
-import MyTeam from '../Pages/MyTeam/Manager'
-import MyInfo from '../Pages/MyInfo'
-import Home from '../Pages/Home'
-import VehicleManager from '../Pages/Vehicle/Manager'
-import MaintenanceManager from '../Pages/MaintenanceOrder/Manager'
-import DriverManager from '../Pages/Driver/Manager'
-import VehicleTypeMananger from '../Pages/VehicleType/Manager'
-import BranchManager from '../Pages/Branch/Manager'
-import OperationManager from '../Pages/Operation/Manager'
-import MaintenanceManagerMobile from '../Pages/Mobile/MaintenanceManagerMobile/Manager'
-import MaintenanceDetailMobile from '../Pages/Mobile/MaintenanceDetailMobile'
-import DriverOperationMobile from '../Pages/Mobile/DriverOperationMobile'
-import MaintenanceDetail from '../Pages/MaintenanceOrder/Detail'
-import DriverDetail from '../Pages/Driver/Detail'
 import BranchDetail from '../Pages/Branch/Detail'
-import OperationDetail from '../Pages/Operation/Detail'
+import BranchManager from '../Pages/Branch/Manager'
 import DriverAuthorizationQrcode from '../Pages/Mobile/DriverQrcodeAuthorization'
+import DriverDetail from '../Pages/Driver/Detail'
+import DriverManager from '../Pages/Driver/Manager'
+import DriverMobile from '../Pages/Mobile/DriverMobile'
+import DriverMobileSuccess from '../Pages/Mobile/DriverMobileSuccess'
+import DriverOperationMobile from '../Pages/Mobile/DriverOperationMobile'
+import Home from '../Pages/Home'
+import MaintenanceDetail from '../Pages/MaintenanceOrder/Detail'
+import MaintenanceDetailMobile from '../Pages/Mobile/MaintenanceDetailMobile'
+import MaintenanceManager from '../Pages/MaintenanceOrder/Manager'
+import MaintenanceManagerMobile from '../Pages/Mobile/MaintenanceManagerMobile/Manager'
+import MyInfo from '../Pages/MyInfo'
+import MyTeam from '../Pages/MyTeam/Manager'
+import OperationDetail from '../Pages/Operation/Detail'
+import OperationManager from '../Pages/Operation/Manager'
+import UpdateMyPassword from '../Pages/UpdateMyPassword'
+import VehicleManager from '../Pages/Vehicle/Manager'
+import VehicleDetail from '../Pages/Vehicle/Detail'
+import VehicleTypeMananger from '../Pages/VehicleType/Manager'
 
 const RootRoutes = [
   {
@@ -52,6 +55,13 @@ const RootRoutes = [
     path: '/logged/vehicle/manager',
     exact: true,
     goBack: false
+  },
+  {
+    component: VehicleDetail,
+    title: 'VEÍCULOS',
+    path: '/logged/vehicle/detail/:id',
+    exact: true,
+    goBack: true
   },
   {
     component: Home,

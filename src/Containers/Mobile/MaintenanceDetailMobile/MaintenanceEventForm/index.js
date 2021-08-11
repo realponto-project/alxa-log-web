@@ -53,6 +53,7 @@ const supply = {
 const formSettingsNextStep = {
   'check-in': {},
   'check-out': {},
+  'external_service': {},
   'courtyard': {},
   'awaiting_repair': {},
   'dock': {},
