@@ -1,7 +1,8 @@
-import React from 'react'
-import { Row, Col, Card, Typography, Image, Tag, Timeline, Button } from 'antd'
+import React, { useState } from 'react'
+import { Row, Col, Card, Typography, Image, Tag, Timeline, Button, Tooltip } from 'antd'
 import Qrcode from 'qrcode.react'
 import { cnpj } from 'cpf-cnpj-validator'
+import { CopyOutlined } from '@ant-design/icons'
 
 import fuelSVG from './fuel.svg'
 import clockSVG from './clock.svg'
@@ -62,7 +63,8 @@ const Detail = ({
 }) => {
   const checkIn = maintenanceOrder.maintenanceOrderEvents.find(item => item.status === 'check-in')
   const permananceTimeDetail = checkIn ? diffTime(checkIn.createdAt, maintenanceOrder.updatedAt, maintenanceOrder.status, true) : { time: '-', descriptionTime: '' }
-  
+  const [copy, setCopy] = useState(false)
+
   return (
     <Row gutter={[8, 8]}>
       <Col span={24}>
@@ -165,6 +167,24 @@ const Detail = ({
                 })}
                 style={{ maxHeight: "89px", width: "89px" }}
               />
+            </Col>
+            <Col span={24}>
+              <Tooltip placement="bottom" title="Link copiado!" visible={copy}>
+                <Button
+                  style={{ padding: '2px', margin: '0' }}
+                  type="link"
+                  onClick={() => {
+                    navigator.clipboard.writeText(
+                      `${process.env.REACT_APP_DASH_URL}/#/mobile-qrcode-detail/${maintenanceOrder.id}`
+                    )
+                    setCopy(true)
+                    setTimeout(() => setCopy(false), 2000)
+                  }
+                  }>
+                  <CopyOutlined />
+                  Copiar link
+                </Button>
+              </Tooltip>
             </Col>
           </Row>
         </Card>
