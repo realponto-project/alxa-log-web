@@ -10,8 +10,8 @@ const { Title, Paragraph } = Typography
 
 const renderSituation = (situation) => {
   return {
-    regular: <Tag color="success">Regular</Tag>,
-    unregular: <Tag color="error">Irregular</Tag>
+    regular: 'Regular',
+    unregular: 'Irregular',
   }[situation]
 }
 
@@ -21,7 +21,7 @@ const Location = ({ tracks }) => {
   const latitude = pathOr(0, [0, 'gpsLatitude'], tracks)
   const longitude = pathOr(0, [0, 'gpsLongitude'], tracks)
   const position = [latitude, longitude]
-
+  const odometer = pathOr({}, [0, 'odometer'], tracks)
   return (
     <Col span={24}>
       <Card bordered={false}>
@@ -46,6 +46,7 @@ const Location = ({ tracks }) => {
 
 const Detail = ({ vehicle }) => {
   const tracks = pathOr([], ['tracks'], vehicle)
+  const odometer = pathOr(0, [0, 'odometer'], tracks)
 
   return (
     <Row gutter={[8, 8]}>
@@ -76,19 +77,19 @@ const Detail = ({ vehicle }) => {
               <Paragraph>Status</Paragraph>
               <Paragraph strong>
                 {vehicle.activated ? (
-                  <Tag color="success">Ativo</Tag>
+                  <Tag color="#268E86">Ativo</Tag>
                 ) : (
-                  <Tag color="error">Inativo</Tag>
+                  <Tag color="#EA5656">Inativo</Tag>
                 )}
               </Paragraph>
             </Col>
-            <Col span={8}>
-              <Paragraph>Número do rastreador</Paragraph>
+            <Col span={6}>
+              <Paragraph>Número rastreador</Paragraph>
               <Paragraph strong>{vehicle?.serialNumber ?? '-'}</Paragraph>
             </Col>
-            <Col span={8}>
-              <Paragraph>Distância máxima entre as manutenções</Paragraph>
-              <Paragraph strong>{vehicle.minKm} Km</Paragraph>
+            <Col span={6}>
+              <Paragraph>Km atual</Paragraph>
+              <Paragraph strong>{odometer} Km</Paragraph>
             </Col>
             <Col span={8}>
               <Paragraph>Última manutenção</Paragraph>
