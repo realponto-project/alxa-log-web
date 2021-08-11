@@ -14,21 +14,26 @@ const getById = async (id) => {
   return await axiosIntance.get(`/authorizations/${id}`)
 }
 
+const getAll = async (params = {}) => {
+  return await axiosIntance.get('/authorizations', { params })
+}
+
 const getAllAuthorizations = async (params) => {
   return await axios.get(
     `${process.env.REACT_APP_API_URL}/mobile/authorization`,
     { params }
-    )
-  }
+  )
+}
 
 const createMaintenanceOrderByAuthorizationId = async (values) => {
   return await axiosIntance.post('/maintenance-order-by-authorization', values)
 }
 
-export { 
+export {
+  getAll,
   getAllAuthorizations,
   createMaintenanceOrderByAuthorizationId,
   createAuthorization,
   updateAuthorization,
-  getById,
+  getById
 }

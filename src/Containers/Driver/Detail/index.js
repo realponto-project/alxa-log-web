@@ -1,82 +1,21 @@
 import React, { useState } from 'react'
-import { Row, Col, Card, Typography, Table, Button, Radio, Tag, Tooltip } from 'antd'
-import { PlusOutlined, BarChartOutlined, DatabaseOutlined } from '@ant-design/icons'
-import { cnpj } from 'cpf-cnpj-validator'
+import { Row, Col, Card, Typography, Button, Radio, Tooltip } from 'antd'
+import {
+  PlusOutlined,
+  BarChartOutlined,
+  DatabaseOutlined,
+  LinkOutlined
+} from '@ant-design/icons'
 
 import IncidentForm from './IncidentForm'
 import BarChart from './BarChart'
 import AuthorizationForm from './AuthorizationForm'
 import AuthorizationList from './Authorizations'
-import formattedDate from '../../../utils/parserDate'
+import FilterAuthorization from '../../../Components/Filters/Authorization'
+import FilterIncident from '../../../Components/Filters/Incident'
+import IncidentList from './IncidentList'
 
-const chartSettings = {
-  collision: 'Colisão',
-  accident: 'Acidente',
-  vehicle_break_down: 'Veículo quebrado'
-}
-
-const colors = {
-  collision: '#5DA0FC',
-  accident: '#268E86',
-  vehicle_break_down: '#2D2D2D'
-}
-
-const columns = [
-  {
-    title: 'Data do incidente',
-    dataIndex: 'incidentDate',
-    key: 'incidentDate',
-    fixed: 'left',
-    render: (field) => formattedDate(field, 'DD/MM/YYYY')
-  },
-  {
-    title: 'Veículo',
-    dataIndex: 'vehicle',
-    key: 'vehicle',
-    fixed: 'left',
-    render: (_, source) => source.vehicle && source.vehicle.plate
-  },
-  {
-    title: 'Tipo de incidente',
-    dataIndex: 'incidentType',
-    key: 'incidentType',
-    fixed: 'left',
-    render: (incidentType) => (
-      <Tag color={colors[incidentType]}>{chartSettings[incidentType]}</Tag>
-    )
-  },
-  {
-    title: 'Descrição do incidente',
-    dataIndex: 'incidentDescription',
-    key: 'incidentDescription',
-    fixed: 'left',
-    render: (incidentDescription) => <small>{incidentDescription}</small>
-  },
-  {
-    title: 'Operação',
-    dataIndex: 'operation',
-    key: 'operation',
-    fixed: 'left',
-    render: (_, source) => (
-      <>
-        {source.operation && source.operation.name} <br />
-        <small>
-          {source.operation &&
-            source.operation.company &&
-            source.operation.company.name}{' '}
-          /{' '}
-          {cnpj.format(
-            source.operation &&
-              source.operation.company &&
-              source.operation.company.document
-          )}
-        </small>
-      </>
-    )
-  }
-]
-
-const { Link, Text, Title } = Typography
+const { Text, Title } = Typography
 
 const Detail = ({
   driver,
@@ -85,7 +24,17 @@ const Detail = ({
   handleSubmit,
   chartData,
   handleSubmitAuthorization,
-  handleSubmitUpdateAuthorization
+  handleSubmitUpdateAuthorization,
+  authorizations,
+  clearFilterAuthorization,
+  handleChangeTableAuthorization,
+  handleFilterAuthorization,
+  authorizationLoading,
+  clearFilterIncident,
+  handleFilterIncident,
+  incidentsLoading,
+  handleChangeTableIncident,
+  incidents
 }) => {
   const [showModal, setShowModal] = useState(false)
   const [showModalAuthorization, setShowModalAuthorization] = useState(false)
@@ -121,22 +70,17 @@ const Detail = ({
             </Col>
 
             <Col span={6}>
-              <Text>Telefone</Text><br />
-              <Text>
-                <strong>{driver.driverLicense}</strong>
-              </Text>
-            </Col>
-
-            <Col span={6}>
               <Text>Telefone</Text>
               <br />
-              <Text>{driver.phone}</Text>
+              <Text strong>{driver.phone}</Text>
             </Col>
 
             <Col span={4}>
               <Text>Link</Text>
               <br />
-              {driver.id && (
+
+              <Text strong copyable={{ text: link }}>Copiar link</Text>
+              {/* {driver.id && (
                 <Tooltip placement="bottom" title="Link copiado!" visible={copy}>
                   <Button
                     style={{ paddingLeft: 0 }}
@@ -149,7 +93,7 @@ const Detail = ({
                     Copiar link
                   </Button>
                 </Tooltip>
-              )}
+              )} */}
             </Col>
           </Row>
         </Card>
@@ -162,7 +106,9 @@ const Detail = ({
               <Title style={{ marginBottom: 0 }} level={4}>
                 Adicione autorizações
               </Title>
-              <p style={{ marginBottom: 0 }}>Crie e gerencie autorizações dos motoristas</p>
+              <p style={{ marginBottom: 0 }}>
+                Crie e gerencie autorizações dos motoristas
+              </p>
             </Col>
             <Col span={12} style={{ textAlign: 'right' }}>
               <Button
@@ -179,44 +125,25 @@ const Detail = ({
       <Col span={24}>
         <Card bordered={false}>
           <Row>
-            <Col span={24} style={{ textAlign: 'right' }}>
-              <AuthorizationList
-                datasource={driver.authorizations}
-                handleSubmitUpdateAuthorization={handleSubmitUpdateAuthorization}
+            <Col span={24}>
+              <FilterAuthorization
+                operations={operationsSource}
+                clearFilter={clearFilterAuthorization}
+                handleSubmit={handleFilterAuthorization}
               />
             </Col>
-          </Row>
-        </Card>
-      </Col>
-
-      <Col span={24}>
-        <Card bordered={false}>
-          <Row>
-            <Col span={12}>
-              <Title style={{ marginBottom: 0 }} level={4}>
-                Adicione autorizações
-              </Title>
-              <p style={{ marginBottom: 0 }}>Crie e gerencie autorizações dos motoristas</p>
-            </Col>
-            <Col span={12} style={{ textAlign: 'right' }}>
-              <Button
-                onClick={() => setShowModalAuthorization(true)}
-                style={{ marginRight: '16px' }}
-                icon={<PlusOutlined />}>
-                Adicionar autorização
-              </Button>
-            </Col>
-          </Row>
-        </Card>
-      </Col>
-
-      <Col span={24}>
-        <Card bordered={false}>
-          <Row>
             <Col span={24} style={{ textAlign: 'right' }}>
               <AuthorizationList
-                datasource={driver.authorizations}
-                handleSubmitUpdateAuthorization={handleSubmitUpdateAuthorization}
+                datasource={authorizations.rows}
+                handleChange={handleChangeTableAuthorization}
+                handleSubmitUpdateAuthorization={
+                  handleSubmitUpdateAuthorization
+                }
+                loading={authorizationLoading}
+                pagination={{
+                  total: authorizations.count,
+                  current: authorizations.current
+                }}
               />
             </Col>
           </Row>
@@ -259,9 +186,22 @@ const Detail = ({
                 </Radio.Button>
               </Radio.Group>
             </Col>
+            {mode === 'table' && (
+              <Col span={24}>
+                <FilterIncident
+                  operations={operationsSource}
+                  clearFilter={clearFilterIncident}
+                  handleSubmit={handleFilterIncident}
+                />
+              </Col>
+            )}
             <Col span={24}>
               {mode === 'table' ? (
-                <Table columns={columns} dataSource={driver.driverIncidents} />
+                <IncidentList
+                  {...incidents}
+                  handleChange={handleChangeTableIncident}
+                  loading={incidentsLoading}
+                />
               ) : (
                 <BarChart data={chartData} />
               )}
@@ -270,34 +210,25 @@ const Detail = ({
         </Card>
       </Col>
 
-      {
-        showModal && (
-          <IncidentForm
-            handleCancel={setShowModal}
-            visible={showModal}
-            vehiclesSource={vehiclesSource}
-            operationsSource={operationsSource}
-            handleSubmit={handleSubmit}
-            vehiclesSource={vehiclesSource}
-            operationsSource={operationsSource}
-          />
-        )
-      }
+      {showModal && (
+        <IncidentForm
+          handleCancel={setShowModal}
+          visible={showModal}
+          vehiclesSource={vehiclesSource}
+          operationsSource={operationsSource}
+          handleSubmit={handleSubmit}
+        />
+      )}
 
-      {
-        showModalAuthorization && (
-          <AuthorizationForm
-            handleCancel={setShowModalAuthorization}
-            visible={showModalAuthorization}
-            vehiclesSource={vehiclesSource}
-            operationsSource={operationsSource}
-            handleSubmit={handleSubmitAuthorization}
-            vehiclesSource={vehiclesSource}
-            operationsSource={operationsSource}
-          />
-        )
-      }
-
+      {showModalAuthorization && (
+        <AuthorizationForm
+          handleCancel={setShowModalAuthorization}
+          visible={showModalAuthorization}
+          vehiclesSource={vehiclesSource}
+          operationsSource={operationsSource}
+          handleSubmit={handleSubmitAuthorization}
+        />
+      )}
     </Row>
   )
 }

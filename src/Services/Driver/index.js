@@ -30,7 +30,11 @@ const createDriverIncident = async (values) => {
 }
 
 const getIncidentsSummary = async (id) => {
-  return await axiosIntance.get(`/drivers-incidents/${id}`)
+  return await axiosIntance.get(`/drivers-incidents-summary/${id}`)
+}
+
+const getAllIncidentsByDriverId = async (id, params = {}) => {
+  return await axiosIntance.get(`/drivers-incidents/${id}`, { params })
 }
 
 export {
@@ -40,5 +44,6 @@ export {
   updateDriver,
   createDriverIncident,
   getIncidentsSummary,
+  getAllIncidentsByDriverId,
   updateDriverWithoutAuth
 }
