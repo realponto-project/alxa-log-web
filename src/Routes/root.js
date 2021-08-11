@@ -58,7 +58,7 @@ const RootRoutes = [
   },
   {
     component: VehicleDetail,
-    title: 'VEÍCULOS',
+    title: 'DETALHES DO VEÍCULOS',
     path: '/logged/vehicle/detail/:id',
     exact: true,
     goBack: true
