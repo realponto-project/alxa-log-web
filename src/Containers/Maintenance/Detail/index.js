@@ -239,7 +239,7 @@ const Detail = ({
             <Col span={24}>
               <Title level={4}>Condutor #1</Title>
             </Col>
-            <Col span={8}>
+            <Col span={24}>
               <Text>Motorista da entrada</Text>
               <br />
               <Text>
@@ -248,7 +248,7 @@ const Detail = ({
                 </strong>
               </Text>
             </Col>
-            <Col span={8}>
+            <Col span={12}>
               <Text>CNH</Text>
               <br />
               <Text>
@@ -260,7 +260,7 @@ const Detail = ({
                 </strong>
               </Text>
             </Col>
-            <Col span={8}>
+            <Col span={12}>
               <Text>Telefone</Text>
               <br />
               <Text>
@@ -289,7 +289,7 @@ const Detail = ({
                   </Button>
               )}
             </Col>
-            <Col span={8}>
+            <Col span={24}>
               <Text>Motorista da saída</Text>
               <br />
               <Text>
@@ -300,7 +300,7 @@ const Detail = ({
                 </strong>
               </Text>
             </Col>
-            <Col span={8}>
+            <Col span={12}>
               <Text>CNH</Text>
               <br />
               <Text>
@@ -312,7 +312,7 @@ const Detail = ({
                 </strong>
               </Text>
             </Col>
-            <Col span={8}>
+            <Col span={12}>
               <Text>Telefone</Text>
               <br />
               <Text>
