@@ -1,8 +1,7 @@
-import React, { useState } from 'react'
-import { Table, Empty, ConfigProvider, Image, Switch } from 'antd'
-import NoData from '../../../../Assets/noData.svg'
+import React from 'react'
+import { Table, Switch } from 'antd'
 
-const columns = ({handleSubmitUpdateAuthorization}) => [
+const columns = ({ handleSubmitUpdateAuthorization }) => [
   {
     title: 'Placa do veículo',
     dataIndex: 'plate',
@@ -20,38 +19,38 @@ const columns = ({handleSubmitUpdateAuthorization}) => [
   {
     title: 'Status',
     dataIndex: 'activated',
-    key: 'activated',
+    key: 'id',
     fixed: 'left',
-    render: (_, source) => {
-      const [checked, setChecked] = useState(source.activated)
+    render: (activated, source) => {
       return (
-        <Switch 
-          checked={checked}
-          checkedChildren="Ativo" 
+        <Switch
+          checked={activated}
+          checkedChildren="Ativo"
           unCheckedChildren="Inativo"
-          onChange={(activated) => handleSubmitUpdateAuthorization({...source, activated }, setChecked)} 
-          value={source.activated}
+          onChange={(activated) =>
+            handleSubmitUpdateAuthorization({ ...source, activated })
+          }
         />
       )
     }
-    },
+  }
 ]
 
-const AuthorizationList = ({ datasource, loading, handleSubmitUpdateAuthorization }) => {
+const AuthorizationList = ({
+  datasource,
+  loading,
+  handleSubmitUpdateAuthorization,
+  handleChange,
+  pagination
+}) => {
   return (
-    <ConfigProvider renderEmpty={() => <Empty 
-        description="Não há dados" 
-        image={<Image width={85} src={NoData} preview={false} />}
-      />
-    }>
-      <Table 
-        columns={columns({handleSubmitUpdateAuthorization})} 
-        loading={loading}
-        dataSource={datasource} 
-      />
-    </ConfigProvider>
+    <Table
+      pagination={pagination}
+      columns={columns({ handleSubmitUpdateAuthorization })}
+      onChange={handleChange}
+      loading={loading}
+      dataSource={datasource}
+    />
   )
 }
-
-
 export default AuthorizationList
