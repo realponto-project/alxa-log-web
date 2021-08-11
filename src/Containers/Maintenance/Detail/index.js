@@ -67,22 +67,30 @@ const Detail = ({
     <Row gutter={[8, 8]}>
       <Col span={24}>
         <Card bordered={false}>
-          <Row gutter={[8, 8]}>
+          <Row gutter={[8, 20]}>
             <Col span={24}>
               <Title level={4}>Detalhes</Title>
             </Col>
-            <Col span={6}>
+            <Col span={4}>
               <Text>Placa cavalo</Text>
               <br />
               <Text>
                 <strong>{maintenanceOrder.plateHorse || '-'}</strong>
               </Text>
             </Col>
-            <Col span={6}>
-              <Text>Placa do veículo da manutenção</Text>
+            <Col span={8}>
+              <Text>Veículo da manutenção</Text>
               <br />
               <Text>
                 <strong>{maintenanceOrder.plateCart}</strong>
+              </Text>
+            </Col>
+
+            <Col span={8}>
+              <Text>Centro de custo </Text>
+              <br />
+              <Text>
+                <strong>{maintenanceOrder.costCenter}</strong>
               </Text>
             </Col>
 
@@ -96,39 +104,34 @@ const Detail = ({
               </Text>
             </Col>
             <Col span={4}>
-              <Text>Centro de custo </Text>
-              <br />
-              <Text>
-                <strong>{maintenanceOrder.costCenter}</strong>
-              </Text>
-            </Col>
-            <Col span={4}>
               <Text>Prioridade </Text>
               <br />
               <Text>
                 <strong>{status[maintenanceOrder.priority]}</strong>
               </Text>
             </Col>
-            <Col span={10}>
+            <Col span={8}>
               <Text>Operação </Text>
               <br />
               <Text>
                 <strong>
-                  {maintenanceOrder.operation.name} -{' '}
-                  {maintenanceOrder.operation.company.name} /{' '}
-                  {cnpj.format(maintenanceOrder.operation.company.document)}
+                  {maintenanceOrder.operation.name}
+                  
                 </strong>
+                <br/>
+                <small>{maintenanceOrder.operation.company.name} - {cnpj.format(maintenanceOrder.operation.company.document)}</small>
               </Text>
             </Col>
 
-            <Col span={10}>
+            <Col span={8}>
               <Text>Manutenção realizada por</Text>
               <br />
               <Text>
                 <strong>
-                  {maintenanceOrder.company.name} /{' '}
-                  {cnpj.format(maintenanceOrder.company.document)}{' '}
+                  {maintenanceOrder.company.name}
                 </strong>
+                <br />
+                <small>{cnpj.format(maintenanceOrder.company.document)}</small>
               </Text>
             </Col>
 
@@ -239,7 +242,7 @@ const Detail = ({
             <Col span={24}>
               <Title level={4}>Condutor #1</Title>
             </Col>
-            <Col span={8}>
+            <Col span={24}>
               <Text>Motorista da entrada</Text>
               <br />
               <Text>
@@ -260,7 +263,7 @@ const Detail = ({
                 </strong>
               </Text>
             </Col>
-            <Col span={8}>
+            <Col span={16}>
               <Text>Telefone</Text>
               <br />
               <Text>
@@ -289,7 +292,7 @@ const Detail = ({
                   </Button>
               )}
             </Col>
-            <Col span={8}>
+            <Col span={24}>
               <Text>Motorista da saída</Text>
               <br />
               <Text>
@@ -312,7 +315,7 @@ const Detail = ({
                 </strong>
               </Text>
             </Col>
-            <Col span={8}>
+            <Col span={16}>
               <Text>Telefone</Text>
               <br />
               <Text>
