@@ -22,6 +22,7 @@ const chartStatus = {
   'wash': 'Lavar',
   'supply': 'Abastecer',
   'check-out': 'Saída',
+  'external_service': 'Serviços externos',
 }
 
 const chartSettings = [
@@ -36,6 +37,7 @@ const chartSettings = [
   { label: 'supply', value: 'Abastecer', color: '#17C9B2' },
   { label: 'avaiable', value: 'Liberado', color: '#F29F03' },
   { label: 'check-out', value: 'Saída', color: '#264ABE' },
+  { label: 'external_service', value: 'Serviços externos', color: '#F6C21F' },
 ]
 
 const Chart = ({ data }) => {

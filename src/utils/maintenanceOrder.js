@@ -21,6 +21,7 @@ const parseStatusColor = {
   'wash': '#D588F2',
   'supply': '#17C9B2',
   'check-out': '#264ABE',
+  'external_service': '#F6C21F',
 }
 
 const parseStatus = {
@@ -35,6 +36,7 @@ const parseStatus = {
   'wash': 'Lavar',
   'supply': 'Abastecer',
   'check-out': 'Saída',
+  'external_service': 'Serviços externos'
 }
 
 export {

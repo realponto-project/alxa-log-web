@@ -44,6 +44,10 @@ const formSettingsEvent = [
       value: 'check-out',
       label: 'Saída'
     },
+    {
+      value: 'external_service',
+      label: 'Serviços externos'
+    },
   ]
 },
 {

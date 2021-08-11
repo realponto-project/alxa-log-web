@@ -29,6 +29,7 @@ const parseStatus = {
   'wash': 'Lavar',
   'supply': 'Abastecer',
   'check-out': 'Saída',
+  'external_service': 'Serviços externos'
 }
 
 const MaintenanceDetailMobile = ({
