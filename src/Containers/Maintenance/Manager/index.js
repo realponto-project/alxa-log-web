@@ -35,7 +35,8 @@ const statusFilters = [
   { value: 'dock', label: 'Doca' },
   { value: 'wash', label: 'Lavar' },
   { value: 'supply', label: 'Abastecer' },
-  { value: 'check-out', label: 'Saída' }
+  { value: 'check-out', label: 'Saída' },
+  { value: 'external_service', label: 'Serviços externos' },
 ]
 
 const priorityFilters = [
