@@ -27,7 +27,8 @@ const parseStatusColor = {
   dock: '#2D2D2D',
   wash: '#D588F2',
   supply: '#17C9B2',
-  'check-out': '#264ABE'
+  'check-out': '#264ABE',
+  'external_service': '#F6C21F' ,
 }
 
 const services = {
@@ -46,7 +47,8 @@ const parseStatus = {
   dock: 'Doca',
   wash: 'Lavar',
   supply: 'Abastecer',
-  'check-out': 'Saída'
+  'check-out': 'Saída',
+  'external_service':'Serviços externos'
 }
 
 const { Text, Title } = Typography

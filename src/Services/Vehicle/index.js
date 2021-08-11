@@ -12,23 +12,23 @@ const updateVehicle = async (values) => {
   return await axiosIntance.put(`/vehicles/${values.id}`, values)
 }
 
-const getById = async (values) => {
-  return await axiosIntance.get(`/vehicles/${values.id}`)
+const getById = async (id) => {
+  return await axiosIntance.get(`/vehicles/${id}`)
 }
 
 const getAllVehicleTypes = async () => {
-  return await axiosIntance.get(`/vehicle-types`)
+  return await axiosIntance.get('/vehicle-types')
 }
 
 const getAllGeoLocation = async () => {
-  return await axiosIntance.get(`/vehicles-geolocation`)
+  return await axiosIntance.get('/vehicles-geolocation')
 }
 
-export { 
-  getAll, 
+export {
+  getAll,
   getById,
-  createVehicle, 
-  updateVehicle, 
+  createVehicle,
+  updateVehicle,
   getAllVehicleTypes,
   getAllGeoLocation
 }

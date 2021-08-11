@@ -3,14 +3,17 @@ import { message } from 'antd'
 import { useLocation, withRouter } from 'react-router-dom'
 
 import ManagerContainer from '../../../Containers/Vehicle/Manager'
-import { createVehicle, getAll, getAllVehicleTypes, updateVehicle } from '../../../Services/Vehicle'
+import {
+  createVehicle,
+  getAll,
+  getAllVehicleTypes,
+  updateVehicle
+} from '../../../Services/Vehicle'
 import { validateBr } from 'js-brasil'
-import { isEmpty, pathOr } from 'ramda'
+import { isEmpty } from 'ramda'
 import GAInitialize from '../../../utils/ga'
 
-const Manager = ({
-  history,
-}) => {
+const Manager = ({ history }) => {
   const [vehiclesData, setVehiclesData] = useState({ rows: [] })
   const [vehicleTypes, setVehicleTypes] = useState({ rows: [] })
   const [vehicleSelected, setVehicleSelected] = useState(null)
@@ -19,27 +22,31 @@ const Manager = ({
 
   const [loading, setLoading] = useState(true)
   const { search, pathname } = useLocation()
-  GAInitialize(`/vehicles`)
+  GAInitialize('/vehicles')
 
   useEffect(() => {
     let query = {}
     getVehicleTypes({ limit: 10000 })
     const searchLocalStorage = localStorage.getItem('vehicleSearch')
-    if(!search && searchLocalStorage) {
+    if (!search && searchLocalStorage) {
       history.push({
         pathname,
-        search: validateBr.placa(searchLocalStorage) ? `?plate=${searchLocalStorage}` : `?fleet=${searchLocalStorage}`
+        search: validateBr.placa(searchLocalStorage)
+          ? `?plate=${searchLocalStorage}`
+          : `?fleet=${searchLocalStorage}`
       })
       setSearchValue(searchLocalStorage)
-      query = validateBr.placa(searchLocalStorage) ? { plate: searchLocalStorage } : { fleet: searchLocalStorage }
+      query = validateBr.placa(searchLocalStorage)
+        ? { plate: searchLocalStorage }
+        : { fleet: searchLocalStorage }
     }
     getVehicles(query)
   }, [])
 
   const success = (text) => {
-    message.success(text);
+    message.success(text)
   }
-  
+
   const errorMessage = (text) => {
     message.error(text)
   }
@@ -56,7 +63,6 @@ const Manager = ({
     }
   }
 
-
   const getVehicleTypes = async (params = {}) => {
     try {
       const { data } = await getAllVehicleTypes(params)
@@ -69,9 +75,9 @@ const Manager = ({
   const handleSubmit = async (values) => {
     try {
       await createVehicle({
-        ...values, 
+        ...values,
         plate: values.plate.toLocaleUpperCase(),
-        fleet: values.fleet.toLocaleUpperCase(),
+        fleet: values.fleet.toLocaleUpperCase()
       })
       success('Cadastro de veículo realizado com sucesso!')
       getVehicles()
@@ -92,9 +98,8 @@ const Manager = ({
     }
   }
 
-  const handleSelectedVehicle = vehicle => {
-    const minKm = pathOr(null, ['minKm'], vehicle)
-    setVehicleSelected({...vehicle, minKm: minKm/1000})
+  const handleSelectedVehicle = (vehicle) => {
+    setVehicleSelected(vehicle)
   }
 
   const handleFilter = () => {
@@ -102,8 +107,12 @@ const Manager = ({
       return null
     }
 
-    const queryLocal = validateBr.placa(searchValue) ? `?plate=${searchValue}` : `?fleet=${searchValue}`
-    const query = validateBr.placa(searchValue) ? { plate: searchValue } : { fleet: searchValue }
+    const queryLocal = validateBr.placa(searchValue)
+      ? `?plate=${searchValue}`
+      : `?fleet=${searchValue}`
+    const query = validateBr.placa(searchValue)
+      ? { plate: searchValue }
+      : { fleet: searchValue }
     localStorage.setItem('vehicleSearch', searchValue)
     history.push({
       pathname,
@@ -113,7 +122,7 @@ const Manager = ({
     getVehicles(query)
   }
 
-  const handleFilterOnchange = value => {
+  const handleFilterOnchange = (value) => {
     setSearchValue(value.target.value)
   }
 
@@ -131,9 +140,11 @@ const Manager = ({
 
   const handleChangeTableEvent = ({ current }) => {
     setoffset(current)
-    let query = { offset: (current - 1) }
+    let query = { offset: current - 1 }
     if (searchValue) {
-      const params = validateBr.placa(searchValue) ? { plate: searchValue } : { fleet: searchValue }
+      const params = validateBr.placa(searchValue)
+        ? { plate: searchValue }
+        : { fleet: searchValue }
       query = { ...query, ...params }
     }
 
@@ -155,6 +166,7 @@ const Manager = ({
       clearFilter={clearFilter}
       handleChangeTableEvent={handleChangeTableEvent}
       offset={offset}
+      goToDetail={(id) => history.push(`/logged/vehicle/detail/${id}`)}
     />
   )
 }
