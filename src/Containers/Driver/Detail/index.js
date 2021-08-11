@@ -1,6 +1,6 @@
 import React, { useState } from 'react'
-import { Row, Col, Card, Typography, Table, Button, Radio, Tag } from 'antd'
-import { PlusOutlined, BarChartOutlined, DatabaseOutlined, PhoneOutlined, LinkOutlined } from '@ant-design/icons'
+import { Row, Col, Card, Typography, Table, Button, Radio, Tag, Tooltip } from 'antd'
+import { PlusOutlined, BarChartOutlined, DatabaseOutlined } from '@ant-design/icons'
 import { cnpj } from 'cpf-cnpj-validator'
 
 import IncidentForm from './IncidentForm'
@@ -84,7 +84,6 @@ const Detail = ({
   operationsSource,
   handleSubmit,
   chartData,
-  goToApp,
   handleSubmitAuthorization,
   handleSubmitUpdateAuthorization
 }) => {
@@ -92,12 +91,11 @@ const Detail = ({
   const [showModalAuthorization, setShowModalAuthorization] = useState(false)
   const [mode, setMode] = useState('table')
   const { origin } = window.location
+  const [copy, setCopy] = useState(false)
 
   const handleChange = ({ target }) => setMode(target.value)
 
-  console.log('origin', origin)
-  const link = `${origin}/#/logged/mobile-driver/${driver.id}`
-  console.log('link', link)
+  const link = `${origin}/#/mobile-driver/${driver.id}`
 
   return (
     <Row gutter={[8, 8]}>
@@ -131,15 +129,20 @@ const Detail = ({
             <Col span={4}>
               <Text>Link</Text>
               <br />
-              <Link
-                href={link}
-                target="_blank"
-                copyable={{
-                  text: link,
-                  icon: [<LinkOutlined key="copy-icon" />]
-                }}>
-                Abrir app
-              </Link>
+              {driver.id && (
+                <Tooltip placement="bottom" title="Link copiado!" visible={copy}>
+                  <Button
+                    style={{ paddingLeft: 0 }}
+                    type="link"
+                    onClick={() => {
+                      setCopy(true)
+                      navigator.clipboard.writeText(link)
+                      setTimeout(() => setCopy(false), 1000)
+                    }}>
+                    Copiar link
+                  </Button>
+                </Tooltip>
+              )}
             </Col>
           </Row>
         </Card>

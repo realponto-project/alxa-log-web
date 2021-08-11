@@ -25,8 +25,9 @@ const DriverMobile = ({ match }) => {
   const updatePhone = async (values) => {
     try {
       await updateDriverWithoutAuth(match.params.id, values)
-      history.push(`/logged/mobile-driver-success/${match.params.id}`)
+      history.push(`/mobile-driver-success/${match.params.id}`)
     } catch (error) {
+      message.error('Não foi possível atualizar o seu telefone!')
       window.onerror(`updateDriver-phone: ${error.error}`, window.location.href)
     }
   }
@@ -48,7 +49,7 @@ const DriverMobile = ({ match }) => {
         setAuthorizationId(data[0].id)
       }
     } catch (error) {
-      console.error(error)
+      window.onerror(`get-authorization-driver: ${error.error}`, window.location.href)
     }
   }
 
