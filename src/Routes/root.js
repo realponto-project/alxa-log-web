@@ -81,20 +81,6 @@ const RootRoutes = [
     goBack: true
   },
   {
-    component: DriverAuthorizationMobile,
-    title: '',
-    path: '/logged/mobile-authorization',
-    exact: true,
-    goBack: true
-  },
-  {
-    component: DriverOperationMobile,
-    title: '',
-    path: '/logged/mobile-operation',
-    exact: true,
-    goBack: true
-  },
-  {
     component: VehicleTypeMananger,
     title: 'TIPO VEÍCULO',
     path: '/logged/vehicle-type/manager',
