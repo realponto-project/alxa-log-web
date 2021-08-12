@@ -1,10 +1,11 @@
 import React from 'react'
-import { Card, Col, Row, Tag, Typography } from 'antd'
-import { MapContainer, Marker, TileLayer } from 'react-leaflet'
+import { Card, Col, Row, Tag, Typography, Image } from 'antd'
+import { MapContainer, Marker, TileLayer, Popup } from 'react-leaflet'
 import moment from 'moment'
 
 import { mapIcon } from '../../../Components/Map/Icons'
 import { length, pathOr } from 'ramda'
+import WhitoutTrackSvg from './whitoutTrack.svg'
 
 const { Title, Text } = Typography
 
@@ -15,12 +16,19 @@ const renderSituation = (situation) => {
   }[situation]
 }
 
-const Location = ({ tracks }) => {
-  if (length(tracks) === 0) return null
+const Location = ({ tracks , plate}) => {
 
-  const latitude = pathOr(0, [0, 'gpsLatitude'], tracks)
-  const longitude = pathOr(0, [0, 'gpsLongitude'], tracks)
+  const latitude = pathOr(-23.7056163, [0, 'gpsLatitude'], tracks)
+  const longitude = pathOr(-46.5404382, [0, 'gpsLongitude'], tracks)
   const position = [latitude, longitude]
+  if (length(tracks) === 0) {
+    return (
+      <Card bordered={false} style={{ height: "330px" }}>
+        <Image src={WhitoutTrackSvg} width="100%" preview={false} alt="vehicle whitout track!" />
+      </Card>
+    )
+  }
+
   return (
     <Card bordered={false} style={{ height: "330px" }}>
       <MapContainer
@@ -31,7 +39,9 @@ const Location = ({ tracks }) => {
         <TileLayer
           url={`https://api.mapbox.com/styles/v1/mapbox/outdoors-v11/tiles/256/{z}/{x}/{y}@2x?access_token=${process.env.REACT_APP_MAPBOX_TOKEN}`}
         />
-        <Marker interactive={false} icon={mapIcon} position={position} />
+          <Marker icon={mapIcon} position={position}>
+            <Popup>{plate}</Popup>
+          </Marker>
       </MapContainer>
     </Card>
   )
@@ -44,7 +54,7 @@ const Detail = ({ vehicle }) => {
   return (
     <Row gutter={[8, 8]}>
       <Col span={8}>
-        <Location tracks={tracks} />
+        <Location tracks={tracks} plate={vehicle.plate} />
       </Col>
       <Col span={16}>
         <Card bordered={false} style={{ height: "330px" }}>
