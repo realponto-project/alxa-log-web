@@ -289,7 +289,7 @@ const Detail = ({
                   }}
                   columns={columns(gotoDetailOrder)}
                   dataSource={datasource.rows}
-                  handleChangeTableEvent={handleChangeTableEvent}
+                  onChange={handleChangeTableEvent}
                 />
               ) : (
                 <BarChart data={chartData} />
