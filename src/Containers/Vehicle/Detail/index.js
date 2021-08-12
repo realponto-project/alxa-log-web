@@ -2,52 +2,67 @@ import React from 'react'
 import { Card, Col, Row, Tag, Typography, Image } from 'antd'
 import { MapContainer, Marker, TileLayer, Popup } from 'react-leaflet'
 import moment from 'moment'
+import { length, pathOr } from 'ramda'
 
 import { mapIcon } from '../../../Components/Map/Icons'
-import { length, pathOr } from 'ramda'
 import WhitoutTrackSvg from './whitoutTrack.svg'
+import FilterMaintenence from '../../../Components/Filters/Maintenance'
+import MaintenanceList from './MaintenanceList'
 
 const { Title, Text } = Typography
 
 const renderSituation = (situation) => {
   return {
     regular: 'Regular',
-    unregular: 'Irregular',
+    unregular: 'Irregular'
   }[situation]
 }
 
-const Location = ({ tracks , plate}) => {
-
+const Location = ({ tracks, plate }) => {
   const latitude = pathOr(-23.7056163, [0, 'gpsLatitude'], tracks)
   const longitude = pathOr(-46.5404382, [0, 'gpsLongitude'], tracks)
   const position = [latitude, longitude]
   if (length(tracks) === 0) {
     return (
-      <Card bordered={false} style={{ height: "330px" }}>
-        <Image src={WhitoutTrackSvg} width="100%" preview={false} alt="vehicle whitout track!" />
+      <Card bordered={false} style={{ height: '330px' }}>
+        <Image
+          src={WhitoutTrackSvg}
+          width="100%"
+          preview={false}
+          alt="vehicle whitout track!"
+        />
       </Card>
     )
   }
 
   return (
-    <Card bordered={false} style={{ height: "330px" }}>
+    <Card bordered={false} style={{ height: '330px' }}>
       <MapContainer
         center={position}
         zoom={16}
-        style={{ width: '100%', height: 280 }}
-      >
+        style={{ width: '100%', height: 280 }}>
         <TileLayer
           url={`https://api.mapbox.com/styles/v1/mapbox/outdoors-v11/tiles/256/{z}/{x}/{y}@2x?access_token=${process.env.REACT_APP_MAPBOX_TOKEN}`}
         />
-          <Marker icon={mapIcon} position={position}>
-            <Popup>{plate}</Popup>
-          </Marker>
+        <Marker icon={mapIcon} position={position}>
+          <Popup>{plate}</Popup>
+        </Marker>
       </MapContainer>
     </Card>
   )
 }
 
-const Detail = ({ vehicle }) => {
+const Detail = ({
+  loading,
+  vehicle,
+  maintenances,
+  filterForm,
+  handleFilter,
+  clearFilter,
+  gotoDetail,
+  offset,
+  handleChangeTable
+}) => {
   const tracks = pathOr([], ['tracks'], vehicle)
   const odometer = pathOr(0, [0, 'odometer'], tracks)
 
@@ -57,7 +72,7 @@ const Detail = ({ vehicle }) => {
         <Location tracks={tracks} plate={vehicle.plate} />
       </Col>
       <Col span={16}>
-        <Card bordered={false} style={{ height: "330px" }}>
+        <Card bordered={false} style={{ height: '330px' }}>
           <Row gutter={[8, 24]}>
             <Col span={24}>
               <Title level={4}>Detalhes</Title>
@@ -91,11 +106,13 @@ const Detail = ({ vehicle }) => {
               <Text>Status</Text>
               <br />
               <Text>
-                <strong>{vehicle.activated ? (
-                  <Tag color="#268E86">Ativo</Tag>
-                ) : (
-                  <Tag color="#EA5656">Inativo</Tag>
-                )}</strong>
+                <strong>
+                  {vehicle.activated ? (
+                    <Tag color="#268E86">Ativo</Tag>
+                  ) : (
+                    <Tag color="#EA5656">Inativo</Tag>
+                  )}
+                </strong>
               </Text>
             </Col>
 
@@ -127,13 +144,41 @@ const Detail = ({ vehicle }) => {
               <Text>Última manutenção</Text>
               <br />
               <Text>
-                <strong>{moment(vehicle.lastMaintenance).format('DD/MM/YYYY')}</strong>
+                <strong>
+                  {moment(vehicle.lastMaintenance).format('DD/MM/YYYY')}
+                </strong>
               </Text>
             </Col>
           </Row>
         </Card>
       </Col>
 
+      <Col span={24}>
+        <Card>
+          <FilterMaintenence
+            form={filterForm}
+            handleFilter={handleFilter}
+            clearFilter={clearFilter}
+            vehicle={vehicle}
+          />
+        </Card>
+      </Col>
+
+      <Col span={24}>
+        <Card bordered={false}>
+          <Row>
+            <Col span={24}>
+              <MaintenanceList
+                gotoDetail={gotoDetail}
+                datasource={maintenances}
+                loading={loading}
+                handleChangeTableEvent={handleChangeTable}
+                offset={offset}
+              />
+            </Col>
+          </Row>
+        </Card>
+      </Col>
     </Row>
   )
 }

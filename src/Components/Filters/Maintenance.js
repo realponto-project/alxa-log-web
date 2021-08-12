@@ -1,15 +1,14 @@
 import React, { useState } from 'react'
 import {
   Button,
-  Card,
-  Col,
-  Input,
-  Row,
-  Typography,
-  Space,
   Checkbox,
   DatePicker,
-  Form
+  Col,
+  Form,
+  Input,
+  Row,
+  Space,
+  Typography
 } from 'antd'
 import { SearchOutlined, DownOutlined, UpOutlined } from '@ant-design/icons'
 
@@ -62,6 +61,7 @@ const FilterMaintenence = ({ clearFilter, handleFilter, form }) => {
             <Input
               placeholder="Filtre pela placa da manutenção."
               prefix={<SearchOutlined />}
+              readOnly
             />
           </Form.Item>
         </Col>
