@@ -36,7 +36,7 @@ const Location = ({ tracks, plate }) => {
   }
 
   return (
-    <Card bordered={false} style={{ height: '330px' }}>
+    <Card bordered={false} style={{ height: '330px', display: 'flex', alignItems: 'center'}}>
       <MapContainer
         center={position}
         zoom={16}
