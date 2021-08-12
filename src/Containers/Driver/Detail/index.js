@@ -79,8 +79,7 @@ const Detail = ({
               <Text>Link</Text>
               <br />
 
-              <Text strong copyable={{ text: link }}>Copiar link</Text>
-              {/* {driver.id && (
+              {driver.id && (
                 <Tooltip placement="bottom" title="Link copiado!" visible={copy}>
                   <Button
                     style={{ paddingLeft: 0 }}
@@ -91,9 +90,10 @@ const Detail = ({
                       setTimeout(() => setCopy(false), 1000)
                     }}>
                     Copiar link
+                    <LinkOutlined />
                   </Button>
                 </Tooltip>
-              )} */}
+              )}
             </Col>
           </Row>
         </Card>

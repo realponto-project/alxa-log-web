@@ -1,7 +1,8 @@
-import React from 'react'
-import { Row, Col, Card, Typography, Image, Tag, Timeline, Button } from 'antd'
+import React, { useState } from 'react'
+import { Row, Col, Card, Typography, Image, Tag, Timeline, Button, Tooltip } from 'antd'
 import Qrcode from 'qrcode.react'
 import { cnpj } from 'cpf-cnpj-validator'
+import { CopyOutlined } from '@ant-design/icons'
 
 import fuelSVG from './fuel.svg'
 import clockSVG from './clock.svg'
@@ -62,27 +63,36 @@ const Detail = ({
 }) => {
   const checkIn = maintenanceOrder.maintenanceOrderEvents.find(item => item.status === 'check-in')
   const permananceTimeDetail = checkIn ? diffTime(checkIn.createdAt, maintenanceOrder.updatedAt, maintenanceOrder.status, true) : { time: '-', descriptionTime: '' }
-  
+  const [copy, setCopy] = useState(false)
+
   return (
     <Row gutter={[8, 8]}>
       <Col span={24}>
         <Card bordered={false}>
-          <Row gutter={[8, 8]}>
+          <Row gutter={[8, 20]}>
             <Col span={24}>
               <Title level={4}>Detalhes</Title>
             </Col>
-            <Col span={6}>
+            <Col span={4}>
               <Text>Placa cavalo</Text>
               <br />
               <Text>
                 <strong>{maintenanceOrder.plateHorse || '-'}</strong>
               </Text>
             </Col>
-            <Col span={6}>
-              <Text>Placa do veículo da manutenção</Text>
+            <Col span={8}>
+              <Text>Veículo da manutenção</Text>
               <br />
               <Text>
                 <strong>{maintenanceOrder.plateCart}</strong>
+              </Text>
+            </Col>
+
+            <Col span={8}>
+              <Text>Centro de custo </Text>
+              <br />
+              <Text>
+                <strong>{maintenanceOrder.costCenter}</strong>
               </Text>
             </Col>
 
@@ -96,39 +106,34 @@ const Detail = ({
               </Text>
             </Col>
             <Col span={4}>
-              <Text>Centro de custo </Text>
-              <br />
-              <Text>
-                <strong>{maintenanceOrder.costCenter}</strong>
-              </Text>
-            </Col>
-            <Col span={4}>
               <Text>Prioridade </Text>
               <br />
               <Text>
                 <strong>{status[maintenanceOrder.priority]}</strong>
               </Text>
             </Col>
-            <Col span={10}>
+            <Col span={8}>
               <Text>Operação </Text>
               <br />
               <Text>
                 <strong>
-                  {maintenanceOrder.operation.name} -{' '}
-                  {maintenanceOrder.operation.company.name} /{' '}
-                  {cnpj.format(maintenanceOrder.operation.company.document)}
+                  {maintenanceOrder.operation.name}
+                  
                 </strong>
+                <br/>
+                <small>{maintenanceOrder.operation.company.name} - {cnpj.format(maintenanceOrder.operation.company.document)}</small>
               </Text>
             </Col>
 
-            <Col span={10}>
+            <Col span={8}>
               <Text>Manutenção realizada por</Text>
               <br />
               <Text>
                 <strong>
-                  {maintenanceOrder.company.name} /{' '}
-                  {cnpj.format(maintenanceOrder.company.document)}{' '}
+                  {maintenanceOrder.company.name}
                 </strong>
+                <br />
+                <small>{cnpj.format(maintenanceOrder.company.document)}</small>
               </Text>
             </Col>
 
@@ -162,6 +167,24 @@ const Detail = ({
                 })}
                 style={{ maxHeight: "89px", width: "89px" }}
               />
+            </Col>
+            <Col span={24}>
+              <Tooltip placement="bottom" title="Link copiado!" visible={copy}>
+                <Button
+                  style={{ padding: '2px', margin: '0' }}
+                  type="link"
+                  onClick={() => {
+                    navigator.clipboard.writeText(
+                      `${process.env.REACT_APP_DASH_URL}/#/mobile-qrcode-detail/${maintenanceOrder.id}`
+                    )
+                    setCopy(true)
+                    setTimeout(() => setCopy(false), 2000)
+                  }
+                  }>
+                  <CopyOutlined />
+                  Copiar link
+                </Button>
+              </Tooltip>
             </Col>
           </Row>
         </Card>
@@ -215,7 +238,7 @@ const Detail = ({
           <Row>
             <Col span={12}>
               <Title level={1}>{permananceTimeDetail.time}</Title>
-              <p level={1}>{permananceTimeDetail.descriptionTime}</p>
+              <p level={1}><strong>{permananceTimeDetail.descriptionTime}</strong></p>
             </Col>
             <Col span={12}>
               <Row>
@@ -239,7 +262,7 @@ const Detail = ({
             <Col span={24}>
               <Title level={4}>Condutor #1</Title>
             </Col>
-            <Col span={8}>
+            <Col span={24}>
               <Text>Motorista da entrada</Text>
               <br />
               <Text>
@@ -260,7 +283,7 @@ const Detail = ({
                 </strong>
               </Text>
             </Col>
-            <Col span={8}>
+            <Col span={16}>
               <Text>Telefone</Text>
               <br />
               <Text>
@@ -289,7 +312,7 @@ const Detail = ({
                   </Button>
               )}
             </Col>
-            <Col span={8}>
+            <Col span={24}>
               <Text>Motorista da saída</Text>
               <br />
               <Text>
@@ -312,7 +335,7 @@ const Detail = ({
                 </strong>
               </Text>
             </Col>
-            <Col span={8}>
+            <Col span={16}>
               <Text>Telefone</Text>
               <br />
               <Text>
