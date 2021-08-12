@@ -1,11 +1,8 @@
 import React from 'react'
-import { Row, Col, Button, Form, Input, Select, Checkbox, Space } from 'antd'
+import { Row, Col, Button, Form, Input, Checkbox, Space } from 'antd'
 import { SearchOutlined } from '@ant-design/icons'
-import { map } from 'ramda'
 
-const { Option } = Select
-
-const FilterAuthorization = ({ handleSubmit, clearFilter, operations }) => {
+const FilterAuthorization = ({ handleSubmit, clearFilter }) => {
   const [form] = Form.useForm()
   return (
     <Form
@@ -13,41 +10,23 @@ const FilterAuthorization = ({ handleSubmit, clearFilter, operations }) => {
       onFinish={handleSubmit}
       initialValues={{ activated: [false, true] }}>
       <Row gutter={8}>
-        <Col span={8}>
+        <Col span={12}>
           <Form.Item name="plate">
             <Input
-              placeholder="Filtre pela placa da manutenção."
+              placeholder="Filtre pela placa"
               prefix={<SearchOutlined />}
             />
           </Form.Item>
         </Col>
-        <Col span={8}>
-          <Form.Item name="operationId">
-            <Select allowClear placeholder="Selecione a operação">
-              {map(
-                ({ id, name }) => (
-                  <Option key={id} value={id}>
-                    {name}
-                  </Option>
-                ),
-                operations
-              )}
-            </Select>
-          </Form.Item>
-        </Col>
-        <Col span={3}>
+        <Col span={6}>
           <Form.Item name="activated">
             <Checkbox.Group>
-              <Row>
-                <Checkbox value={true}>Ativo</Checkbox>
-              </Row>
-              <Row>
-                <Checkbox value={false}>Inativo</Checkbox>
-              </Row>
+              <Checkbox value={true}>Ativo</Checkbox>
+              <Checkbox value={false}>Inativo</Checkbox>
             </Checkbox.Group>
           </Form.Item>
         </Col>
-        <Col span={5} style={{ textAlign: 'right' }}>
+        <Col span={6} style={{ textAlign: 'right' }}>
           <Form.Item>
             <Space>
               <Button
