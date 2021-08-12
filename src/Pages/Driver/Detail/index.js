@@ -1,8 +1,10 @@
 import React, { useEffect, useState } from 'react'
-import { withRouter } from 'react-router-dom'
 import { message } from 'antd'
-import GAInitialize from '../../../utils/ga'
+import { validateBr } from 'js-brasil'
+import { useLocation, withRouter } from 'react-router-dom'
+import { map, omit, pathOr, pipe, prop } from 'ramda'
 
+import GAInitialize from '../../../utils/ga'
 import DriverDetail from '../../../Containers/Driver/Detail'
 import {
   getById,
@@ -17,7 +19,6 @@ import {
 } from '../../../Services/Authorization'
 import { getAll } from '../../../Services/Vehicle'
 import { getAll as getAllOperations } from '../../../Services/Operations'
-import { map, omit, pathOr, pipe, prop } from 'ramda'
 
 const Detail = ({ match, history }) => {
   const [authorizations, setAuthorizations] = useState({ rows: [] })
@@ -35,6 +36,7 @@ const Detail = ({ match, history }) => {
     driverIncidents: []
   })
   const [incidents, setIncidents] = useState({ rows: [] })
+  const { search, pathname } = useLocation()
   const [incidentsLoading, setIncidentsLoading] = useState(false)
   const [operationsData, setOperationsData] = useState({ rows: [] })
   const [queryAuthorization, setQueryAuthorization] = useState({

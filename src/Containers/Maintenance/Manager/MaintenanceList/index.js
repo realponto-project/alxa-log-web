@@ -151,6 +151,7 @@ const MaintenanceList = ({
         columns={columns({ handleClickEdit, handleShowVoucher, gotoDetail, handleMenuClick })} 
         loading={loading}
         dataSource={datasource.rows} 
+        size="small"
       />
     </ConfigProvider>
   )
