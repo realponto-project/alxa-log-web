@@ -24,7 +24,7 @@ const Location = ({ tracks, plate }) => {
   const position = [latitude, longitude]
   if (length(tracks) === 0) {
     return (
-      <Card bordered={false} style={{ height: '330px' }}>
+      <Card bordered={false} style={{ height: '330px', display: 'flex', alignItems: 'center'}}>
         <Image
           src={WhitoutTrackSvg}
           width="100%"
