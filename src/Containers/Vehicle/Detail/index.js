@@ -45,6 +45,7 @@ const Location = ({ tracks, plate }) => {
   return (
     <Card
       bordered={false}
+      bodyStyle={{ width: '100%' }}
       style={{
         height: '330px',
         display: 'flex',
