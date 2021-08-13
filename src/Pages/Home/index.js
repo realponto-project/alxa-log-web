@@ -1,13 +1,16 @@
 import React, { useEffect, useState } from 'react'
 import HomeContainer from '../../Containers/Home'
+import qs from 'qs'
 import {
-  getByStatus, 
+  getByStatus,
   // getByStatusCompany,
-  getByStatusOperation,
+  getByStatusOperation
 } from '../../Services/Summary'
 import GAInitialize from '../../utils/ga'
+import { useHistory } from 'react-router-dom'
 
 const Home = () => {
+  const history = useHistory()
   const [homeState] = useState({
     customers: null,
     orders: null,
@@ -17,7 +20,7 @@ const Home = () => {
   const [orderStatus, setOrderStatus] = useState([])
   // const [orderCompanyStatus, setOrderCompanyStatus] = useState([])
   const [orderOperationStatus, setOrderOperationStatus] = useState([])
-  GAInitialize(`/home`)
+  GAInitialize('/home')
 
   useEffect(() => {
     getByStatusAll()
@@ -30,7 +33,10 @@ const Home = () => {
       const { data } = await getByStatus()
       setOrderStatus(data)
     } catch (error) {
-      window.onerror(`maintenanceOrderStatusSummary: ${error.error}`, window.location.href)
+      window.onerror(
+        `maintenanceOrderStatusSummary: ${error.error}`,
+        window.location.href
+      )
     }
   }
 
@@ -48,12 +54,27 @@ const Home = () => {
       const { data } = await getByStatusOperation()
       setOrderOperationStatus(data)
     } catch (error) {
-      window.onerror(`maintenanceOrderOperationStatusSummary: ${error.error}`, window.location.href)
+      window.onerror(
+        `maintenanceOrderOperationStatusSummary: ${error.error}`,
+        window.location.href
+      )
     }
+  }
+
+  const goToOrders = (status) => {
+    const searchValueLocal = qs.parse(localStorage.getItem('searchValue'))
+    const queryFilters = qs.stringify({ ...searchValueLocal, status })
+
+    localStorage.setItem('searchValue', queryFilters)
+    history.push({
+      pathname: '/logged/maintenance/manager',
+      search: queryFilters
+    })
   }
 
   return (
     <HomeContainer
+      goToOrders={goToOrders}
       orderStatus={orderStatus}
       // orderCompanyStatus={orderCompanyStatus}
       orderOperationStatus={orderOperationStatus}
