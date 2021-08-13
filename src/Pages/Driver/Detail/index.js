@@ -95,7 +95,6 @@ const Detail = ({ match, history }) => {
     try {
       const { data } = await getById(match.params.id)
       setDriver(data)
-      console.log('aquiiiiiiiiii', data)
     } catch (error) {
       window.onerror(`driverId: ${error.error}`, window.location.href)
     }
@@ -159,7 +158,7 @@ const Detail = ({ match, history }) => {
         incidentDate: new Date(values.incidentDate),
         driverId: match.params.id
       })
-      getDriver()
+      getIncidents()
       summaryChartIncidents()
       success('Incidente criado com sucesso!')
     } catch (error) {
@@ -174,7 +173,7 @@ const Detail = ({ match, history }) => {
         ...values,
         driverId: match.params.id
       })
-      getDriver()
+      getAllAuthorization()
       success('Autorização criada com sucesso!')
     } catch (error) {
       window.onerror(

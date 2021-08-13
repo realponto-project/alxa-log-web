@@ -24,7 +24,14 @@ const Location = ({ tracks, plate }) => {
   const position = [latitude, longitude]
   if (length(tracks) === 0) {
     return (
-      <Card bordered={false} style={{ height: '330px', display: 'flex', alignItems: 'center', justifyContent: 'center'}}>
+      <Card
+        bordered={false}
+        style={{
+          height: '330px',
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'center'
+        }}>
         <Image
           src={WhitoutTrackSvg}
           width="250px"
@@ -36,7 +43,15 @@ const Location = ({ tracks, plate }) => {
   }
 
   return (
-    <Card bordered={false} style={{ height: '330px', display: 'flex', alignItems: 'center', justifyContent: 'center'}}>
+    <Card
+      bordered={false}
+      bodyStyle={{ width: '100%' }}
+      style={{
+        height: '330px',
+        display: 'flex',
+        alignItems: 'center',
+        justifyContent: 'center'
+      }}>
       <MapContainer
         center={position}
         zoom={16}
@@ -156,6 +171,7 @@ const Detail = ({
       <Col span={24}>
         <Card>
           <FilterMaintenence
+            visibleSearchPlate={false}
             form={filterForm}
             handleFilter={handleFilter}
             clearFilter={clearFilter}
