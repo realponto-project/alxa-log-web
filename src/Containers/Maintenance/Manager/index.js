@@ -28,7 +28,7 @@ const statusFilters = [
   { value: 'cancel', label: 'Cancelado' },
   { value: 'solicitation', label: 'Solicitação' },
   { value: 'check-in', label: 'Entrada' },
-  { value: 'avaiable', label: 'Liberado' },
+  { value: 'avaiable', label: 'Aguardando Retirada' },
   { value: 'parking', label: 'Estacionar' },
   { value: 'courtyard', label: 'Pátio' },
   { value: 'awaiting_repair', label: 'Aguardando peça' },
