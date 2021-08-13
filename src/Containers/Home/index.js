@@ -80,7 +80,7 @@ const Home = ({
       <Col span={6}>
         <div className={styles.cardTotalValues}>
           <div>
-            <h1 className={styles.cardTotalTitle}>Total de liberado</h1>
+            <h1 className={styles.cardTotalTitle}>Total de Aguardando Retirada</h1>
             <h1 className={styles.cardTotalValue}>{vehicleTotalAvailable > 0 ? vehicleTotalAvailable :  '-' }</h1>
           </div>
           <Image preview={false} src={vehicleTotalAvailable > 0 ? AvailableSVG : AvailableEmptySVG} alt="orders" />

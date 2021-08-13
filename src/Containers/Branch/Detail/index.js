@@ -217,7 +217,7 @@ const Detail = ({
       <Col span={6}>
         <div className={styles.cardTotalValues}>
           <div>
-            <h1 className={styles.cardTotalTitle}>Total de liberado</h1>
+            <h1 className={styles.cardTotalTitle}>Total de Aguardando Retirada</h1>
             <h1 className={styles.cardTotalValue}>
               {vehicleTotalAvailable && vehicleTotalAvailable.count > 0
                 ? vehicleTotalAvailable.count

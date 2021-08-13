@@ -24,7 +24,7 @@ const chartSettings = [
   { label: 'parking', value: 'Estacionar', color: '#1772C9' },
   { label: 'awaiting_repair', value: 'Aguardando peça', color: '#7550D8' }, 
   { label: 'supply', value: 'Abastecer', color: '#17C9B2' },
-  { label: 'avaiable', value: 'Liberado', color: '#F29F03' },
+  { label: 'avaiable', value: 'Aguardando Retirada', color: '#F29F03' },
   { label: 'check-out', value: 'Saída', color: '#264ABE' },
   { label: 'external_service', value: 'Serviços externos', color: '#F6C21F' },
 ]
