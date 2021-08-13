@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from 'react'
 import { message } from 'antd'
 import { useLocation, withRouter } from 'react-router-dom'
-import queryString from 'query-string'
 import qs from 'qs'
 import {
   filter,
@@ -84,7 +83,7 @@ const Manager = ({ history, match }) => {
       })
       getAllMaintenances(searchParser)
     } else {
-      const urlParams = queryString.parse(search, { arrayFormat: 'index' })
+      const urlParams = qs.parse(search, { arrayFormat: 'index' })
 
       const checkBoxValues = {}
 
