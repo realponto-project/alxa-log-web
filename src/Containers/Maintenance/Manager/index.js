@@ -36,7 +36,7 @@ const statusFilters = [
   { value: 'wash', label: 'Lavar' },
   { value: 'supply', label: 'Abastecer' },
   { value: 'check-out', label: 'Saída' },
-  { value: 'external_service', label: 'Serviços externos' },
+  { value: 'external_service', label: 'Serviços externos' }
 ]
 
 const priorityFilters = [
@@ -69,11 +69,12 @@ const Manager = ({
   offset,
   gotoDetail,
   checkBoxDefaultValues,
+  moreFilters,
+  handleShowFilters,
   handleCancelOrder
 }) => {
   const [showModal, setShowModal] = useState(false)
   const [showVoucher, setShowVoucher] = useState(false)
-  const [moreFilters, setMoreFilters] = useState(false)
 
   const openModal = () => setShowModal(true)
 
@@ -86,8 +87,6 @@ const Manager = ({
     handleSelectedMaintenance(value)
     setShowVoucher(true)
   }
-
-  const handleShowFilters = () => setMoreFilters(!moreFilters)
 
   return (
     <Row gutter={[8, 16]}>
