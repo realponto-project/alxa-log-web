@@ -1,11 +1,20 @@
 import React from 'react'
-import { Table, Button, Empty, ConfigProvider, Image, Space, Tag, Menu, Dropdown, Modal } from 'antd'
+import {
+  Table,
+  Button,
+  Empty,
+  ConfigProvider,
+  Image,
+  Space,
+  Tag,
+  Menu,
+  Dropdown,
+  Modal
+} from 'antd'
 import NoData from '../../../../Assets/noData.svg'
 import formattedDate from '../../../../utils/parserDate'
 import diffTime from '../../../../utils/permananceTime'
 import { ExclamationCircleOutlined } from '@ant-design/icons'
-
-const { confirm } = Modal
 
 import {
   parseStatus,
@@ -14,13 +23,20 @@ import {
   status
 } from '../../../../utils/maintenanceOrder'
 
-const menu = handleMenuClick => (
+const { confirm } = Modal
+
+const menu = (handleMenuClick) => (
   <Menu onClick={handleMenuClick}>
     <Menu.Item key="1">Cancelar Solicitação</Menu.Item>
   </Menu>
 )
 
-const columns = ({ handleClickEdit, handleShowVoucher, gotoDetail, handleMenuClick }) => [
+const columns = ({
+  handleClickEdit,
+  handleShowVoucher,
+  gotoDetail,
+  handleMenuClick
+}) => [
   {
     title: 'Data da manutenção',
     dataIndex: 'maintenanceDate',
@@ -32,13 +48,13 @@ const columns = ({ handleClickEdit, handleShowVoucher, gotoDetail, handleMenuCli
     title: 'Placa Manutenção',
     dataIndex: 'plateCart',
     key: 'plateCart',
-    fixed: 'left',
+    fixed: 'left'
   },
   {
     title: 'Frota',
     dataIndex: 'fleet',
     key: 'fleet',
-    fixed: 'left',
+    fixed: 'left'
   },
   {
     title: 'Motorista',
@@ -46,14 +62,15 @@ const columns = ({ handleClickEdit, handleShowVoucher, gotoDetail, handleMenuCli
     key: 'maintenanceOrderDrivers',
     fixed: 'left',
     render: (_, source) => source.maintenanceOrderDrivers[0].driver.name
-
   },
   {
     title: 'Status',
     dataIndex: 'status',
     key: 'status',
     fixed: 'left',
-    render: value => <Tag color={parseStatusColor[value]}>{parseStatus[value]}</Tag>
+    render: (value) => (
+      <Tag color={parseStatusColor[value]}>{parseStatus[value]}</Tag>
+    )
   },
   {
     title: 'Prioridade',
@@ -67,7 +84,7 @@ const columns = ({ handleClickEdit, handleShowVoucher, gotoDetail, handleMenuCli
     dataIndex: 'service',
     key: 'service',
     fixed: 'left',
-    render: value => services[value]
+    render: (value) => services[value]
   },
   {
     title: 'Permanência',
@@ -75,7 +92,9 @@ const columns = ({ handleClickEdit, handleShowVoucher, gotoDetail, handleMenuCli
     key: 'service',
     fixed: 'left',
     render: (_, source) => {
-      const checkIn = source.maintenanceOrderEvents.find(item => item.status === 'check-in')
+      const checkIn = source.maintenanceOrderEvents.find(
+        (item) => item.status === 'check-in'
+      )
       if (checkIn) {
         return diffTime(checkIn.createdAt, source.updatedAt, source.status)
       }
@@ -85,40 +104,41 @@ const columns = ({ handleClickEdit, handleShowVoucher, gotoDetail, handleMenuCli
   {
     title: ' ',
     dataIndex: 'id',
-    render: (id, source) => 
-    <Space>
-      {source.status === 'solicitation' && (
-        <Button type="link" onClick={() => handleClickEdit(source)}>
-          Editar
-        </Button>
-      )}
+    render: (id, source) => (
+      <Space>
+        {source.status === 'solicitation' && (
+          <Button type="link" onClick={() => handleClickEdit(source)}>
+            Editar
+          </Button>
+        )}
 
-      {source.status !== 'solicitation' && (
-        <Button type="link" onClick={() => gotoDetail(id)}>
-          Detalhes
-        </Button>
-      )}
+        {source.status !== 'solicitation' && (
+          <Button type="link" onClick={() => gotoDetail(id)}>
+            Detalhes
+          </Button>
+        )}
 
-      {source.status !== 'check-out' && source.status !== 'cancel' && (
-        <Button type="link" onClick={() => handleShowVoucher(source)}>
-          Voucher
-        </Button>
-      )}
+        {source.status !== 'check-out' && source.status !== 'cancel' && (
+          <Button type="link" onClick={() => handleShowVoucher(source)}>
+            Voucher
+          </Button>
+        )}
 
-      {source.status === 'solicitation' && (
-        <Dropdown.Button type="link" overlay={menu(handleMenuClick(id))} />
-      )}
-    </Space>
+        {source.status === 'solicitation' && (
+          <Dropdown.Button type="link" overlay={menu(handleMenuClick(id))} />
+        )}
+      </Space>
+    )
   }
 ]
 
-const MaintenanceList = ({ 
-  gotoDetail, 
-  datasource, 
-  handleClickEdit, 
-  loading, 
-  handleChangeTableEvent, 
-  handleShowVoucher, 
+const MaintenanceList = ({
+  gotoDetail,
+  datasource,
+  handleClickEdit,
+  loading,
+  handleChangeTableEvent,
+  handleShowVoucher,
   offset,
   handleCancelOrder
 }) => {
@@ -130,27 +150,39 @@ const MaintenanceList = ({
       okText: 'Cancelar',
       okType: 'danger',
       cancelText: 'Confirmar',
-      onOk() {
-        console.log('cancelar', id);
+      onOk: () => {
+        console.log('cancelar', id)
       },
-      onCancel() {
-        handleCancelOrder({ id, status: 'cancel' });
-      },
-    });
+      onCancel: () => {
+        handleCancelOrder({ id, status: 'cancel' })
+      }
+    })
   }
 
   return (
-    <ConfigProvider renderEmpty={() => <Empty 
-        description="Não há dados" 
-        image={<Image width={85} src={NoData} preview={false} />}
-      />
-    }>
-      <Table 
-        pagination={{ showSizeChanger: false, pageSize: 20, total: datasource.count, current: offset }}
+    <ConfigProvider
+      renderEmpty={() => (
+        <Empty
+          description="Não há dados"
+          image={<Image width={85} src={NoData} preview={false} />}
+        />
+      )}>
+      <Table
+        pagination={{
+          showSizeChanger: false,
+          pageSize: 20,
+          total: datasource.count,
+          current: offset
+        }}
         onChange={handleChangeTableEvent}
-        columns={columns({ handleClickEdit, handleShowVoucher, gotoDetail, handleMenuClick })} 
+        columns={columns({
+          handleClickEdit,
+          handleShowVoucher,
+          gotoDetail,
+          handleMenuClick
+        })}
         loading={loading}
-        dataSource={datasource.rows} 
+        dataSource={datasource.rows}
         size="small"
       />
     </ConfigProvider>
