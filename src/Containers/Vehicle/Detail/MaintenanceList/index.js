@@ -19,12 +19,6 @@ const columns = ({ gotoDetail }) => [
     render: (maintenanceDate) => formattedDate(maintenanceDate, 'DD MMM YYYY')
   },
   {
-    title: 'Placa Manutenção',
-    dataIndex: 'plateCart',
-    key: 'plateCart',
-    fixed: 'left'
-  },
-  {
     title: 'Motorista',
     dataIndex: 'maintenanceOrderDrivers',
     key: 'maintenanceOrderDrivers',
@@ -59,8 +53,15 @@ const columns = ({ gotoDetail }) => [
     dataIndex: 'service',
     key: 'service',
     fixed: 'left',
-    render: (_, source) =>
-      diffTime(source.createdAt, source.updatedAt, source.status)
+    render: (_, source) => {
+      const checkIn = source.maintenanceOrderEvents.find(
+        (item) => item.status === 'check-in'
+      )
+      if (checkIn) {
+        return diffTime(checkIn.createdAt, source.updatedAt, source.status)
+      }
+      return '-'
+    }
   },
   {
     title: ' ',
