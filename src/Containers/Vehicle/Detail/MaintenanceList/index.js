@@ -19,12 +19,6 @@ const columns = ({ gotoDetail }) => [
     render: (maintenanceDate) => formattedDate(maintenanceDate, 'DD MMM YYYY')
   },
   {
-    title: 'Placa Manutenção',
-    dataIndex: 'plateCart',
-    key: 'plateCart',
-    fixed: 'left'
-  },
-  {
     title: 'Motorista',
     dataIndex: 'maintenanceOrderDrivers',
     key: 'maintenanceOrderDrivers',

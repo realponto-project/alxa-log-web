@@ -41,7 +41,12 @@ const services = [
   { value: 'preventive', label: 'Preventiva' }
 ]
 
-const FilterMaintenence = ({ clearFilter, handleFilter, form }) => {
+const FilterMaintenence = ({
+  clearFilter,
+  handleFilter,
+  form,
+  visibleSearchPlate = true
+}) => {
   const [moreFilters, setMoreFilters] = useState(false)
 
   return (
@@ -51,12 +56,23 @@ const FilterMaintenence = ({ clearFilter, handleFilter, form }) => {
         handleFilter(JSON.parse(JSON.stringify(values, null, 2)))
       }>
       <Row gutter={[8, 0]} justify="space-between">
-        <Col span={12}>
+        <Col span={6}>
           <Form.Item name="dates">
             <RangePicker allowClear format="DD/MM/YYYY" placeholder="" />
           </Form.Item>
         </Col>
-        <Col span={12} style={{ textAlign: 'right' }}>
+        <Col span={10}>
+          {visibleSearchPlate && (
+            <Form.Item name="plate">
+              <Input
+                placeholder="Filtre pela placa da manutenção."
+                prefix={<SearchOutlined />}
+                readOnly
+              />
+            </Form.Item>
+          )}
+        </Col>
+        <Col span={8} style={{ textAlign: 'right' }}>
           <Form.Item>
             <Space>
               <Button onClick={() => setMoreFilters(!moreFilters)}>
