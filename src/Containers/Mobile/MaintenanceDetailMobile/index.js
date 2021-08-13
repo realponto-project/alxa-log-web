@@ -21,7 +21,7 @@ const parseStatus = {
   'cancel': 'Cancelado',
   'solicitation': 'Solicitação',
   'check-in': 'Entrada',
-  'avaiable': 'Liberado',
+  'avaiable': 'Aguardando Retirada',
   'parking': 'Estacionar',
   'courtyard': 'Pátio',
   'awaiting_repair': 'Aguardando peça',

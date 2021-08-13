@@ -14,7 +14,7 @@ const formSettingsEvent = [
     },
     {
       value: 'avaiable',
-      label: 'Liberado'
+      label: 'Aguardando Retirada'
     },
     {
       value: 'parking',
