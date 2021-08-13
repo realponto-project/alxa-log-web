@@ -20,7 +20,7 @@ const formSettingsIncident = vehiclesSource => [{
   options: []
 },
 {
-  label: 'Data do incident',
+  label: 'Data do incidente',
   name: 'incidentDate',
   rules,
   placeholder: '',
