@@ -2,54 +2,50 @@ import React, { useEffect, useState } from 'react'
 import { message } from 'antd'
 import { useLocation, withRouter } from 'react-router-dom'
 import { validateBr } from 'js-brasil'
+import qs from 'qs'
+
 import GAInitialize from '../../../utils/ga'
-
 import ManagerContainer from '../../../Containers/Driver/Manager'
-import {   
-  getAll, 
-  createDriver, 
-  updateDriver,  
-} from '../../../Services/Driver'
-import { isEmpty } from 'ramda'
+import { getAll, createDriver, updateDriver } from '../../../Services/Driver'
+import { add, isEmpty, pathOr, pipe } from 'ramda'
+import { parseQueryParams } from '../../../utils/queryParams'
 
-const Manager = ({
-  history,
-}) => {
+const success = (text) => {
+  message.success(text)
+}
+
+const errorMessage = (text) => {
+  message.error(text)
+}
+
+const Manager = ({ history }) => {
   const [driverData, setDriverData] = useState({ rows: [] })
   const [driverSelected, setDriverSelected] = useState(null)
   const [searchValue, setSearchValue] = useState('')
   const [offset, setoffset] = useState(1)
-
   const [loading, setLoading] = useState(true)
   const { search, pathname } = useLocation()
-  GAInitialize(`/driver`)
 
-  useEffect(() => {
-    let query = {} 
-    const searchLocalStorage = localStorage.getItem('driverSearch')
-    if(!search && searchLocalStorage) {
-      history.push({
-        pathname,
-        search: validateBr.cnh(searchValue) ? `?driverLicense=${searchLocalStorage}` : `?name=${searchLocalStorage}`
-      })
-      setSearchValue(searchLocalStorage)
-      query = validateBr.cnh(searchValue) ? { driverLicense: searchLocalStorage.replace(/\D/g, '') } : { name: searchLocalStorage }
-    }
-    getDrivers(query)
-  }, [])
+  GAInitialize('/driver')
 
-  const success = (text) => {
-    message.success(text);
-  }
-  
-  const errorMessage = (text) => {
-    message.error(text)
+  const changeQueryParams = (search) => {
+    return history.push({
+      pathname,
+      search
+    })
   }
 
-  const getDrivers = async (params = {}) => {
+  const clearFilter = () => {
+    localStorage.removeItem('driverSearch')
+    setSearchValue('')
+
+    changeQueryParams('')
+  }
+
+  const getDrivers = async () => {
     setLoading(true)
     try {
-      const { data } = await getAll(params)
+      const { data } = await getAll(parseQueryParams(search))
       setDriverData(data)
       setLoading(false)
     } catch (error) {
@@ -58,20 +54,13 @@ const Manager = ({
     }
   }
 
-  const handleSubmit = async (values) => {
-    try {
-      await createDriver({...values, driverLicense: values.driverLicense.replace(/\D/g, ''), phone: values.phone.replace(/\D/g, '') })
-      getDrivers()
-      success('Cadastro de motorista realizado com sucesso!')
-    } catch (error) {
-      window.onerror(`createDriver: ${error.error}`, window.location.href)
-      errorMessage('Não foi realizar o cadastro do motorista!')
-    }
-  }
-
   const handleEdit = async (values) => {
     try {
-      await updateDriver({...values, driverLicense: values.driverLicense.replace(/\D/g, ''), phone: values.phone.replace(/\D/g, '') })
+      await updateDriver({
+        ...values,
+        driverLicense: values.driverLicense.replace(/\D/g, ''),
+        phone: values.phone.replace(/\D/g, '')
+      })
       getDrivers()
       success('Editado motorista com sucesso!')
     } catch (error) {
@@ -80,81 +69,91 @@ const Manager = ({
     }
   }
 
-  const handleSelectedDriver = driver => {
-    setDriverSelected(driver)
-  }
-
   const handleFilter = () => {
     if (isEmpty(searchValue)) {
       return null
     }
 
     const isValidCnh = validateBr.cnh(searchValue)
-    let query = {
-      name: searchValue
-    }
 
-    const searchLocal = isValidCnh ? `?driverLicense=${searchValue}` : `?name=${searchValue}`
-
-    if (isValidCnh) {
-      query = {
-        driverLicense: searchValue.replace(/\D/g, '')
-      }
-    
-    }
+    const searchLocal = isValidCnh
+      ? `?driverLicense=${searchValue}`
+      : `?name=${searchValue}`
 
     localStorage.setItem('driverSearch', searchValue)
-    history.push({
-      pathname,
-      search: searchLocal
-    })
 
-    getDrivers(query)
+    changeQueryParams(searchLocal)
   }
 
-  const handleFilterOnchange = value => {
+  const handleFilterOnchange = (value) => {
     setSearchValue(value.target.value)
   }
 
-  const clearFilter = () => {
-    setSearchValue('')
-    localStorage.removeItem('driverSearch')
-    setSearchValue('')
-    history.push({
-      pathname,
-      search: ''
-    })
-    setoffset(1)
-    getDrivers({})
+  const handleChangeTableEvent = ({ current }) => {
+    const query = { offset: current - 1 }
+    const queryParams = parseQueryParams(search)
+
+    changeQueryParams(qs.stringify({ ...queryParams, ...query }))
   }
 
-  const handleChangeTableEvent = ({ current }) => {
-    setoffset(current)
-    let query = { offset: (current - 1) }
-    if (searchValue) {
-      const params = validateBr.cnh(searchValue) ? { driverLicense: searchValue.replace(/\D/g, '') } : { name: searchValue }
-      query = { ...query, ...params }
+  const handleSelectedDriver = (driver) => {
+    setDriverSelected(driver)
+  }
+
+  const handleSubmit = async (values) => {
+    try {
+      await createDriver({
+        ...values,
+        driverLicense: values.driverLicense.replace(/\D/g, ''),
+        phone: values.phone.replace(/\D/g, '')
+      })
+      getDrivers()
+      success('Cadastro de motorista realizado com sucesso!')
+    } catch (error) {
+      window.onerror(`createDriver: ${error.error}`, window.location.href)
+      errorMessage('Não foi realizar o cadastro do motorista!')
+    }
+  }
+
+  useEffect(() => {
+    const searchLocalStorage = localStorage.getItem('driverSearch')
+    const queryParams = parseQueryParams(search)
+
+    if (!search && searchLocalStorage) {
+      changeQueryParams(
+        validateBr.cnh(searchValue)
+          ? `?driverLicense=${searchLocalStorage}`
+          : `?name=${searchLocalStorage}`
+      )
     }
 
-    getDrivers(query)
-  }
+    setSearchValue(queryParams?.name ?? queryParams?.driverLicense ?? '')
+  }, [])
 
+  useEffect(() => {
+    const queryParams = parseQueryParams(search)
+    const current = pipe(pathOr('0', ['offset']), Number, add(1))(queryParams)
+
+    setoffset(current)
+
+    getDrivers()
+  }, [search])
 
   return (
     <ManagerContainer
-      source={driverData}
-      loading={loading}
-      handleSubmit={handleSubmit}
-      handleSelectedDriver={handleSelectedDriver}
+      clearFilter={clearFilter}
       driverSelected={driverSelected}
+      goToDetail={(id) => history.push(`/logged/driver-detail/${id}`)}
+      handleChangeTableEvent={handleChangeTableEvent}
       handleEdit={handleEdit}
-      searchValue={searchValue}
       handleFilter={handleFilter}
       handleFilterOnchange={handleFilterOnchange}
-      clearFilter={clearFilter}
-      handleChangeTableEvent={handleChangeTableEvent}
+      handleSelectedDriver={handleSelectedDriver}
+      handleSubmit={handleSubmit}
+      loading={loading}
       offset={offset}
-      goToDetail={id => history.push(`/logged/driver-detail/${id}`)}
+      searchValue={searchValue}
+      source={driverData}
     />
   )
 }
