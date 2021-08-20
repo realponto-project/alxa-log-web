@@ -103,10 +103,10 @@ const DriverMobileContainer = ({
                 return (
                   <Form.Item name="authorizationId">
                     <Radio.Group style={{ width: '100%' }}>
-                      {map(({ operation }) => {
+                      {map(({ operation, id }) => {
                         return (
                           <MyRadioButton
-                            value={operation.id}
+                            value={id}
                             text={operation.name}
                             checked={authorizationId === operation.id}
                           />
