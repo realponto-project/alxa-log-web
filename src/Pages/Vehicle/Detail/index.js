@@ -68,12 +68,13 @@ const Detail = ({ match }) => {
   }
 
   useEffect(() => {
-    getAllMaintenance()
-  }, [query])
+    if(!isEmpty(vehicle)){
+      getAllMaintenance()
+    }
+  }, [query, vehicle])
 
   useEffect(() => {
     filterForm.setFieldsValue({ plate: vehicle.plate })
-    getAllMaintenance()
   }, [vehicle])
 
   useEffect(() => {

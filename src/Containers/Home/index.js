@@ -29,18 +29,10 @@ const CardStatus = ({ title, count, redirectPage, srcImage }) => (
         </Title>
       </Col>
       <Col span={12}>
-        <Image
-          preview={false}
-          src={srcImage}
-          alt="orders"
-        />
+        <Image preview={false} src={srcImage} alt="orders" />
       </Col>
       <Col span={24}>
-        <Link
-          onClick={redirectPage}
-        >
-          Detalhes
-        </Link>
+        <Link onClick={redirectPage}>Detalhes</Link>
       </Col>
     </Row>
   </Card>
@@ -96,14 +88,28 @@ const Home = ({ orderStatus, orderOperationStatus, goToOrders }) => {
           count={vehicleTotalSolicitacion}
           redirectPage={() => goToOrders(['solicitation'])}
           title="Total de solicitações"
-          srcImage={vehicleTotalSolicitacion > 0 ? CustomersSvg : EmptyStateCustomersSvg}
+          srcImage={
+            vehicleTotalSolicitacion > 0 ? CustomersSvg : EmptyStateCustomersSvg
+          }
         />
       </Col>
 
       <Col span={6}>
         <CardStatus
           count={vehicleTotal}
-          redirectPage={() => goToOrders([])}
+          redirectPage={() =>
+            goToOrders([
+              'check-in',
+              'avaiable',
+              'parking',
+              'courtyard',
+              'awaiting_repair',
+              'dock',
+              'wash',
+              'supply',
+              'external_service'
+            ])
+          }
           title="Total de veículos"
           srcImage={vehicleTotal > 0 ? OrdersSvg : EmptyStateOrderSvg}
         />
@@ -114,7 +120,9 @@ const Home = ({ orderStatus, orderOperationStatus, goToOrders }) => {
           count={vehicleTotalAvailable}
           redirectPage={() => goToOrders(['avaiable'])}
           title="Total de liberado"
-          srcImage={vehicleTotalAvailable > 0 ? AvailableSVG : AvailableEmptySVG}
+          srcImage={
+            vehicleTotalAvailable > 0 ? AvailableSVG : AvailableEmptySVG
+          }
         />
       </Col>
 
