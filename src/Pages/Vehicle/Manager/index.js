@@ -48,7 +48,7 @@ const Manager = ({ history }) => {
     changeQueryParams('')
   }
 
-  const getVehicles = async (params = {}) => {
+  const getVehicles = async () => {
     setLoading(true)
     try {
       const { data } = await getAll(parseQueryParams(search))
