@@ -3,13 +3,14 @@ import { message } from 'antd'
 import { useLocation, withRouter } from 'react-router-dom'
 import qs from 'qs'
 import {
+  add,
   filter,
   forEach,
   includes,
+  isEmpty,
   keys,
   length,
   lt,
-  merge,
   pathOr,
   pipe,
   __
@@ -29,118 +30,62 @@ import {
   updateMaintenanceOrderCancel
 } from '../../../Services/MaintenanceOrders'
 import GAInitialize from '../../../utils/ga'
+import { parseQueryParams } from '../../../utils/queryParams'
+
+const success = (text) => {
+  message.success(text)
+}
+
+const errorMessage = (text) => {
+  message.error(text)
+}
+
+const defaultValueCheckBoxDefaultValues = {
+  dates: [],
+  status: [],
+  services: [],
+  priorities: []
+}
+const defaultValueSearchValue = {
+  plate: null,
+  dates: [],
+  status: [],
+  services: [],
+  priorities: []
+}
 
 const Manager = ({ history, match }) => {
-  const [vehiclesData, setVehiclesData] = useState({ rows: [] })
-  const [moreFilters, setMoreFilters] = useState(false)
+  const [branchsData, setBranchsData] = useState({ rows: [] })
+  const [driversData, setDriversData] = useState({ rows: [] })
+  const [checkBoxDefaultValues, setCheckBoxDefaultValues] = useState(
+    defaultValueCheckBoxDefaultValues
+  )
+  const [loading, setLoading] = useState(true)
   const [maintenanceOrdersData, setMaintenanceOrdersData] = useState({
     rows: []
   })
-  const [driversData, setDriversData] = useState({ rows: [] })
-  const [branchsData, setBranchsData] = useState({ rows: [] })
-  const [operationsData, setOperationsData] = useState({ rows: [] })
-  const [offset, setoffset] = useState(1)
   const [maintenanceSelected, setMaintenanceSelected] = useState(null)
-  const [searchValue, setSearchValue] = useState({
-    plate: null,
-    dates: [],
-    status: [],
-    services: [],
-    priorities: []
-  })
-
-  const [checkBoxDefaultValues, setCheckBoxDefaultValues] = useState({
-    dates: [],
-    status: [],
-    services: [],
-    priorities: []
-  })
-
-  const [loading, setLoading] = useState(true)
+  const [moreFilters, setMoreFilters] = useState(false)
+  const [offset, setoffset] = useState(1)
+  const [operationsData, setOperationsData] = useState({ rows: [] })
+  const [searchValue, setSearchValue] = useState(defaultValueSearchValue)
+  const [vehiclesData, setVehiclesData] = useState({ rows: [] })
   const { search, pathname } = useLocation()
+
   GAInitialize('/maintenance-order')
 
-  useEffect(() => {
-    getVehicles({ limit: 100000 })
-    getAllDriver({ limit: 100000 })
-    getAllBranch({ limit: 400 })
-    getAllOperation({ limit: 100000 })
-
-    if (!search && localStorage.getItem('searchValue')) {
-      const searchValueLocal = localStorage.getItem('searchValue')
-      history.push({
-        pathname,
-        search: searchValueLocal
-      })
-      const searchParser = qs.parse(searchValueLocal)
-      setSearchValue(searchParser)
-      setCheckBoxDefaultValues({
-        ...searchParser,
-        dates:
-          searchParser?.dates?.length > 0
-            ? [moment(searchParser.dates[0]), moment(searchParser.dates[1])]
-            : []
-      })
-      getAllMaintenances(searchParser)
-    } else {
-      const urlParams = qs.parse(search, { arrayFormat: 'index' })
-
-      const checkBoxValues = {}
-
-      forEach(
-        (key) => (checkBoxValues[key] = urlParams[key]),
-        filter(
-          includes(__, ['dates', 'status', 'services', 'priorities']),
-          keys(urlParams)
-        )
-      )
-
-      setSearchValue(checkBoxValues)
-
-      getAllMaintenances(merge(searchValue, urlParams))
-    }
-  }, [])
-
-  const handleShowFilters = () => setMoreFilters(!moreFilters)
-
-  const success = (text) => {
-    message.success(text)
+  const changeQueryParams = (search) => {
+    return history.push({
+      pathname,
+      search
+    })
   }
 
-  const errorMessage = (text) => {
-    message.error(text)
-  }
-
-  const getVehicles = async (params = {}) => {
-    setLoading(true)
-    try {
-      const { data } = await getAll(params)
-      setVehiclesData(data)
-      setLoading(false)
-    } catch (error) {
-      setLoading(false)
-      window.onerror(`allVehicles: ${error.error}`, window.location.href)
-    }
-  }
-
-  const getAllMaintenances = async (params = {}) => {
-    const checkLengthPath = (path) => pipe(pathOr([], path), length, lt(0))
-    try {
-      if (
-        checkLengthPath(['status'])(params) ||
-        checkLengthPath(['priorities'])(params) ||
-        checkLengthPath(['services'])(params)
-      ) {
-        setMoreFilters(true)
-      }
-      const { data } = await getAllMaintenanceOrders(params)
-      setMaintenanceOrdersData(data)
-    } catch (error) {
-      window.onerror(
-        `allMaintenaceOrders: ${error.error}`,
-        window.location.href
-      )
-    }
+  const clearFilter = async () => {
+    localStorage.removeItem('searchValue')
+    setSearchValue(defaultValueSearchValue)
+    setCheckBoxDefaultValues(defaultValueCheckBoxDefaultValues)
+    changeQueryParams('')
   }
 
   const getAllBranch = async (params = {}) => {
@@ -161,6 +106,18 @@ const Manager = ({ history, match }) => {
     }
   }
 
+  const getAllMaintenances = async (params = {}) => {
+    try {
+      const { data } = await getAllMaintenanceOrders(parseQueryParams(search))
+      setMaintenanceOrdersData(data)
+    } catch (error) {
+      window.onerror(
+        `allMaintenaceOrders: ${error.error}`,
+        window.location.href
+      )
+    }
+  }
+
   const getAllOperation = async (params = {}) => {
     try {
       const { data } = await getAllOperations(params)
@@ -170,20 +127,15 @@ const Manager = ({ history, match }) => {
     }
   }
 
-  const handleSubmit = async (values) => {
+  const getVehicles = async (params = {}) => {
+    setLoading(true)
     try {
-      await createMaintenanceOrder({
-        ...values,
-        maintenanceDate: new Date(values.maintenanceDate)
-      })
-      getAllMaintenances()
-      success('Manutenção criada com sucesso!')
+      const { data } = await getAll(params)
+      setVehiclesData(data)
+      setLoading(false)
     } catch (error) {
-      window.onerror(
-        `createMaintenanceOrder: ${error.error}`,
-        window.location.href
-      )
-      errorMessage('Não foi criar a manutenção!')
+      setLoading(false)
+      window.onerror(`allVehicles: ${error.error}`, window.location.href)
     }
   }
 
@@ -201,6 +153,13 @@ const Manager = ({ history, match }) => {
     }
   }
 
+  const handleChangeTableEvent = ({ current }) => {
+    const query = { offset: current - 1 }
+    const queryParams = parseQueryParams(search)
+
+    changeQueryParams(qs.stringify({ ...queryParams, ...query }))
+  }
+
   const handleEdit = async (values) => {
     try {
       await updateMaintenanceOrder(values)
@@ -215,19 +174,10 @@ const Manager = ({ history, match }) => {
     }
   }
 
-  const handleSelectedMaintenance = (values) => {
-    setMaintenanceSelected(values)
-  }
-
   const handleFilter = () => {
     const queryFilters = qs.stringify(searchValue)
     localStorage.setItem('searchValue', queryFilters)
-    history.push({
-      pathname,
-      search: queryFilters
-    })
-
-    getAllMaintenances(searchValue)
+    changeQueryParams(queryFilters)
   }
 
   const handleFilterOnchange = ({ target }) => {
@@ -254,62 +204,96 @@ const Manager = ({ history, match }) => {
     })
   }
 
-  const clearFilter = async () => {
-    localStorage.removeItem('searchValue')
-    setSearchValue({
-      plate: null,
-      dates: [],
-      status: [],
-      services: [],
-      priorities: []
-    })
-    setCheckBoxDefaultValues({
-      dates: [],
-      status: [],
-      services: [],
-      priorities: []
-    })
-    history.push({
-      pathname,
-      search: ''
-    })
-    setoffset(1)
-    getAllMaintenances({})
+  const handleSelectedMaintenance = (values) => {
+    setMaintenanceSelected(values)
   }
 
-  const handleChangeTableEvent = ({ current }) => {
-    setoffset(current)
-    let query = { offset: current - 1 }
-    if (searchValue) {
-      query = { ...query }
+  const handleShowFilters = () => setMoreFilters(!moreFilters)
+
+  const handleSubmit = async (values) => {
+    try {
+      await createMaintenanceOrder({
+        ...values,
+        maintenanceDate: new Date(values.maintenanceDate)
+      })
+      getAllMaintenances()
+      success('Manutenção criada com sucesso!')
+    } catch (error) {
+      window.onerror(
+        `createMaintenanceOrder: ${error.error}`,
+        window.location.href
+      )
+      errorMessage('Não foi criar a manutenção!')
     }
-
-    getAllMaintenances(query)
   }
+
+  useEffect(() => {
+    getVehicles({ limit: 100000 })
+    getAllDriver({ limit: 100000 })
+    getAllBranch({ limit: 400 })
+    getAllOperation({ limit: 100000 })
+
+    if (!search && localStorage.getItem('searchValue')) {
+      const searchValueLocal = localStorage.getItem('searchValue')
+
+      changeQueryParams(searchValueLocal)
+
+      const searchParser = qs.parse(searchValueLocal)
+      setSearchValue(searchParser)
+      setCheckBoxDefaultValues({
+        ...searchParser,
+        dates:
+          searchParser?.dates?.length > 0
+            ? [moment(searchParser.dates[0]), moment(searchParser.dates[1])]
+            : []
+      })
+    } else {
+      const urlParams = qs.parse(search, { arrayFormat: 'index' })
+      const checkBoxValues = {}
+      forEach(
+        (key) => (checkBoxValues[key] = urlParams[key]),
+        filter(
+          includes(__, ['dates', 'status', 'services', 'priorities']),
+          keys(urlParams)
+        )
+      )
+      setSearchValue(checkBoxValues)
+      if (!isEmpty(checkBoxValues)) setMoreFilters(true)
+    }
+  }, [])
+
+  useEffect(() => {
+    const queryParams = parseQueryParams(search)
+    const current = pipe(pathOr('0', ['offset']), Number, add(1))(queryParams)
+
+    setoffset(current)
+
+    getAllMaintenances()
+  }, [search])
 
   return (
     <ManagerContainer
-      moreFilters={moreFilters}
-      handleShowFilters={handleShowFilters}
-      vehiclesSource={vehiclesData.rows}
       branchsSource={branchsData.rows}
+      checkBoxDefaultValues={checkBoxDefaultValues}
+      clearFilter={clearFilter}
       driversSource={driversData.rows}
-      operationsSource={operationsData.rows}
-      maintenanceOrdersSource={maintenanceOrdersData}
-      loading={loading}
-      handleSubmit={handleSubmit}
-      handleSelectedMaintenance={handleSelectedMaintenance}
-      maintenanceSelected={maintenanceSelected}
+      gotoDetail={(id) => history.push(`/logged/maintenance-detail/${id}`)}
+      handleCancelOrder={handleCancelOrder}
+      handleChangeTableEvent={handleChangeTableEvent}
       handleEdit={handleEdit}
-      searchValue={searchValue}
       handleFilter={handleFilter}
       handleFilterOnchange={handleFilterOnchange}
-      clearFilter={clearFilter}
-      handleChangeTableEvent={handleChangeTableEvent}
+      handleSelectedMaintenance={handleSelectedMaintenance}
+      handleShowFilters={handleShowFilters}
+      handleSubmit={handleSubmit}
+      loading={loading}
+      maintenanceOrdersSource={maintenanceOrdersData}
+      maintenanceSelected={maintenanceSelected}
+      moreFilters={moreFilters}
       offset={offset}
-      gotoDetail={(id) => history.push(`/logged/maintenance-detail/${id}`)}
-      checkBoxDefaultValues={checkBoxDefaultValues}
-      handleCancelOrder={handleCancelOrder}
+      operationsSource={operationsData.rows}
+      searchValue={searchValue}
+      vehiclesSource={vehiclesData.rows}
     />
   )
 }
