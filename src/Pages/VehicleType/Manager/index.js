@@ -1,73 +1,69 @@
 import React, { useEffect, useState } from 'react'
 import { message } from 'antd'
 import { useLocation, withRouter } from 'react-router-dom'
+import qs from 'qs'
 
 import ManagerContainer from '../../../Containers/VehicleType/Manager'
-import {   
-  getAll, 
+import {
+  getAll,
   createVehicleType,
-  updateVehicleType  
+  updateVehicleType
 } from '../../../Services/VehicleType'
-import { isEmpty } from 'ramda'
+import { add, isEmpty, pathOr, pipe } from 'ramda'
 import GAInitialize from '../../../utils/ga'
+import { parseQueryParams } from '../../../utils/queryParams'
 
-const Manager = ({
-  history,
-}) => {
+const success = (text) => {
+  message.success(text)
+}
+
+const errorMessage = (text) => {
+  message.error(text)
+}
+
+const Manager = ({ history }) => {
   const [vehicleTypeData, setVehicleTypeData] = useState({ rows: [] })
   const [vehicleTypeSelected, setVehicleTypeSelected] = useState(null)
   const [searchValue, setSearchValue] = useState('')
   const [offset, setoffset] = useState(1)
-
   const [loading, setLoading] = useState(true)
   const { search, pathname } = useLocation()
-  GAInitialize(`/vehicle-types`)
 
-  useEffect(() => {
-    let query = {} 
-    const searchLocaStorage = localStorage.getItem('vehicleTypeSearch')
-  
-    if(!search && searchLocaStorage) {
-      history.push({
-        pathname,
-        search: `?name=${searchLocaStorage}`
-      })
-      setSearchValue(searchLocaStorage)
-      query = { name: searchLocaStorage }
-    }
-    getVehicleTye(query)
-  }, [])
+  GAInitialize('/vehicle-types')
 
-  const success = (text) => {
-    message.success(text);
-  }
-  
-  const errorMessage = (text) => {
-    message.error(text)
+  const changeQueryParams = (search) => {
+    return history.push({
+      pathname,
+      search
+    })
   }
 
-  const getVehicleTye = async (params = {}) => {
+  const clearFilter = async () => {
+    setSearchValue('')
+    localStorage.removeItem('vehicleTypeSearch')
+    setSearchValue('')
+
+    changeQueryParams('')
+  }
+
+  const getVehicleTye = async () => {
     setLoading(true)
+
     try {
-      const { data } = await getAll(params)
+      const { data } = await getAll(parseQueryParams(search))
       setVehicleTypeData(data)
       setLoading(false)
     } catch (error) {
       setLoading(false)
       window.onerror(`allVehiclesTypes: ${error.error}`, window.location.href)
-
     }
   }
 
-  const handleSubmit = async (values) => {
-    try {
-      await createVehicleType(values)
-      getVehicleTye()
-      success('Cadastro do tipo de veículo realizado com sucesso!')
-    } catch (error) {
-      errorMessage('Não foi realizar o cadastro do tipo de veículo!')
-      window.onerror(`createVehicleTypes: ${error.error}`, window.location.href)
-    }
+  const handleChangeTableEvent = ({ current }) => {
+    const query = { offset: current - 1 }
+    const queryParams = parseQueryParams(search)
+
+    changeQueryParams(qs.stringify({ ...queryParams, ...query }))
   }
 
   const handleEdit = async (values) => {
@@ -81,65 +77,69 @@ const Manager = ({
     }
   }
 
-  const handleSelectedVehicleType = fleet => {
-    setVehicleTypeSelected(fleet)
-  }
-
   const handleFilter = async () => {
-    if(isEmpty(searchValue)) {
+    if (isEmpty(searchValue)) {
       return null
     }
 
     localStorage.setItem('vehicleTypeSearch', `?name=${searchValue}`)
-    history.push({
-      pathname,
-      search: `?name=${searchValue}`
-    })
 
-    getVehicleTye({ name: searchValue })
+    changeQueryParams(`?name=${searchValue}`)
   }
 
-  const handleFilterOnchange = value => {
+  const handleFilterOnchange = (value) => {
     setSearchValue(value.target.value)
   }
 
-  const clearFilter = async () => {
-    setSearchValue('')
-    localStorage.removeItem('vehicleTypeSearch')
-    setSearchValue('')
-    history.push({
-      pathname,
-      search: ''
-    })
-    setoffset(1)
-    getVehicleTye({})
-
+  const handleSelectedVehicleType = (fleet) => {
+    setVehicleTypeSelected(fleet)
   }
 
-  const handleChangeTableEvent = ({ current }) => {
-    setoffset(current)
-    let query = { offset: (current - 1) }
-    if (searchValue) {
-      query = { ...query, name: searchValue }
+  const handleSubmit = async (values) => {
+    try {
+      await createVehicleType(values)
+      getVehicleTye()
+      success('Cadastro do tipo de veículo realizado com sucesso!')
+    } catch (error) {
+      errorMessage('Não foi realizar o cadastro do tipo de veículo!')
+      window.onerror(`createVehicleTypes: ${error.error}`, window.location.href)
+    }
+  }
+
+  useEffect(() => {
+    const searchLocaStorage = localStorage.getItem('vehicleTypeSearch')
+    const queryParams = parseQueryParams(search)
+
+    if (!search && searchLocaStorage) {
+      changeQueryParams(`?name=${searchLocaStorage}`)
     }
 
-    getVehicleTye(query)
-  }
+    setSearchValue(queryParams?.name)
+  }, [])
+
+  useEffect(() => {
+    const queryParams = parseQueryParams(search)
+    const current = pipe(pathOr('0', ['offset']), Number, add(1))(queryParams)
+
+    setoffset(current)
+
+    getVehicleTye()
+  }, [search])
 
   return (
     <ManagerContainer
-      source={vehicleTypeData}
-      loading={loading}
-      handleSubmit={handleSubmit}
-      handleSelectedVehicleType={handleSelectedVehicleType}
-      vehicleTypeSelected={vehicleTypeSelected}
+      clearFilter={clearFilter}
+      handleChangeTableEvent={handleChangeTableEvent}
       handleEdit={handleEdit}
-      searchValue={searchValue}
       handleFilter={handleFilter}
       handleFilterOnchange={handleFilterOnchange}
-      clearFilter={clearFilter}
+      handleSelectedVehicleType={handleSelectedVehicleType}
+      handleSubmit={handleSubmit}
+      loading={loading}
       offset={offset}
-      handleChangeTableEvent={handleChangeTableEvent}
+      searchValue={searchValue}
+      source={vehicleTypeData}
+      vehicleTypeSelected={vehicleTypeSelected}
     />
   )
 }

@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react'
 import { message } from 'antd'
 import { useLocation, withRouter } from 'react-router-dom'
+import qs from 'qs'
 
 import ManagerContainer from '../../../Containers/Vehicle/Manager'
 import {
@@ -10,8 +11,17 @@ import {
   updateVehicle
 } from '../../../Services/Vehicle'
 import { validateBr } from 'js-brasil'
-import { isEmpty } from 'ramda'
+import { add, isEmpty, pathOr, pipe } from 'ramda'
 import GAInitialize from '../../../utils/ga'
+import { parseQueryParams } from '../../../utils/queryParams'
+
+const success = (text) => {
+  message.success(text)
+}
+
+const errorMessage = (text) => {
+  message.error(text)
+}
 
 const Manager = ({ history }) => {
   const [vehiclesData, setVehiclesData] = useState({ rows: [] })
@@ -19,42 +29,29 @@ const Manager = ({ history }) => {
   const [vehicleSelected, setVehicleSelected] = useState(null)
   const [searchValue, setSearchValue] = useState('')
   const [offset, setoffset] = useState(1)
-
   const [loading, setLoading] = useState(true)
   const { search, pathname } = useLocation()
+
   GAInitialize('/vehicles')
 
-  useEffect(() => {
-    let query = {}
-    getVehicleTypes({ limit: 10000 })
-    const searchLocalStorage = localStorage.getItem('vehicleSearch')
-    if (!search && searchLocalStorage) {
-      history.push({
-        pathname,
-        search: validateBr.placa(searchLocalStorage)
-          ? `?plate=${searchLocalStorage}`
-          : `?fleet=${searchLocalStorage}`
-      })
-      setSearchValue(searchLocalStorage)
-      query = validateBr.placa(searchLocalStorage)
-        ? { plate: searchLocalStorage }
-        : { fleet: searchLocalStorage }
-    }
-    getVehicles(query)
-  }, [])
-
-  const success = (text) => {
-    message.success(text)
+  const changeQueryParams = (search) => {
+    return history.push({
+      pathname,
+      search
+    })
   }
 
-  const errorMessage = (text) => {
-    message.error(text)
+  const clearFilter = () => {
+    setSearchValue('')
+    localStorage.removeItem('vehicleSearch')
+    setSearchValue('')
+    changeQueryParams('')
   }
 
-  const getVehicles = async (params = {}) => {
+  const getVehicles = async () => {
     setLoading(true)
     try {
-      const { data } = await getAll(params)
+      const { data } = await getAll(parseQueryParams(search))
       setVehiclesData(data)
       setLoading(false)
     } catch (error) {
@@ -72,6 +69,44 @@ const Manager = ({ history }) => {
     }
   }
 
+  const handleChangeTableEvent = ({ current }) => {
+    const query = { offset: current - 1 }
+    const queryParams = parseQueryParams(search)
+
+    changeQueryParams(qs.stringify({ ...queryParams, ...query }))
+  }
+
+  const handleEdit = async (values) => {
+    try {
+      await updateVehicle(values)
+      getVehicles()
+      success('Editado veículo com sucesso!')
+    } catch (error) {
+      window.onerror(`editVehicle: ${error.error}`, window.location.href)
+      errorMessage('Não foi realizar a edição do veículo!')
+    }
+  }
+
+  const handleFilter = () => {
+    if (isEmpty(searchValue)) {
+      return null
+    }
+
+    const queryLocal = validateBr.placa(searchValue)
+      ? `?plate=${searchValue}`
+      : `?fleet=${searchValue}`
+    localStorage.setItem('vehicleSearch', searchValue)
+    changeQueryParams(queryLocal)
+  }
+
+  const handleFilterOnchange = (value) => {
+    setSearchValue(value.target.value)
+  }
+
+  const handleSelectedVehicle = (vehicle) => {
+    setVehicleSelected(vehicle)
+  }
+
   const handleSubmit = async (values) => {
     try {
       await createVehicle({
@@ -87,86 +122,44 @@ const Manager = ({ history }) => {
     }
   }
 
-  const handleEdit = async (values) => {
-    try {
-      await updateVehicle(values)
-      getVehicles()
-      success('Editado veículo com sucesso!')
-    } catch (error) {
-      window.onerror(`editVehicle: ${error.error}`, window.location.href)
-      errorMessage('Não foi realizar a edição do veículo!')
+  useEffect(() => {
+    getVehicleTypes({ limit: 10000 })
+    const searchLocalStorage = localStorage.getItem('vehicleSearch')
+    if (!search && searchLocalStorage) {
+      changeQueryParams(
+        validateBr.placa(searchLocalStorage)
+          ? `?plate=${searchLocalStorage}`
+          : `?fleet=${searchLocalStorage}`
+      )
+      setSearchValue(searchLocalStorage)
     }
-  }
+  }, [])
 
-  const handleSelectedVehicle = (vehicle) => {
-    setVehicleSelected(vehicle)
-  }
+  useEffect(() => {
+    const queryParams = parseQueryParams(search)
+    const current = pipe(pathOr('0', ['offset']), Number, add(1))(queryParams)
 
-  const handleFilter = () => {
-    if (isEmpty(searchValue)) {
-      return null
-    }
-
-    const queryLocal = validateBr.placa(searchValue)
-      ? `?plate=${searchValue}`
-      : `?fleet=${searchValue}`
-    const query = validateBr.placa(searchValue)
-      ? { plate: searchValue }
-      : { fleet: searchValue }
-    localStorage.setItem('vehicleSearch', searchValue)
-    history.push({
-      pathname,
-      search: queryLocal
-    })
-
-    getVehicles(query)
-  }
-
-  const handleFilterOnchange = (value) => {
-    setSearchValue(value.target.value)
-  }
-
-  const clearFilter = () => {
-    setSearchValue('')
-    localStorage.removeItem('vehicleSearch')
-    setSearchValue('')
-    history.push({
-      pathname,
-      search: ''
-    })
-    setoffset(1)
-    getVehicles()
-  }
-
-  const handleChangeTableEvent = ({ current }) => {
     setoffset(current)
-    let query = { offset: current - 1 }
-    if (searchValue) {
-      const params = validateBr.placa(searchValue)
-        ? { plate: searchValue }
-        : { fleet: searchValue }
-      query = { ...query, ...params }
-    }
 
-    getVehicles(query)
-  }
+    getVehicles()
+  }, [search])
 
   return (
     <ManagerContainer
-      source={vehiclesData}
-      vehicleTypesSource={vehicleTypes.rows}
-      loading={loading}
-      handleSubmit={handleSubmit}
-      handleSelectedVehicle={handleSelectedVehicle}
-      vehicleSelected={vehicleSelected}
+      clearFilter={clearFilter}
+      goToDetail={(id) => history.push(`/logged/vehicle/detail/${id}`)}
+      handleChangeTableEvent={handleChangeTableEvent}
       handleEdit={handleEdit}
-      searchValue={searchValue}
       handleFilter={handleFilter}
       handleFilterOnchange={handleFilterOnchange}
-      clearFilter={clearFilter}
-      handleChangeTableEvent={handleChangeTableEvent}
+      handleSelectedVehicle={handleSelectedVehicle}
+      handleSubmit={handleSubmit}
+      loading={loading}
       offset={offset}
-      goToDetail={(id) => history.push(`/logged/vehicle/detail/${id}`)}
+      searchValue={searchValue}
+      source={vehiclesData}
+      vehicleSelected={vehicleSelected}
+      vehicleTypesSource={vehicleTypes.rows}
     />
   )
 }
