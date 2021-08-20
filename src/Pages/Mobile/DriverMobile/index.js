@@ -5,7 +5,7 @@ import { message } from 'antd'
 
 import DriverMobileContainer from '../../../Containers/Mobile/DriverMobile'
 import { getAllAuthorizations } from '../../../Services/Authorization'
-import { getById, updateDriverWithoutAuth } from '../../../Services/Driver'
+import { getById, updateDriverWithoutAuth } from '../../../Services/Mobile'
 
 const DriverMobile = ({ match }) => {
   const [plate, setPlate] = useState(null)
@@ -49,7 +49,10 @@ const DriverMobile = ({ match }) => {
         setAuthorizationId(data[0].id)
       }
     } catch (error) {
-      window.onerror(`get-authorization-driver: ${error.error}`, window.location.href)
+      window.onerror(
+        `get-authorization-driver: ${error.error}`,
+        window.location.href
+      )
     }
   }
 

@@ -12,37 +12,30 @@ const DriverAuthorizationQrcode = ({
   restart
 }) => {
   return (
-    <Row  
+    <Row
       style={{
         background: '#F2F2F3',
         minHeight: '100vh',
         textAlign: 'center',
-        padding: "63px 16px 16px 16px"
+        padding: '63px 16px 16px 16px'
       }}>
       <Col span={24}>
-        <Image 
-          src={LogoSvg} 
-          alt="logo" 
-          preview={false}
-          width="161px"
-        />
+        <Image src={LogoSvg} alt="logo" preview={false} width="161px" />
       </Col>
       <Col span={24}>
         <div
           style={{
             background: '#FFF',
             padding: '15px',
-            borderRadius: '11px',
-          }}
-        >
+            borderRadius: '11px'
+          }}>
           <Row>
             <Col span={24}>
-              <Title level={5}>
-                {driver.name}
-              </Title>
+              <Title level={5}>{driver.name}</Title>
               <p style={{ color: '#8E8D92' }}>Autorização alxa log</p>
             </Col>
             <Col span={24}>
+              {}
               <Qrcode
                 value={JSON.stringify({
                   plate: plate,
@@ -55,9 +48,9 @@ const DriverAuthorizationQrcode = ({
               <Title level={3}>{plate}</Title>
             </Col>
             <Col span={24}>
-            <Text>
-              Este é o seu Qr code de autorização, apresente o Qr code do veículo
-                que está dirigindo ou retirando
+              <Text>
+                Este é o seu Qr code de autorização, apresente o Qr code do
+                veículo que está dirigindo ou retirando
               </Text>
             </Col>
           </Row>
