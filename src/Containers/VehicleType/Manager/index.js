@@ -19,15 +19,17 @@ const Manager = ({
   handleFilterOnchange,
   clearFilter,
   offset,
-  handleChangeTableEvent,
+  handleChangeTableEvent
 }) => {
   const [showModal, setShowModal] = useState(false)
   const openModal = () => setShowModal(true)
-  
+
   const showModalEditVehicleType = (value) => {
     handleSelectedVehicleType(value)
     setShowModal(true)
   }
+
+  console.log(searchValue)
 
   return (
     <Row gutter={[8, 16]}>
@@ -38,7 +40,9 @@ const Manager = ({
               <Title style={{ marginBottom: 0 }} level={4}>
                 Adicione novos tipos de veículos
               </Title>
-              <p style={{ marginBottom: 0 }}>Crie e gerencie seus tipos de veículo</p>
+              <p style={{ marginBottom: 0 }}>
+                Crie e gerencie seus tipos de veículo
+              </p>
             </Col>
             <Col span={12} style={{ textAlign: 'right' }}>
               <Button
@@ -51,7 +55,7 @@ const Manager = ({
           </Row>
         </Card>
       </Col>
-  
+
       <Col span={24}>
         <Card bordered={false}>
           <Row gutter={[8, 8]}>
@@ -75,11 +79,11 @@ const Manager = ({
           </Row>
         </Card>
       </Col>
-      
+
       <Col span={24}>
         <Card bordered={false}>
-          <VehicleTypeList 
-            datasource={source} 
+          <VehicleTypeList
+            datasource={source}
             handleClickEdit={showModalEditVehicleType}
             loading={loading}
             offset={offset}
@@ -87,19 +91,17 @@ const Manager = ({
           />
         </Card>
       </Col>
-  
-      {
-        showModal && (
-          <VehicleTypeForm
-            handleCancel={setShowModal}
-            visible={showModal}
-            handleSubmit={handleSubmit}
-            vehicleTypeSelected={vehicleTypeSelected}
-            handleSelectedVehicleType={handleSelectedVehicleType}
-            handleEdit={handleEdit}
-          />
-        )
-      }
+
+      {showModal && (
+        <VehicleTypeForm
+          handleCancel={setShowModal}
+          visible={showModal}
+          handleSubmit={handleSubmit}
+          vehicleTypeSelected={vehicleTypeSelected}
+          handleSelectedVehicleType={handleSelectedVehicleType}
+          handleEdit={handleEdit}
+        />
+      )}
     </Row>
   )
 }

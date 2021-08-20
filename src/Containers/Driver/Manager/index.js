@@ -20,11 +20,11 @@ const Manager = ({
   clearFilter,
   handleChangeTableEvent,
   offset,
-  goToDetail,
+  goToDetail
 }) => {
   const [showModal, setShowModal] = useState(false)
   const openModal = () => setShowModal(true)
-  
+
   const showModalEditDriver = (value) => {
     handleSelectedDriver(value)
     setShowModal(true)
@@ -52,7 +52,7 @@ const Manager = ({
           </Row>
         </Card>
       </Col>
-  
+
       <Col span={24}>
         <Card bordered={false}>
           <Row gutter={[8, 8]}>
@@ -76,11 +76,11 @@ const Manager = ({
           </Row>
         </Card>
       </Col>
-      
+
       <Col span={24}>
         <Card bordered={false}>
-          <DriverList 
-            datasource={source} 
+          <DriverList
+            datasource={source}
             handleClickEdit={showModalEditDriver}
             loading={loading}
             handleChangeTableEvent={handleChangeTableEvent}
@@ -89,19 +89,17 @@ const Manager = ({
           />
         </Card>
       </Col>
-  
-      {
-        showModal && (
-          <DriverForm
-            handleCancel={setShowModal}
-            visible={showModal}
-            handleSubmit={handleSubmit}
-            driverSelected={driverSelected}
-            handleSelectedDriver={handleSelectedDriver}
-            handleEdit={handleEdit}
-          />
-        )
-      }
+
+      {showModal && (
+        <DriverForm
+          handleCancel={setShowModal}
+          visible={showModal}
+          handleSubmit={handleSubmit}
+          driverSelected={driverSelected}
+          handleSelectedDriver={handleSelectedDriver}
+          handleEdit={handleEdit}
+        />
+      )}
     </Row>
   )
 }

@@ -1,61 +1,56 @@
 import React, { useEffect, useState } from 'react'
 import { message } from 'antd'
 import { useLocation, withRouter } from 'react-router-dom'
+import qs from 'qs'
 
 import ManagerContainer from '../../../Containers/Operation/Manager'
 import { getAll as getAllBranchs } from '../../../Services/Branch'
-import { 
-  createOperations, 
-  getAll, 
+import {
+  createOperations,
+  getAll,
   updateOperations
 } from '../../../Services/Operations'
-import { isEmpty } from 'ramda'
+import { add, isEmpty, pathOr, pipe } from 'ramda'
 import GAInitialize from '../../../utils/ga'
+import { parseQueryParams } from '../../../utils/queryParams'
 
-const Manager = ({
-  history,
-}) => {
-  const [operationData, setOperationData] = useState({ rows: [] })
+const success = (text) => {
+  message.success(text)
+}
+
+const errorMessage = (text) => {
+  message.error(text)
+}
+
+const Manager = ({ history }) => {
   const [branchsData, setBranchsDataData] = useState({ rows: [] })
-
+  const [loading, setLoading] = useState(true)
+  const [offset, setoffset] = useState(1)
+  const [operationData, setOperationData] = useState({ rows: [] })
   const [operationSelected, setOperationSelected] = useState(null)
   const [searchValue, setSearchValue] = useState('')
-  const [offset, setoffset] = useState(1)
-
-  const [loading, setLoading] = useState(true)
   const { search, pathname } = useLocation()
-  GAInitialize(`/operation`)
 
-  useEffect(() => {
-    let query = {}
-    const searchLocalStorage = localStorage.getItem('operationSearch')
-    getAllBranch({ limit: 400 })
+  GAInitialize('/operation')
 
-    if(!search && searchLocalStorage) {
-      history.push({
-        pathname,
-        search: `?name=${searchLocalStorage}`
-      })
-      setSearchValue(searchLocalStorage)
-      query = {
-        name: searchLocalStorage
-      }
-    }
-    getOperations(query)
-  }, [])
-
-  const success = (text) => {
-    message.success(text);
-  }
-  
-  const errorMessage = (text) => {
-    message.error(text)
+  const changeQueryParams = (search) => {
+    return history.push({
+      pathname,
+      search
+    })
   }
 
-  const getOperations = async (params = {}) => {
+  const clearFilter = async () => {
+    localStorage.removeItem('operationSearch')
+    setSearchValue('')
+
+    changeQueryParams('')
+  }
+
+  const getOperations = async () => {
     setLoading(true)
     try {
-      const { data } = await getAll(params)
+      const { data } = await getAll(parseQueryParams(search))
       setOperationData(data)
       setLoading(false)
     } catch (error) {
@@ -73,15 +68,11 @@ const Manager = ({
     }
   }
 
-  const handleSubmit = async (values) => {
-    try {
-      await createOperations(values)
-      getOperations()
-      success('Operação criada com sucesso!')
-    } catch (error) {
-      errorMessage('Não foi criar a operação!')
-      window.onerror(`createOperation: ${error.error}`, window.location.href)
-    }
+  const handleChangeTableEvent = ({ current }) => {
+    const query = { offset: current - 1 }
+    const queryParams = parseQueryParams(search)
+
+    changeQueryParams(qs.stringify({ ...queryParams, ...query }))
   }
 
   const handleEdit = async (values) => {
@@ -95,68 +86,71 @@ const Manager = ({
     }
   }
 
-  const handleSelectedOperation = values => {
-    setOperationSelected(values)
-  }
-
   const handleFilter = async () => {
     if (isEmpty(searchValue)) {
       return null
     }
 
     localStorage.setItem('operationSearch', searchValue)
-    history.push({
-      pathname,
-      search: `?name=${searchValue}`
-    })
 
-    getOperations({ name: searchValue})
-
+    changeQueryParams(`?name=${searchValue}`)
   }
 
-  const handleFilterOnchange = value => {
+  const handleFilterOnchange = (value) => {
     setSearchValue(value.target.value)
   }
 
-  const clearFilter = async () => {
-    setSearchValue('')
-    localStorage.removeItem('operationSearch')
-    setSearchValue('')
-    history.push({
-      pathname,
-      search: ''
-    })
-    setoffset(1)
-    getOperations({})
+  const handleSelectedOperation = (values) => {
+    setOperationSelected(values)
   }
 
-  const handleChangeTableEvent = ({ current }) => {
-    setoffset(current)
-    let query = { offset: (current - 1)  }
-    if (searchValue) {
-      query = { ...query, name: searchValue }
+  const handleSubmit = async (values) => {
+    try {
+      await createOperations(values)
+      getOperations()
+      success('Operação criada com sucesso!')
+    } catch (error) {
+      errorMessage('Não foi criar a operação!')
+      window.onerror(`createOperation: ${error.error}`, window.location.href)
     }
-
-    getOperations(query)
   }
 
+  useEffect(() => {
+    const searchLocalStorage = localStorage.getItem('operationSearch')
+    getAllBranch({ limit: 400 })
+
+    if (!search && searchLocalStorage) {
+      changeQueryParams(`?name=${searchLocalStorage}`)
+
+      setSearchValue(searchLocalStorage)
+    }
+  }, [])
+
+  useEffect(() => {
+    const queryParams = parseQueryParams(search)
+    const current = pipe(pathOr('0', ['offset']), Number, add(1))(queryParams)
+
+    setoffset(current)
+
+    getOperations()
+  }, [search])
 
   return (
     <ManagerContainer
-      source={operationData}
       branchsSource={branchsData}
-      loading={loading}
-      handleSubmit={handleSubmit}
-      handleSelectedOperation={handleSelectedOperation}
-      operationSelected={operationSelected}
+      clearFilter={clearFilter}
+      goToDetail={(id) => history.push(`/logged/operation-detail/${id}`)}
+      handleChangeTableEvent={handleChangeTableEvent}
       handleEdit={handleEdit}
-      searchValue={searchValue}
       handleFilter={handleFilter}
       handleFilterOnchange={handleFilterOnchange}
-      clearFilter={clearFilter}
-      handleChangeTableEvent={handleChangeTableEvent}
+      handleSelectedOperation={handleSelectedOperation}
+      handleSubmit={handleSubmit}
+      loading={loading}
       offset={offset}
-      goToDetail={id => history.push(`/logged/operation-detail/${id}`)}
+      operationSelected={operationSelected}
+      searchValue={searchValue}
+      source={operationData}
     />
   )
 }
