@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import {
   Button,
   Checkbox,
@@ -47,9 +47,14 @@ const FilterMaintenence = ({
   clearFilter,
   handleFilter,
   form,
-  visibleSearchPlate = true
+  visibleSearchPlate = true,
+  defaultMoreFilters = false
 }) => {
-  const [moreFilters, setMoreFilters] = useState(false)
+  const [moreFilters, setMoreFilters] = useState(defaultMoreFilters)
+
+  useEffect(() => {
+    setMoreFilters(defaultMoreFilters)
+  }, [defaultMoreFilters])
 
   return (
     <Form

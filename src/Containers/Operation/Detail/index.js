@@ -104,6 +104,7 @@ const Detail = ({
   filterForm,
   handleFilter,
   clearFilter,
+  defaultMoreFilters,
   loading
 }) => {
   const [mode, setMode] = useState('table')
@@ -205,6 +206,8 @@ const Detail = ({
           <Card bordered={false}>
             <Col span={24}>
               <FilterMaintenence
+                defaultMoreFilters={defaultMoreFilters}
+                visibleSearchPlate={false}
                 form={filterForm}
                 handleFilter={handleFilter}
                 clearFilter={clearFilter}

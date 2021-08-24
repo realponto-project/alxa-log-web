@@ -110,7 +110,7 @@ const Manager = ({ history }) => {
       getOperations()
       success('Operação criada com sucesso!')
     } catch (error) {
-      errorMessage('Não foi criar a operação!')
+      errorMessage('Não foi possível criar a operação!')
       window.onerror(`createOperation: ${error.error}`, window.location.href)
     }
   }
