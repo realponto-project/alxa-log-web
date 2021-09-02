@@ -5,7 +5,6 @@ import { getById, updateEvents } from '../../../Services/MaintenanceOrders'
 import MaintenanceDetailMobile from '../../../Containers/Mobile/MaintenanceDetailMobile'
 import { getAll } from '../../../Services/Driver'
 import GAInitialize from '../../../utils/ga'
-import { message } from 'antd'
 
 const errorMessage = (text) => {
   message.error(text)
