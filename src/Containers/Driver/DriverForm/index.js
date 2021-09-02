@@ -1,5 +1,5 @@
 import React, { useState } from 'react'
-import { Button, Form, Input, Modal, Select } from 'antd'
+import { Button, Form, Input, Modal, Select, Radio, DatePicker } from 'antd'
 import { map } from 'ramda'
 import {
   settingsNextStep,
@@ -9,25 +9,30 @@ import {
 
 const formItemsComponent = {
   input: Input,
-  select: Select
+  select: Select,
+  radio: Radio.Group,
+  datepicker: DatePicker,
 }
 
-const renderFormItems = ({ 
-  label, 
-  name, 
-  rules, 
-  placeholder, 
-  show, 
-  typeInput, 
+const renderFormItems = ({
+  label,
+  name,
+  rules,
+  placeholder,
+  show,
+  typeInput,
+  options
 }) => {
   const Component = formItemsComponent[typeInput]
+
   return (
     show && (
       <Form.Item key={name} label={label} name={name} rules={rules}>
-        <Component 
+        <Component
           showSearch
-          name={name} 
+          name={name}
           placeholder={placeholder}
+          options={options}
         />
       </Form.Item>
     )
@@ -49,8 +54,8 @@ const DriverForm = ({
     const formItem = formSettings.find(item => !item.show && settingsNextStep[Object.keys(value)[0]] === item.name)
     if (formItem) {
       setFormSettings(formSettings.map(item => (
-        item.name === formItem.name 
-          ? {...formItem, show: true } 
+        item.name === formItem.name
+          ? { ...formItem, show: true }
           : item
       )))
     }
@@ -85,7 +90,7 @@ const DriverForm = ({
         validateTrigger="onChange"
         onFinish={values => {
           if (driverSelected) {
-            handleEdit({...driverSelected, ...values})
+            handleEdit({ ...driverSelected, ...values })
           } else {
             handleSubmit(values)
           }

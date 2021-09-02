@@ -14,6 +14,7 @@ import AuthorizationList from './Authorizations'
 import FilterAuthorization from '../../../Components/Filters/Authorization'
 import FilterIncident from '../../../Components/Filters/Incident'
 import IncidentList from './IncidentList'
+import formattedDate from '../../../utils/parserDate'
 
 const { Text, Title } = Typography
 
@@ -57,9 +58,9 @@ const Detail = ({
 
   return (
     <Row gutter={[8, 8]}>
-      <Col span={24}>
+      <Col span={24} >
         <Card bordered={false}>
-          <Row gutter={[8, 8]}>
+          <Row gutter={[8, 8]} style={{marginBottom: '25px'}}>
             <Col span={24}>
               <Title level={4}>Detalhes</Title>
             </Col>
@@ -74,14 +75,74 @@ const Detail = ({
               <Text>CNH</Text>
               <br />
               <Text>
-                <strong>{driver.driverLicense}</strong>
+                <strong>{driver.driverLicense || '-'}</strong>
               </Text>
             </Col>
 
             <Col span={6}>
               <Text>Telefone</Text>
               <br />
-              <Text strong>{driver.phone}</Text>
+              <Text strong>{driver.phone || '-'}</Text>
+            </Col>
+
+            <Col span={4}>
+              <Text>RG</Text>
+              <br />
+              <Text>
+                <strong>{driver.rg || '-'}</strong>
+              </Text>
+            </Col>
+          </Row>
+
+          <Row gutter={[8, 8]} style={{marginBottom: '25px'}}>
+            <Col span={8}>
+              <Text>CPF</Text>
+              <br />
+              <Text>
+                <strong>{driver.cpf || '-'}</strong>
+              </Text>
+            </Col>
+            <Col span={6}>
+              <Text>Validade CNH</Text>
+              <br />
+              <Text>
+                <strong>{formattedDate(driver.expireDriverLicense, 'DD/MM/YYYY') || '-'}</strong>
+              </Text>
+            </Col>
+
+            <Col span={6}>
+              <Text>Protocolo seguradora</Text>
+              <br />
+              <Text strong>{driver.protocolInsuranceCompany || '-'}</Text>
+            </Col>
+
+            <Col span={4}>
+              <Text>Validade protocolo</Text>
+              <br />
+              <Text strong>{formattedDate(driver.expireProtocolInsuranceCompany, 'DD/MM/YYYY') || '-'}</Text>
+            </Col>
+          </Row>
+
+          <Row gutter={[8, 8]}>
+            <Col span={8}>
+              <Text>Validade ASO</Text>
+              <br />
+              <Text>
+                <strong>{formattedDate(driver.expireASO, 'DD/MM/YYYY') || '-'}</strong>
+              </Text>
+            </Col>
+            <Col span={6}>
+              <Text>Curso MOP</Text>
+              <br />
+              <Text>
+                <strong>{driver.mop ? 'Sim' : 'Não' || '-'}</strong>
+              </Text>
+            </Col>
+
+            <Col span={6}>
+              <Text></Text>
+              <br />
+              <Text strong></Text>
             </Col>
 
             <Col span={4}>

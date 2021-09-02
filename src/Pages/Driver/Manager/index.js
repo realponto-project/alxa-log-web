@@ -102,10 +102,16 @@ const Manager = ({ history }) => {
 
   const handleSubmit = async (values) => {
     try {
+      console.log(values)
       await createDriver({
         ...values,
         driverLicense: values.driverLicense.replace(/\D/g, ''),
-        phone: values.phone.replace(/\D/g, '')
+        phone: values.phone.replace(/\D/g, ''),
+        rg: values.rg.replace(/\D/g, ''),
+        cpf: values.cpf.replace(/\D/g, ''),
+        expireASO: values.expireASO._d,
+        expireDriverLicense: values.expireDriverLicense._d,
+        expireProtocolInsuranceCompany: values.expireProtocolInsuranceCompany._d
       })
       getDrivers()
       success('Cadastro de motorista realizado com sucesso!')
