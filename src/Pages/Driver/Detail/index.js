@@ -280,7 +280,7 @@ const Detail = ({ match, history, user }) => {
       vehiclesSource={vehiclesData.rows}
       handleClickEdit={handleClickEdit}
       incidentSelected={incidentSelected}
-      userId={user && user.id}
+      userId={user?.user?.id}
       handleEditSubmit={handleEditSubmit}
     />
   )
