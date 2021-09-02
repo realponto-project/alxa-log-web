@@ -30,7 +30,7 @@ const chartSettings = [
 ]
 
 const Chart = ({ data }) => {
-  const dataParse = data.sort((a, b) => a.order - b.order)
+  const dataParse = data.sort((a, b) => new Date(a.name) - new Date(b.name))
 
   return (
     <Row gutter={[0, 16]}>
@@ -45,7 +45,7 @@ const Chart = ({ data }) => {
             margin={{ left: 15 }}
             maxBarSize={13}>
             <XAxis
-              dataKey={({ name }) => formattedDate(name, 'DD/MM/YYYY', 1)}
+              dataKey={({ name }) => formattedDate(name, 'DD/MM/YYYY')}
               axisLine={false}
               tick={{ fontSize: 13 }}
               tickMargin={10}
