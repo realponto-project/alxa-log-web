@@ -21,6 +21,7 @@ import AvailableSVG from '../../../Assets/available.svg'
 import FilterMaintenence from '../../../Components/Filters/Maintenance'
 import Tag from '../../../Components/Tag'
 import { CardStatus } from '../../../Components/CardStatus'
+import { map } from 'ramda'
 
 const { Text, Title } = Typography
 
@@ -241,7 +242,10 @@ const Detail = ({
                   }}
                   loading={loading}
                   columns={columns(gotoDetailOrder)}
-                  dataSource={datasource.rows}
+                  dataSource={map(
+                    (row) => ({ ...row, key: row.id }),
+                    datasource.rows
+                  )}
                   onChange={handleChangeTableEvent}
                 />
               ) : (

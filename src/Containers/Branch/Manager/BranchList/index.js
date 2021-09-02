@@ -1,6 +1,7 @@
 import React from 'react'
 import { Table, Button, Space } from 'antd'
 import { cnpj } from 'cpf-cnpj-validator'
+import { map } from 'ramda'
 
 const columns = ({ handleClickEdit, goToDetail }) => [
   {
@@ -58,7 +59,7 @@ const BranchList = ({
       onChange={handleChangeTableEvent}
       columns={columns({ handleClickEdit, goToDetail })}
       loading={loading}
-      dataSource={datasource.rows}
+      dataSource={map((row) => ({ ...row, key: row.id }), datasource.rows)}
     />
   )
 }

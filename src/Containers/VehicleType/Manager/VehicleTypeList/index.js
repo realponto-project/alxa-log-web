@@ -1,6 +1,7 @@
 import React from 'react'
 import { Table, Button } from 'antd'
 import NoData from '../../../../Assets/noData.svg'
+import { map } from 'ramda'
 
 const columns = ({ handleClickEdit }) => [
   {
@@ -12,10 +13,11 @@ const columns = ({ handleClickEdit }) => [
   {
     title: ' ',
     dataIndex: 'id',
-    render: (_, source) => <Button type="link" onClick={() => handleClickEdit(source)}>
+    render: (_, source) => (
+      <Button type="link" onClick={() => handleClickEdit(source)}>
         Editar
       </Button>
-    
+    )
   }
 ]
 
@@ -37,7 +39,7 @@ const FleetList = ({
       onChange={handleChangeTableEvent}
       columns={columns({ handleClickEdit })}
       loading={loading}
-      dataSource={datasource.rows}
+      dataSource={map((row) => ({ ...row, key: row.id }), datasource.rows)}
     />
   )
 }

@@ -11,6 +11,7 @@ import {
   services,
   status
 } from '../../../../utils/maintenanceOrder'
+import { map } from 'ramda'
 
 const { confirm } = Modal
 
@@ -164,7 +165,7 @@ const MaintenanceList = ({
         handleMenuClick
       })}
       loading={loading}
-      dataSource={datasource.rows}
+      dataSource={map((row) => ({ ...row, key: row.id }), datasource.rows)}
       size="small"
     />
   )

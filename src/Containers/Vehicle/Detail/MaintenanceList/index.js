@@ -2,6 +2,7 @@ import React from 'react'
 import { Table, Button } from 'antd'
 import formattedDate from '../../../../utils/parserDate'
 import diffTime from '../../../../utils/permananceTime'
+import { map } from 'ramda'
 
 import Tag from '../../../../Components/Tag'
 import {
@@ -95,7 +96,10 @@ const MaintenanceList = ({
         gotoDetail
       })}
       loading={loading}
-      dataSource={datasource.rows}
+      dataSource={map(
+        (row) => ({ ...row, key: row.id }),
+        datasource.rows || []
+      )}
       size="small"
     />
   )
