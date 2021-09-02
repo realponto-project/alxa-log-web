@@ -6,7 +6,9 @@ import { cnpj } from 'cpf-cnpj-validator'
 import {
   settingsNextStep,
   formSettingsIncident,
+  formSettingsIncidentEdit
 } from './formSettings'
+import moment from 'moment'
 
 const formItemsComponent = {
   input: Input,
@@ -54,8 +56,11 @@ const IncidentForm = ({
   handleCancel,
   visible,
   handleSubmit,
+  incidentSelected,
+  handleEditSubmit,
+  handleSelectedIncident,
 }) => {
-  const [formSettings, setFormSettings] = useState(formSettingsIncident(vehiclesSource))
+  const [formSettings, setFormSettings] = useState(incidentSelected ? formSettingsIncidentEdit(vehiclesSource, operationsSource) : formSettingsIncident(vehiclesSource))
   const [form] = Form.useForm()
   const parseOptionItemOperation = item => ({ value: item.id, label: `${item.name} - Filial: ${item.company.name} / ${cnpj.format(item.company.document)}` })
 
@@ -79,6 +84,12 @@ const IncidentForm = ({
     }
   }
 
+  const incidentDate = (
+    incidentSelected && incidentSelected.incidentDate
+      ? moment(incidentSelected.incidentDate)
+      : undefined
+  )
+
   return (
     <Modal
       visible={visible}
@@ -98,7 +109,7 @@ const IncidentForm = ({
           Salvar
         </Button>
       ]}
-      title='Cadastrar novo incidente'
+      title={`${incidentSelected ? 'Editar' : 'Cadastrar novo'} incidente`}
     >
       <Form
         form={form}
@@ -106,10 +117,16 @@ const IncidentForm = ({
         onValuesChange={onValuesChangeVisableFomItem}
         validateTrigger="onChange"
         onFinish={values => {
-          handleSubmit(values)
+          if(incidentSelected) {
+            handleEditSubmit({ ...incidentSelected, ...values })
+          } else {
+            handleSubmit(values)
+          }
+          handleSelectedIncident(null)
           setFormSettings(formSettingsIncident(vehiclesSource))
           form.resetFields()
         }}
+        initialValues={{ ...incidentSelected, incidentDate }}
       >
         {map(renderFormItems, formSettings)}
       </Form>
