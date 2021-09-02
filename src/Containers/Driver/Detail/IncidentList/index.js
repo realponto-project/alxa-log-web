@@ -1,5 +1,5 @@
 import React from 'react'
-import { Table, Tag } from 'antd'
+import { Table, Tag, Button } from 'antd'
 import { cnpj } from 'cpf-cnpj-validator'
 
 import formattedDate from '../../../../utils/parserDate'
@@ -28,7 +28,7 @@ const colors = {
   lack_of_cargo_lashing: '#F6C21F'
 }
 
-const columns = [
+const columns = (handleClickEdit, userId) => ([
   {
     title: 'Data do incidente',
     dataIndex: 'incidentDate',
@@ -75,13 +75,26 @@ const columns = [
         </small>
       </>
     )
+  },
+  {
+    title: ' ',
+    dataIndex: 'id',
+    key: 'id',
+    fixed: 'left',
+    render: (_, source) => (
+      userId === source.userId && (
+        <Button type="link" onClick={() => handleClickEdit(source)}>
+          Editar
+        </Button>
+      )
+    )
   }
-]
+])
 
-const IncidentList = ({ rows, count, current, loading, handleChange }) => {
+const IncidentList = ({ rows, count, current, loading, handleChange, handleClickEdit, userId }) => {
   return (
     <Table
-      columns={columns}
+      columns={columns(handleClickEdit, userId)}
       dataSource={rows}
       loading={loading}
       onChange={handleChange}

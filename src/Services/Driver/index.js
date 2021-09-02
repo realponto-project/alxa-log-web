@@ -20,6 +20,10 @@ const createDriverIncident = async (values) => {
   return await axiosIntance.post('/drivers-incidents', values)
 }
 
+const editDriverIncident = async (values) => {
+  return await axiosIntance.put(`/drivers-incidents/${values.id}`, values)
+}
+
 const getIncidentsSummary = async (id) => {
   return await axiosIntance.get(`/drivers-incidents-summary/${id}`)
 }
@@ -35,5 +39,6 @@ export {
   updateDriver,
   createDriverIncident,
   getIncidentsSummary,
-  getAllIncidentsByDriverId
+  getAllIncidentsByDriverId,
+  editDriverIncident
 }

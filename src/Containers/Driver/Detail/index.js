@@ -34,7 +34,11 @@ const Detail = ({
   handleFilterIncident,
   incidentsLoading,
   handleChangeTableIncident,
-  incidents
+  incidents,
+  handleClickEdit,
+  incidentSelected,
+  userId,
+  handleEditSubmit
 }) => {
   const [showModal, setShowModal] = useState(false)
   const [showModalAuthorization, setShowModalAuthorization] = useState(false)
@@ -45,6 +49,11 @@ const Detail = ({
   const handleChange = ({ target }) => setMode(target.value)
 
   const link = `${origin}/#/mobile-driver/${driver.id}`
+
+  const handleSelectedIncidents = (incident) => {
+    handleClickEdit(incident)
+    setShowModal(true)
+  }
 
   return (
     <Row gutter={[8, 8]}>
@@ -201,6 +210,8 @@ const Detail = ({
                   {...incidents}
                   handleChange={handleChangeTableIncident}
                   loading={incidentsLoading}
+                  handleClickEdit={handleSelectedIncidents}
+                  userId={userId}
                 />
               ) : (
                 <BarChart data={chartData} />
@@ -217,6 +228,9 @@ const Detail = ({
           vehiclesSource={vehiclesSource}
           operationsSource={operationsSource}
           handleSubmit={handleSubmit}
+          incidentSelected={incidentSelected}
+          handleEditSubmit={handleEditSubmit}
+          handleSelectedIncident={handleClickEdit}
         />
       )}
 
