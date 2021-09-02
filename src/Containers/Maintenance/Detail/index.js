@@ -3,6 +3,7 @@ import { Row, Col, Card, Typography, Image, Tag, Timeline, Button, Tooltip } fro
 import Qrcode from 'qrcode.react'
 import { cnpj } from 'cpf-cnpj-validator'
 import { CopyOutlined } from '@ant-design/icons'
+import { map, prop, sortBy } from 'ramda'
 
 import fuelSVG from './fuel.svg'
 import clockSVG from './clock.svg'
@@ -358,19 +359,24 @@ const Detail = ({
             </Col>
             <Col span={24}>
               <Timeline>
-                {maintenanceOrder.maintenanceOrderEvents.map((item) => (
-                  <Timeline.Item color="green" key={item.id}>
-                    <Row>
-                      <Col span={12}>
-                        <p>
-                          {parseStatus[item.status]} -{' '}
-                          {item.user && item.user.name} <br />{' '}
-                          {formattedDate(item.createdAt, 'DD/MMM/YYYY HH:mm')}
-                        </p>
-                      </Col>
-                    </Row>
-                  </Timeline.Item>
-                ))}
+                {
+                  map(
+                    (item) => (
+                      <Timeline.Item color="green" key={item.id}>
+                        <Row>
+                          <Col span={12}>
+                            <p>
+                              {parseStatus[item.status]} -{' '}
+                              {item.user && item.user.name} <br />{' '}
+                              {formattedDate(item.createdAt, 'DD/MMM/YYYY HH:mm')}
+                            </p>
+                          </Col>
+                        </Row>
+                      </Timeline.Item>
+                    ),
+                    sortBy(prop('createdAt'), maintenanceOrder.maintenanceOrderEvents)
+                  )
+                }
               </Timeline>
             </Col>
           </Row>
