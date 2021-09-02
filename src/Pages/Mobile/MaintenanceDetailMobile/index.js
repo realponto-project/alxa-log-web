@@ -5,6 +5,11 @@ import { getById, updateEvents } from '../../../Services/MaintenanceOrders'
 import MaintenanceDetailMobile from '../../../Containers/Mobile/MaintenanceDetailMobile'
 import { getAll } from '../../../Services/Driver'
 import GAInitialize from '../../../utils/ga'
+import { message } from 'antd'
+
+const errorMessage = (text) => {
+  message.error(text)
+}
 
 const Manager = ({
   history,
@@ -63,7 +68,14 @@ const Manager = ({
       setShowModal(false)
     } catch (error) {
       window.onerror(`createEvent: ${error.error}`, window.location.href)
-      setShowModal(false)
+      const errorMessageResponse = pathOr(null, ['data', 'error'])
+      let textMessage = 'Não foi possível adicionar esse evento!'
+      
+      if (errorMessageResponse === 'Don\'t have a second driver') {
+        textMessage = `Precisa associar o motorista que está retirando o veículo`
+      }
+      
+      errorMessage(textMessage)
     }
   }
 

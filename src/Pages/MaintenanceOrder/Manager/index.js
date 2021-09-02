@@ -9,8 +9,6 @@ import {
   includes,
   isEmpty,
   keys,
-  length,
-  lt,
   pathOr,
   pipe,
   __
@@ -219,11 +217,19 @@ const Manager = ({ history, match }) => {
       getAllMaintenances()
       success('Manutenção criada com sucesso!')
     } catch (error) {
+      const errorMessageResponse = pathOr(null, ['data', 'error'])
+      let textMessage = 'Não foi criar a manutenção!'
+
+      if (errorMessageResponse === 'Allow only one order for this plate!') {
+        textMessage = `Já existe uma manutenção aberta para o veículo - ${values.plateCart}`
+      }
+
       window.onerror(
         `createMaintenanceOrder: ${error.error}`,
         window.location.href
       )
-      errorMessage('Não foi criar a manutenção!')
+
+      errorMessage(textMessage)
     }
   }
 
