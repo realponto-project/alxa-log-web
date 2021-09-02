@@ -218,7 +218,7 @@ const Manager = ({ history, match }) => {
       success('Manutenção criada com sucesso!')
     } catch (error) {
       const errorMessageResponse = pathOr(null, ['data', 'error'])
-      let textMessage = 'Não foi criar a manutenção!'
+      let textMessage = 'Não foi possível criar a manutenção!'
 
       if (errorMessageResponse === 'Allow only one order for this plate!') {
         textMessage = `Já existe uma manutenção aberta para o veículo - ${values.plateCart}`
