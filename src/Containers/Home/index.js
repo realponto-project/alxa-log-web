@@ -1,5 +1,14 @@
 import React from 'react'
-import { Row, Col, Image, Card, Typography } from 'antd'
+import {
+  Row,
+  Col,
+  Image,
+  Card,
+  Typography,
+  Button,
+  Space,
+  DatePicker
+} from 'antd'
 
 import BarChart from './BarChart'
 import VerticalChart from './VerticalChart'
@@ -14,6 +23,7 @@ import AvailableSVG from './available.svg'
 import AvailableEmptySVG from './available-empty.svg'
 
 const { Link, Text, Title } = Typography
+const { RangePicker } = DatePicker
 
 const CardStatus = ({ title, count, redirectPage, srcImage }) => (
   <Card
@@ -38,7 +48,14 @@ const CardStatus = ({ title, count, redirectPage, srcImage }) => (
   </Card>
 )
 
-const Home = ({ orderStatus, orderOperationStatus, goToOrders }) => {
+const Home = ({
+  dateChoosed,
+  goToOrders,
+  handleChangeDate,
+  orderOperationStatus,
+  orderStatus,
+  querDate
+}) => {
   const vehicleTotal = orderStatus
     .filter(
       ({ status }) =>
@@ -81,6 +98,45 @@ const Home = ({ orderStatus, orderOperationStatus, goToOrders }) => {
         <p className={styles.welcomeSubtitle}>
           Ao <b>alxa dashboard</b> para suas análises
         </p>
+      </Col>
+
+      <Col span={24}>
+        <Row justify="end">
+          <Space size="middle">
+            <Button
+              onClick={() => handleChangeDate('today')}
+              ghost={dateChoosed === 'today'}
+              className={dateChoosed === 'today' && 'btn-active'}
+              size="small"
+              shape="round">
+              Hoje
+            </Button>
+            <Button
+              onClick={() => handleChangeDate('week')}
+              ghost={dateChoosed === 'week'}
+              className={dateChoosed === 'week' && 'btn-active'}
+              size="small"
+              shape="round">
+              7 dias
+            </Button>
+            <Button
+              onClick={() => handleChangeDate('month')}
+              ghost={dateChoosed === 'month'}
+              className={dateChoosed === 'month' && 'btn-active'}
+              size="small"
+              shape="round">
+              30 dias
+            </Button>
+
+            <RangePicker
+              format="DD-MM-YYYY"
+              value={[querDate.start, querDate.end]}
+              className={dateChoosed === 'custom' && 'btn-active'}
+              onChange={(dates) => handleChangeDate('custom', { dates })}
+              bordered={true}
+            />
+          </Space>
+        </Row>
       </Col>
 
       <Col span={6}>

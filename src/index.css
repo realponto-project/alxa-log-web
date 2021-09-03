@@ -30,3 +30,8 @@ body {
     display: block !important;
   }
 }
+
+.btn-active {
+  color: #40a9ff;
+  border-color: #40a9ff;
+}
