@@ -1,5 +1,6 @@
 import React from 'react'
-import { Table, Button, Space } from 'antd'
+import { Table, Button, Space, Tooltip } from 'antd'
+import { InfoCircleOutlined } from '@ant-design/icons';
 import { map } from 'ramda'
 
 const columns = ({ handleClickEdit, goToDetail }) => [
@@ -16,9 +17,27 @@ const columns = ({ handleClickEdit, goToDetail }) => [
     fixed: 'left'
   },
   {
+    title: 'RG',
+    dataIndex: 'rg',
+    key: 'rg',
+    fixed: 'left'
+  },
+  {
+    title: 'CPF',
+    dataIndex: 'cpf',
+    key: 'cpf',
+    fixed: 'left'
+  },
+  {
     title: 'Telefone',
     dataIndex: 'phone',
     key: 'phone',
+    fixed: 'left'
+  },
+  {
+    title: 'Vínculo',
+    dataIndex: 'bond',
+    key: 'bond',
     fixed: 'left'
   },
   {
@@ -33,6 +52,19 @@ const columns = ({ handleClickEdit, goToDetail }) => [
           Detalhes
         </Button>
       </Space>
+    )
+  },
+  {
+    title: ' ',
+    dataIndex: 'id',
+    render: (_, source) => (
+      <Tooltip placement="bottom" title={()=> {
+        <div>
+          teste
+        </div>
+      }}>
+        <InfoCircleOutlined />
+      </Tooltip>
     )
   }
 ]
