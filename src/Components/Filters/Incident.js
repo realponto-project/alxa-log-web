@@ -1,17 +1,22 @@
 import React, { useState } from 'react'
-import { Row, Col, Button, DatePicker, Form, Input, Select, Space, Typography, Checkbox } from 'antd'
+import {
+  Row,
+  Col,
+  Button,
+  DatePicker,
+  Form,
+  Input,
+  Space,
+  Typography,
+  Checkbox
+} from 'antd'
 import { SearchOutlined, DownOutlined, UpOutlined } from '@ant-design/icons'
 import { map } from 'ramda'
 
-const { Title } = Typography
-const { Option } = Select
-const { RangePicker } = DatePicker
+import { incidentTypes } from '../../constants/Driver'
 
-const incidentTypes = [
-  { value: 'accident', label: 'Acidente' },
-  { value: 'collision', label: 'Colisão' },
-  { value: 'vehicle_break_down', label: 'Veículo quebrado' }
-]
+const { Title } = Typography
+const { RangePicker } = DatePicker
 
 const FilterIncident = ({ handleSubmit, clearFilter, operations }) => {
   const [form] = Form.useForm()
@@ -41,7 +46,7 @@ const FilterIncident = ({ handleSubmit, clearFilter, operations }) => {
               <Space>
                 <Button onClick={() => setMoreFilters(!moreFilters)}>
                   Mais filtros
-                {moreFilters ? <UpOutlined /> : <DownOutlined />}
+                  {moreFilters ? <UpOutlined /> : <DownOutlined />}
                 </Button>
                 <Button
                   onClick={() => {
@@ -66,23 +71,25 @@ const FilterIncident = ({ handleSubmit, clearFilter, operations }) => {
                 marginBottom: '20px'
               }}>
               <Row>
-                <Col span={8}>
+                <Col span={24}>
                   <Title level={5}>Incidentes</Title>
-                    <Form.Item name="incidentType">
-                      <Checkbox.Group>
-                      {map(
-                          ({ value, label }) => (
-                            <Row>
-                              <Checkbox key={value} value={value}>
-                                {label}
-                              </Checkbox>
-                            </Row>
-                          ),
-                          incidentTypes
-                        )}
-                      </Checkbox.Group>
-                    </Form.Item>
                 </Col>
+                <Form.Item name="incidentType">
+                  <Checkbox.Group>
+                    <Row>
+                      {map(
+                        ({ value, label }) => (
+                          <Col span={12}>
+                            <Checkbox key={value} value={value}>
+                              {label}
+                            </Checkbox>
+                          </Col>
+                        ),
+                        incidentTypes
+                      )}
+                    </Row>
+                  </Checkbox.Group>
+                </Form.Item>
               </Row>
             </div>
           </Col>

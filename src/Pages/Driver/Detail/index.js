@@ -1,14 +1,17 @@
 import React, { useEffect, useState } from 'react'
 import { message } from 'antd'
-import { validateBr } from 'js-brasil'
 import { useLocation, withRouter } from 'react-router-dom'
 import { map, omit, pathOr, pipe, prop } from 'ramda'
+
+import { connect } from 'react-redux'
+import { compose } from 'ramda'
 
 import GAInitialize from '../../../utils/ga'
 import DriverDetail from '../../../Containers/Driver/Detail'
 import {
   getById,
   createDriverIncident,
+  editDriverIncident,
   getIncidentsSummary,
   getAllIncidentsByDriverId
 } from '../../../Services/Driver'
@@ -20,7 +23,8 @@ import {
 import { getAll } from '../../../Services/Vehicle'
 import { getAll as getAllOperations } from '../../../Services/Operations'
 
-const Detail = ({ match, history }) => {
+const Detail = ({ match, history, user }) => {
+  const [incidentSelected, setIncidentSelected] = useState(null)
   const [authorizations, setAuthorizations] = useState({ rows: [] })
   const [authorizationLoading, setAuthorizationLoading] = useState(false)
   const [chartData, setChartData] = useState([])
@@ -167,6 +171,21 @@ const Detail = ({ match, history }) => {
     }
   }
 
+  const handleEditSubmit = async (values) => {
+    try {
+      await editDriverIncident({
+        ...values,
+        incidentDate: new Date(values.incidentDate),
+      })
+      getIncidents()
+      summaryChartIncidents()
+      success('Incidente editado com sucesso!')
+    } catch (error) {
+      window.onerror(`createIncident: ${error.error}`, window.location.href)
+      errorMessage('Não foi possível editar incidente!')
+    }
+  }
+
   const handleSubmitAuthorization = async (values) => {
     try {
       await createAuthorization({
@@ -235,6 +254,10 @@ const Detail = ({ match, history }) => {
     getIncidents()
   }, [queryIncident])
 
+  const handleClickEdit = (incident) => {
+    setIncidentSelected(incident)
+  }
+
   return (
     <DriverDetail
       authorizations={authorizations}
@@ -255,8 +278,22 @@ const Detail = ({ match, history }) => {
       incidentsLoading={incidentsLoading}
       operationsSource={operationsData.rows}
       vehiclesSource={vehiclesData.rows}
+      handleClickEdit={handleClickEdit}
+      incidentSelected={incidentSelected}
+      userId={user?.user?.id}
+      handleEditSubmit={handleEditSubmit}
     />
   )
 }
 
-export default withRouter(Detail)
+const mapStateToProps = ({ user }) => ({
+  user
+})
+
+const enhanced = compose(
+  connect(mapStateToProps),
+  withRouter
+)
+
+export default enhanced(Detail)
+
