@@ -15,7 +15,6 @@ import {
 } from '../../../Services/Driver'
 import { add, isEmpty, pathOr, pipe } from 'ramda'
 import { parseQueryParams } from '../../../utils/queryParams'
-import moment from 'moment'
 
 const success = (text) => {
   message.success(text)
