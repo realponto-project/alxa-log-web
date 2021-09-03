@@ -140,9 +140,9 @@ const Detail = ({
             </Col>
 
             <Col span={6}>
-              <Text></Text>
+              <Text>Vínculo</Text>
               <br />
-              <Text strong></Text>
+              <Text strong>{driver.bond || '-'}</Text>
             </Col>
 
             <Col span={4}>

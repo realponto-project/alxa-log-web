@@ -15,74 +15,95 @@ const formSettingsDriver = [{
   show: false,
   typeInput: 'input',
   options: []
-}, {
-  label: 'Validade CNH',
-  name: 'expireDriverLicense',
-  rules,
-  placeholder: '',
-  show: false,
-  typeInput: 'datepicker',
-  options: []
-}, {
-  label: 'RG',
-  name: 'rg',
-  rules,
-  placeholder: '',
-  show: false,
-  typeInput: 'input',
-  options: []
-}, {
-  label: 'CPF',
-  name: 'cpf',
-  rules,
-  placeholder: '',
-  show: false,
-  typeInput: 'input',
-  options: []
-}, {
-  label: 'Validade ASO',
-  name: 'expireASO',
-  rules,
-  placeholder: '',
-  show: false,
-  typeInput: 'datepicker',
-  options: []
-}, {
-  label: 'Protocolo seguradora',
-  name: 'protocolInsuranceCompany',
-  rules,
-  placeholder: '',
-  show: false,
-  typeInput: 'input',
-  options: []
-}, {
-  label: 'Validade protocolo seguradora',
-  name: 'expireProtocolInsuranceCompany',
-  rules,
-  placeholder: '',
-  show: false,
-  typeInput: 'datepicker',
-  options: []
-}, {
-  label: 'Curso MOP',
-  name: 'mop',
-  rules,
-  placeholder: '',
-  show: false,
-  typeInput: 'radio',
-  options: [
-    { value: true, label: 'Sim' },
-    { value: false, label: 'Não' }
-  ],
-}, {
-  label: 'Telefone',
-  name: 'phone',
-  rules,
-  placeholder: '',
-  show: false,
-  typeInput: 'input',
-  options: []
 },
+  {
+    label: 'Validade CNH',
+    name: 'expireDriverLicense',
+    rules,
+    placeholder: '',
+    show: false,
+    typeInput: 'datepicker',
+    options: []
+  },
+   {
+    label: 'RG',
+    name: 'rg',
+    rules,
+    placeholder: '',
+    show: false,
+    typeInput: 'input',
+    options: []
+  },
+   {
+    label: 'CPF',
+    name: 'cpf',
+    rules,
+    placeholder: '',
+    show: false,
+    typeInput: 'input',
+    options: []
+  },
+   {
+    label: 'Validade ASO',
+    name: 'expireASO',
+    rules,
+    placeholder: '',
+    show: false,
+    typeInput: 'datepicker',
+    options: []
+  },
+   {
+    label: 'Protocolo seguradora',
+    name: 'protocolInsuranceCompany',
+    rules,
+    placeholder: '',
+    show: false,
+    typeInput: 'input',
+    options: []
+  },
+   {
+    label: 'Validade protocolo seguradora',
+    name: 'expireProtocolInsuranceCompany',
+    rules,
+    placeholder: '',
+    show: false,
+    typeInput: 'datepicker',
+    options: []
+  },
+   {
+    label: 'Curso MOP',
+    name: 'mop',
+    rules,
+    placeholder: '',
+    show: false,
+    typeInput: 'radio',
+    options: [
+      { value: true, label: 'Sim' },
+      { value: false, label: 'Não' }
+    ],
+  },{
+    label: 'Vínculo',
+    name: 'bond',
+    rules,
+    placeholder: '',
+    show: false,
+    typeInput: 'select',
+    options: [
+      { value: 'AGREGADO', label: 'AGREGADO' },
+      { value: 'FROTA', label: 'FROTA' },
+      { value: 'TERCEIRO', label: 'TERCEIRO' },
+      { value: 'TERCEIRO FIDELIZADO', label: 'TERCEIRO FIDELIZADO' }
+    ],
+  },
+   {
+    label: 'Telefone',
+    name: 'phone',
+    rules,
+    placeholder: '',
+    show: false,
+    typeInput: 'input',
+    options: []
+  },
 ]
 
 const formSettingsDriverEdit = formSettingsDriver.map(item => ({ ...item, show: true }))
@@ -96,7 +117,8 @@ const settingsNextStep = {
   expireASO: 'protocolInsuranceCompany',
   protocolInsuranceCompany: 'expireProtocolInsuranceCompany',
   expireProtocolInsuranceCompany: 'mop',
-  mop: 'phone',
+  mop: 'bond',
+  bond: 'phone',
 }
 
 export {
