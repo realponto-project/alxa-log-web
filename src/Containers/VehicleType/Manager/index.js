@@ -29,8 +29,6 @@ const Manager = ({
     setShowModal(true)
   }
 
-  console.log(searchValue)
-
   return (
     <Row gutter={[8, 16]}>
       <Col span={24}>

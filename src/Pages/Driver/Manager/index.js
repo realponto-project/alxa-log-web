@@ -9,6 +9,7 @@ import ManagerContainer from '../../../Containers/Driver/Manager'
 import { getAll, createDriver, updateDriver } from '../../../Services/Driver'
 import { add, isEmpty, pathOr, pipe } from 'ramda'
 import { parseQueryParams } from '../../../utils/queryParams'
+import moment from 'moment'
 
 const success = (text) => {
   message.success(text)
@@ -97,7 +98,12 @@ const Manager = ({ history }) => {
   }
 
   const handleSelectedDriver = (driver) => {
-    setDriverSelected(driver)
+    setDriverSelected({ 
+      ...driver, 
+      expireASO: moment(pathOr('', ['expireASO'], driver)),
+      expireDriverLicense: moment(pathOr('', ['expireDriverLicense'], driver)),
+      expireProtocolInsuranceCompany: moment(pathOr('', ['expireProtocolInsuranceCompany'], driver)),
+    })
   }
 
   const handleSubmit = async (values) => {
@@ -105,7 +111,12 @@ const Manager = ({ history }) => {
       await createDriver({
         ...values,
         driverLicense: values.driverLicense.replace(/\D/g, ''),
-        phone: values.phone.replace(/\D/g, '')
+        phone: values.phone.replace(/\D/g, ''),
+        rg: values.rg.replace(/\D/g, ''),
+        cpf: values.cpf.replace(/\D/g, ''),
+        expireASO: values.expireASO._d,
+        expireDriverLicense: values.expireDriverLicense._d,
+        expireProtocolInsuranceCompany: values.expireProtocolInsuranceCompany._d
       })
       getDrivers()
       success('Cadastro de motorista realizado com sucesso!')
