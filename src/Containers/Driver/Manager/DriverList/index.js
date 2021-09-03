@@ -1,7 +1,10 @@
 import React from 'react'
-import { Table, Button, Space, Tooltip } from 'antd'
+import { Table, Button, Space, Tooltip, Typography, Col, Row } from 'antd'
 import { InfoCircleOutlined } from '@ant-design/icons';
 import { map } from 'ramda'
+import moment from 'moment';
+
+const { Title, Paragraph, Text, Link } = Typography;
 
 const columns = ({ handleClickEdit, goToDetail }) => [
   {
@@ -58,10 +61,35 @@ const columns = ({ handleClickEdit, goToDetail }) => [
     title: ' ',
     dataIndex: 'id',
     render: (_, source) => (
-      <Tooltip placement="bottom" title={()=> {
-        <div>
-          teste
-        </div>
+      <Tooltip placement="bottom" title={() => {
+       return(
+         <>
+         <Row>
+           <Col>
+            <Paragraph style={{color: 'white'}}>Validade ASO:</Paragraph>
+           </Col>
+           <Col>
+            <Paragraph style={{color: 'white'}}>{moment(source.expireASO).format('DD/MM/YYYY')}  -  {moment().format() > source.expireASO ? 'Ok' : 'Vencido'}</Paragraph>
+           </Col>
+         </Row>
+         <Row>
+           <Col>
+            <Paragraph style={{color: 'white'}}>Validade CNH:</Paragraph>
+           </Col>
+           <Col>
+            <Paragraph style={{color: 'white'}}>{moment(source.expireDriverLicense).format('DD/MM/YYYY')}  -  {moment().format() > source.expireDriverLicense ? 'Ok' : 'Vencido'}</Paragraph>
+           </Col>
+         </Row>
+         <Row>
+           <Col>
+            <Paragraph style={{color: 'white'}}>Validade Protocolo:</Paragraph>
+           </Col>
+           <Col>
+            <Paragraph style={{color: 'white'}}>{moment(source.expireProtocolInsuranceCompany).format('DD/MM/YYYY')}  -  {moment().format() > source.expireProtocolInsuranceCompany ? 'Ok' : 'Vencido'}</Paragraph>
+           </Col>
+         </Row>
+         </>
+       ) 
       }}>
         <InfoCircleOutlined />
       </Tooltip>
