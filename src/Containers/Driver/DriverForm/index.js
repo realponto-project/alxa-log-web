@@ -21,7 +21,8 @@ const renderFormItems = ({
   placeholder,
   show,
   typeInput,
-  options
+  options,
+  format
 }) => {
   const Component = formItemsComponent[typeInput]
 
@@ -33,6 +34,7 @@ const renderFormItems = ({
           name={name}
           placeholder={placeholder}
           options={options}
+          format={format}
         />
       </Form.Item>
     )
