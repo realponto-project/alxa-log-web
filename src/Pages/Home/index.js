@@ -1,36 +1,39 @@
 import React, { useEffect, useState } from 'react'
-import HomeContainer from '../../Containers/Home'
 import qs from 'qs'
+import moment from 'moment'
+import { useHistory } from 'react-router-dom'
+import { applySpec, path } from 'ramda'
+
+import HomeContainer from '../../Containers/Home'
 import {
   getByStatus,
   // getByStatusCompany,
   getByStatusOperation
 } from '../../Services/Summary'
 import GAInitialize from '../../utils/ga'
-import { useHistory } from 'react-router-dom'
 
 const Home = () => {
   const history = useHistory()
-  const [homeState] = useState({
-    customers: null,
-    orders: null,
-    ordersTotal: [],
-    ordersToday: []
-  })
+  // const [homeState] = useState({
+  //   customers: null,
+  //   orders: null,
+  //   ordersTotal: [],
+  //   ordersToday: []
+  // })
   const [orderStatus, setOrderStatus] = useState([])
   // const [orderCompanyStatus, setOrderCompanyStatus] = useState([])
   const [orderOperationStatus, setOrderOperationStatus] = useState([])
+  const [querDate, setQueryDate] = useState({
+    start: moment().subtract(1, 'month').startOf('day'),
+    end: moment().endOf('day')
+  })
+  const [dateChoosed, setDateChoosed] = useState('month')
+
   GAInitialize('/home')
 
-  useEffect(() => {
-    getByStatusAll()
-    // getByCompanyAll()
-    getByOperationAll()
-  }, [])
-
-  const getByStatusAll = async () => {
+  const getByStatusAll = async (params) => {
     try {
-      const { data } = await getByStatus()
+      const { data } = await getByStatus(params)
       setOrderStatus(data)
     } catch (error) {
       window.onerror(
@@ -49,9 +52,9 @@ const Home = () => {
   //   }
   // }
 
-  const getByOperationAll = async () => {
+  const getByOperationAll = async (params) => {
     try {
-      const { data } = await getByStatusOperation()
+      const { data } = await getByStatusOperation(params)
       setOrderOperationStatus(data)
     } catch (error) {
       window.onerror(
@@ -72,12 +75,54 @@ const Home = () => {
     })
   }
 
+  const handleChangeDate = (type, options = {}) => {
+    setDateChoosed(type)
+
+    const end = moment().endOf('day')
+    const { dates } = options
+
+    switch (type) {
+      case 'today':
+        setQueryDate({ start: moment().startOf('day'), end })
+        break
+      case 'week':
+        setQueryDate({
+          start: moment().subtract(1, 'week').startOf('day'),
+          end
+        })
+        break
+      case 'month':
+        setQueryDate({
+          start: moment().subtract(1, 'month').startOf('day'),
+          end
+        })
+        break
+      case 'custom':
+        setQueryDate({ start: dates[0], end: dates[1] })
+        break
+    }
+  }
+
+  useEffect(() => {
+    const dates = applySpec({
+      start: path(['start', '_d']),
+      end: path(['end', '_d'])
+    })(querDate)
+
+    // getByCompanyAll()
+    getByOperationAll({ dates })
+    getByStatusAll({ dates })
+  }, [querDate])
+
   return (
     <HomeContainer
+      dateChoosed={dateChoosed}
       goToOrders={goToOrders}
-      orderStatus={orderStatus}
+      handleChangeDate={handleChangeDate}
       // orderCompanyStatus={orderCompanyStatus}
       orderOperationStatus={orderOperationStatus}
+      orderStatus={orderStatus}
+      querDate={querDate}
     />
   )
 }
