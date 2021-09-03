@@ -1,11 +1,37 @@
 import React, { useState } from 'react'
 import { Button, Card, Col, Input, Row, Typography } from 'antd'
 import { SearchOutlined, PlusOutlined } from '@ant-design/icons'
+import { map } from 'ramda'
 
 import DriverForm from '../DriverForm'
 import DriverList from './DriverList'
+import AvailableSVG from './available.svg'
+import CircleBar from '../../../Components/circleBar'
 
-const { Title } = Typography
+const { Link, Title, Text } = Typography
+
+const CardStatus = ({ title, count, srcImage, total, redirectPage }) => (
+  <Card
+    style={{
+      borderRadius: 5,
+      boxShadow: '0px 4px 4px rgba(0, 0, 0, 0.1)'
+    }}>
+    <Row align="middle" justify="space-between">
+      <Col span={12}>
+        <Text style={{ fontSize: '1rem' }}>{title}</Text>
+        <Title level={1} style={{ margin: 0, padding: 0 }}>
+          {count > 0 ? count : '-'}
+        </Title>
+      </Col>
+      <Col span={12}>
+        <CircleBar icon={srcImage} total={total} count={count} />
+      </Col>
+      <Col span={24}>
+        <Link onClick={redirectPage}>Detalhes</Link>
+      </Col>
+    </Row>
+  </Card>
+)
 
 const Manager = ({
   handleSelectedDriver,
@@ -20,15 +46,29 @@ const Manager = ({
   clearFilter,
   handleChangeTableEvent,
   offset,
-  goToDetail
+  goToDetail,
+  handleClickCard
 }) => {
   const [showModal, setShowModal] = useState(false)
   const openModal = () => setShowModal(true)
-
   const showModalEditDriver = (value) => {
     handleSelectedDriver(value)
     setShowModal(true)
   }
+
+  const settingsCards = [
+    {
+      key: 'expireDriverLicense',
+      title: 'CNH vencida',
+      count: source.countExpireDriverLicense
+    },
+    { key: 'expireASO', title: 'ASO vencida', count: source.countExpireASO },
+    {
+      key: 'expireProtocolInsuranceCompany',
+      title: 'Protocolo de segurança vencido',
+      count: source.countExpireProtocolInsuranceCompany
+    }
+  ]
 
   return (
     <Row gutter={[8, 16]}>
@@ -52,6 +92,21 @@ const Manager = ({
           </Row>
         </Card>
       </Col>
+
+      {map(
+        ({ title, count, key }) => (
+          <Col key={key} span={8}>
+            <CardStatus
+              redirectPage={() => handleClickCard(key)}
+              total={source.count}
+              count={count}
+              title={title}
+              srcImage={AvailableSVG}
+            />
+          </Col>
+        ),
+        settingsCards
+      )}
 
       <Col span={24}>
         <Card bordered={false}>

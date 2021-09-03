@@ -2,11 +2,17 @@ import React, { useEffect, useState } from 'react'
 import { message } from 'antd'
 import { useLocation, withRouter } from 'react-router-dom'
 import { validateBr } from 'js-brasil'
+import moment from 'moment'
 import qs from 'qs'
 
 import GAInitialize from '../../../utils/ga'
 import ManagerContainer from '../../../Containers/Driver/Manager'
-import { getAll, createDriver, updateDriver } from '../../../Services/Driver'
+import {
+  getAll,
+  createDriver,
+  updateDriver,
+  getSummaryExpire
+} from '../../../Services/Driver'
 import { add, isEmpty, pathOr, pipe } from 'ramda'
 import { parseQueryParams } from '../../../utils/queryParams'
 import moment from 'moment'
@@ -25,6 +31,11 @@ const Manager = ({ history }) => {
   const [searchValue, setSearchValue] = useState('')
   const [offset, setoffset] = useState(1)
   const [loading, setLoading] = useState(true)
+  const [counts, setCounts] = useState({
+    countExpireDriverLicense: 0,
+    countExpireProtocolInsuranceCompany: 0,
+    countExpireASO: 0
+  })
   const { search, pathname } = useLocation()
 
   GAInitialize('/driver')
@@ -130,6 +141,10 @@ const Manager = ({ history }) => {
     const searchLocalStorage = localStorage.getItem('driverSearch')
     const queryParams = parseQueryParams(search)
 
+    getSummaryExpire()
+      .then(({ data }) => setCounts(data))
+      .catch((err) => console.error(err))
+
     if (!search && searchLocalStorage) {
       changeQueryParams(
         validateBr.cnh(searchValue)
@@ -150,8 +165,22 @@ const Manager = ({ history }) => {
     getDrivers()
   }, [search])
 
+  const handleClickCard = (event) => {
+    console.log('>>>', event)
+    changeQueryParams(
+      qs.stringify({
+        [event]: [
+          new Date(moment().subtract(10, 'years')).toISOString(),
+          new Date(moment().startOf('day')).toISOString()
+        ]
+      })
+    )
+  }
+
   return (
     <ManagerContainer
+      handleClickCard={handleClickCard}
+      counts={counts}
       clearFilter={clearFilter}
       driverSelected={driverSelected}
       goToDetail={(id) => history.push(`/logged/driver-detail/${id}`)}
