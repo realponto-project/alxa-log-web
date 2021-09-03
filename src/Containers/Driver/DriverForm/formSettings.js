@@ -1,3 +1,6 @@
+import { cpf } from 'cpf-cnpj-validator'
+import { isEmpty } from 'ramda'
+
 const rules = [{ required: true, message: 'Este campo é obrigatório!' }]
 const formSettingsDriver = [{
   label: 'Nome completo',
@@ -37,7 +40,20 @@ const formSettingsDriver = [{
    {
     label: 'CPF',
     name: 'cpf',
-    rules,
+    rules: [
+      {
+        required: true,
+        validator: async (_, value) => {
+          if(isEmpty(value)) {
+            return Promise.reject(new Error('Este campo é obrigatório!' ))
+          }
+          return (
+            !cpf.isValid(value)
+            && Promise.reject(new Error('CPF inválido!'))
+          )
+        }
+      },
+    ],
     placeholder: '',
     show: false,
     typeInput: 'input',
@@ -89,10 +105,10 @@ const formSettingsDriver = [{
     show: false,
     typeInput: 'select',
     options: [
-      { value: 'AGREGADO', label: 'AGREGADO' },
-      { value: 'FROTA', label: 'FROTA' },
-      { value: 'TERCEIRO', label: 'TERCEIRO' },
-      { value: 'TERCEIRO FIDELIZADO', label: 'TERCEIRO FIDELIZADO' }
+      { value: 'AGREGADO', label: 'Agregado' },
+      { value: 'FROTA', label: 'Frota' },
+      { value: 'TERCEIRO', label: 'Terceiro' },
+      { value: 'TERCEIRO FIDELIZADO', label: 'Terceiro fidelizado' }
     ],
   },
    {
