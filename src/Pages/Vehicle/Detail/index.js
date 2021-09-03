@@ -33,19 +33,21 @@ const Detail = ({ match }) => {
 
   const getAllMaintenance = async () => {
     setLoading(true)
-    try {
-      const { data } = await getAllMaintenances({
-        ...query,
-        plate: vehicle.plate
-      })
-      setMaintenances(data)
-      setLoading(false)
-    } catch (error) {
-      setLoading(false)
-      window.onerror(
-        `getAllMaintenancesByVehicleId: ${error}`,
-        window.location.href
-      )
+    if (vehicle.plate) {
+      try {
+        const { data } = await getAllMaintenances({
+          ...query,
+          plate: vehicle.plate
+        })
+        setMaintenances(data)
+        setLoading(false)
+      } catch (error) {
+        setLoading(false)
+        window.onerror(
+          `getAllMaintenancesByVehicleId: ${error}`,
+          window.location.href
+        )
+      }
     }
   }
 
@@ -68,12 +70,13 @@ const Detail = ({ match }) => {
   }
 
   useEffect(() => {
-    getAllMaintenance()
-  }, [query])
+    if(!isEmpty(vehicle)){
+      getAllMaintenance()
+    }
+  }, [query, vehicle])
 
   useEffect(() => {
     filterForm.setFieldsValue({ plate: vehicle.plate })
-    getAllMaintenance()
   }, [vehicle])
 
   useEffect(() => {

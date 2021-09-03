@@ -9,8 +9,6 @@ import {
   includes,
   isEmpty,
   keys,
-  length,
-  lt,
   pathOr,
   pipe,
   __
@@ -219,11 +217,19 @@ const Manager = ({ history, match }) => {
       getAllMaintenances()
       success('Manutenção criada com sucesso!')
     } catch (error) {
+      const errorMessageResponse = pathOr(null, ['data', 'error'])
+      let textMessage = 'Não foi possível criar a manutenção!'
+
+      if (errorMessageResponse === 'Allow only one order for this plate!') {
+        textMessage = `Já existe uma manutenção aberta para o veículo - ${values.plateCart}`
+      }
+
       window.onerror(
         `createMaintenanceOrder: ${error.error}`,
         window.location.href
       )
-      errorMessage('Não foi criar a manutenção!')
+
+      errorMessage(textMessage)
     }
   }
 
@@ -232,7 +238,6 @@ const Manager = ({ history, match }) => {
     getAllDriver({ limit: 100000 })
     getAllBranch({ limit: 400 })
     getAllOperation({ limit: 100000 })
-
     if (!search && localStorage.getItem('searchValue')) {
       const searchValueLocal = localStorage.getItem('searchValue')
 
@@ -248,7 +253,7 @@ const Manager = ({ history, match }) => {
             : []
       })
     } else {
-      const urlParams = qs.parse(search, { arrayFormat: 'index' })
+      const urlParams = parseQueryParams(search)
       const checkBoxValues = {}
       forEach(
         (key) => (checkBoxValues[key] = urlParams[key]),
@@ -258,6 +263,7 @@ const Manager = ({ history, match }) => {
         )
       )
       setSearchValue(checkBoxValues)
+
       if (!isEmpty(checkBoxValues)) setMoreFilters(true)
     }
   }, [])

@@ -1,5 +1,5 @@
 import React from 'react'
-import { Table, Tag } from 'antd'
+import { Table, Tag, Button } from 'antd'
 import { cnpj } from 'cpf-cnpj-validator'
 
 import formattedDate from '../../../../utils/parserDate'
@@ -7,16 +7,28 @@ import formattedDate from '../../../../utils/parserDate'
 const chartSettings = {
   collision: 'Colisão',
   accident: 'Acidente',
-  vehicle_break_down: 'Veículo quebrado'
+  vehicle_break_down: 'Veículo quebrado',
+  refusal_of_freight: 'Recusa de frete',
+  absence_without_justification: 'Falta sem Justificativa',
+  absence_with_justification: 'Falta com justificativa',
+  speeding: 'Excesso de velocidade',
+  lack_of_PPE: 'Falta de EPI',
+  lack_of_cargo_lashing: 'Falta de amarração da carga'
 }
 
 const colors = {
   collision: '#5DA0FC',
   accident: '#268E86',
-  vehicle_break_down: '#2D2D2D'
+  vehicle_break_down: '#2D2D2D',
+  refusal_of_freight: '#1772C9',
+  absence_without_justification: '#D588F2',
+  absence_with_justification: '#F29F03',
+  speeding: '#17C9B2',
+  lack_of_PPE: '#7550D8',
+  lack_of_cargo_lashing: '#F6C21F'
 }
 
-const columns = [
+const columns = (handleClickEdit, userId) => ([
   {
     title: 'Data do incidente',
     dataIndex: 'incidentDate',
@@ -63,13 +75,26 @@ const columns = [
         </small>
       </>
     )
+  },
+  {
+    title: ' ',
+    dataIndex: 'id',
+    key: 'id',
+    fixed: 'left',
+    render: (_, source) => (
+      userId === source.userId && (
+        <Button type="link" onClick={() => handleClickEdit(source)}>
+          Editar
+        </Button>
+      )
+    )
   }
-]
+])
 
-const IncidentList = ({ rows, count, current, loading, handleChange }) => {
+const IncidentList = ({ rows, count, current, loading, handleChange, handleClickEdit, userId }) => {
   return (
     <Table
-      columns={columns}
+      columns={columns(handleClickEdit, userId)}
       dataSource={rows}
       loading={loading}
       onChange={handleChange}

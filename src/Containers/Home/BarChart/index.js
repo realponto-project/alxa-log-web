@@ -22,17 +22,16 @@ const chartSettings = [
   { label: 'courtyard', value: 'Pátio', color: '#EA5656' },
   { label: 'wash', value: 'Lavar', color: '#D588F2' },
   { label: 'parking', value: 'Estacionar', color: '#1772C9' },
-  { label: 'awaiting_repair', value: 'Aguardando peça', color: '#7550D8' }, 
+  { label: 'awaiting_repair', value: 'Aguardando peça', color: '#7550D8' },
   { label: 'supply', value: 'Abastecer', color: '#17C9B2' },
   { label: 'avaiable', value: 'Aguardando Retirada', color: '#F29F03' },
   { label: 'check-out', value: 'Saída', color: '#264ABE' },
-  { label: 'external_service', value: 'Serviços externos', color: '#F6C21F' },
+  { label: 'external_service', value: 'Serviços externos', color: '#F6C21F' }
 ]
 
 const Chart = ({ data }) => {
-  const dataParse = data
-    .map((item) => ({...item, name: `${item.name.substr(8, 2)}/${item.name.substr(5, 2)}/${item.name.substr(0, 4)}`, order: item.name.substr(8, 2)}))
-    .sort((a, b) => a.order - b.order)
+  const dataParse = data.sort((a, b) => new Date(a.name) - new Date(b.name))
+
   return (
     <Row gutter={[0, 16]}>
       <Col span={24}>
@@ -46,8 +45,8 @@ const Chart = ({ data }) => {
             margin={{ left: 15 }}
             maxBarSize={13}>
             <XAxis
+              dataKey={({ name }) => formattedDate(name, 'DD/MM/YYYY')}
               axisLine={false}
-              dataKey="name"
               tick={{ fontSize: 13 }}
               tickMargin={10}
             />
@@ -69,10 +68,7 @@ const Chart = ({ data }) => {
               tick={{ fontSize: 13 }}
             />
             <CartesianGrid stroke="#d7d7d7" vertical={false} />
-            <Tooltip
-              cursor={{ fillOpacity: 0.3 }}
-              labelFormatter={(value) => formattedDate(value, 'DD/MM/YYYY', 1)}
-            />
+            <Tooltip cursor={{ fillOpacity: 0.3 }} />
             {chartSettings.map(({ label, color, value }) => (
               <Bar
                 dataKey={label}
@@ -89,10 +85,12 @@ const Chart = ({ data }) => {
       </Col>
       <Col span={24}>
         <Row style={{ marginTop: '20px' }} gutter={[8, 8]} wrap={true}>
-            <Col span={24}>
-              <Title level={5}>LEGENDAS</Title>
-            </Col>
-            {chartSettings.sort((a, b) => a.value - b.value).map(({ color, value, label }) => (
+          <Col span={24}>
+            <Title level={5}>LEGENDAS</Title>
+          </Col>
+          {chartSettings
+            .sort((a, b) => a.value - b.value)
+            .map(({ color, value, label }) => (
               <Col key={`${color}-${value}`} xs={6} sm={6} md={4} lg={4} xl={4}>
                 <Tag color={color}>{value}</Tag>
               </Col>

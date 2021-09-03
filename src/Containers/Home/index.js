@@ -1,5 +1,14 @@
 import React from 'react'
-import { Row, Col, Image, Card, Typography } from 'antd'
+import {
+  Row,
+  Col,
+  Image,
+  Card,
+  Typography,
+  Button,
+  Space,
+  DatePicker
+} from 'antd'
 
 import BarChart from './BarChart'
 import VerticalChart from './VerticalChart'
@@ -14,6 +23,7 @@ import AvailableSVG from './available.svg'
 import AvailableEmptySVG from './available-empty.svg'
 
 const { Link, Text, Title } = Typography
+const { RangePicker } = DatePicker
 
 const CardStatus = ({ title, count, redirectPage, srcImage }) => (
   <Card
@@ -29,24 +39,23 @@ const CardStatus = ({ title, count, redirectPage, srcImage }) => (
         </Title>
       </Col>
       <Col span={12}>
-        <Image
-          preview={false}
-          src={srcImage}
-          alt="orders"
-        />
+        <Image preview={false} src={srcImage} alt="orders" />
       </Col>
       <Col span={24}>
-        <Link
-          onClick={redirectPage}
-        >
-          Detalhes
-        </Link>
+        <Link onClick={redirectPage}>Detalhes</Link>
       </Col>
     </Row>
   </Card>
 )
 
-const Home = ({ orderStatus, orderOperationStatus, goToOrders }) => {
+const Home = ({
+  dateChoosed,
+  goToOrders,
+  handleChangeDate,
+  orderOperationStatus,
+  orderStatus,
+  querDate
+}) => {
   const vehicleTotal = orderStatus
     .filter(
       ({ status }) =>
@@ -91,19 +100,72 @@ const Home = ({ orderStatus, orderOperationStatus, goToOrders }) => {
         </p>
       </Col>
 
+      <Col span={24}>
+        <Row justify="end">
+          <Space size="middle">
+            <Button
+              onClick={() => handleChangeDate('today')}
+              ghost={dateChoosed === 'today'}
+              className={dateChoosed === 'today' && 'btn-active'}
+              size="small"
+              shape="round">
+              Hoje
+            </Button>
+            <Button
+              onClick={() => handleChangeDate('week')}
+              ghost={dateChoosed === 'week'}
+              className={dateChoosed === 'week' && 'btn-active'}
+              size="small"
+              shape="round">
+              7 dias
+            </Button>
+            <Button
+              onClick={() => handleChangeDate('month')}
+              ghost={dateChoosed === 'month'}
+              className={dateChoosed === 'month' && 'btn-active'}
+              size="small"
+              shape="round">
+              30 dias
+            </Button>
+
+            <RangePicker
+              format="DD-MM-YYYY"
+              value={[querDate.start, querDate.end]}
+              className={dateChoosed === 'custom' && 'btn-active'}
+              onChange={(dates) => handleChangeDate('custom', { dates })}
+              bordered={true}
+            />
+          </Space>
+        </Row>
+      </Col>
+
       <Col span={6}>
         <CardStatus
           count={vehicleTotalSolicitacion}
           redirectPage={() => goToOrders(['solicitation'])}
           title="Total de solicitações"
-          srcImage={vehicleTotalSolicitacion > 0 ? CustomersSvg : EmptyStateCustomersSvg}
+          srcImage={
+            vehicleTotalSolicitacion > 0 ? CustomersSvg : EmptyStateCustomersSvg
+          }
         />
       </Col>
 
       <Col span={6}>
         <CardStatus
           count={vehicleTotal}
-          redirectPage={() => goToOrders([])}
+          redirectPage={() =>
+            goToOrders([
+              'check-in',
+              'avaiable',
+              'parking',
+              'courtyard',
+              'awaiting_repair',
+              'dock',
+              'wash',
+              'supply',
+              'external_service'
+            ])
+          }
           title="Total de veículos"
           srcImage={vehicleTotal > 0 ? OrdersSvg : EmptyStateOrderSvg}
         />
@@ -114,7 +176,9 @@ const Home = ({ orderStatus, orderOperationStatus, goToOrders }) => {
           count={vehicleTotalAvailable}
           redirectPage={() => goToOrders(['avaiable'])}
           title="Total de liberado"
-          srcImage={vehicleTotalAvailable > 0 ? AvailableSVG : AvailableEmptySVG}
+          srcImage={
+            vehicleTotalAvailable > 0 ? AvailableSVG : AvailableEmptySVG
+          }
         />
       </Col>
 
