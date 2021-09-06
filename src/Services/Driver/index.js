@@ -8,6 +8,10 @@ const createDriver = async (values) => {
   return await axiosIntance.post('/drivers', values)
 }
 
+const getSummaryExpire = async () => {
+  return await axiosIntance.get('/drivers-summary-expire')
+}
+
 const updateDriver = async (values) => {
   return await axiosIntance.put(`/drivers/${values.id}`, values)
 }
@@ -35,6 +39,7 @@ const getAllIncidentsByDriverId = async (id, params = {}) => {
 export {
   getAll,
   getById,
+  getSummaryExpire,
   createDriver,
   updateDriver,
   createDriverIncident,

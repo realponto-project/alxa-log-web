@@ -1,15 +1,5 @@
 import React, { useState } from 'react'
-import {
-  Row,
-  Col,
-  Card,
-  Typography,
-  Tag,
-  Radio,
-  Table,
-  Button,
-  Image
-} from 'antd'
+import { Row, Col, Card, Typography, Tag, Radio, Table, Button } from 'antd'
 import BarChart from './BarChart'
 import { cnpj } from 'cpf-cnpj-validator'
 import { BarChartOutlined, DatabaseOutlined } from '@ant-design/icons'
@@ -24,15 +14,11 @@ import diffTime from '../../../utils/permananceTime'
 
 import OrdersSvg from './orders.svg'
 import CustomersSvg from './customers.svg'
-import EmptyStateOrderSvg from './empty-state-order.svg'
-import EmptyStateCustomersSvg from './empty-state-customers.svg'
 import CheckoutSvg from './checkout.svg'
-import CheckoutEmptySvg from './checkout-empty.svg'
 import AvailableSVG from './available.svg'
-import AvailableEmptySVG from './available-empty.svg'
 
-import styles from './style.module.css'
 import FilterMaintenence from '../../../Components/Filters/Maintenance'
+import CircleBar from '../../../Components/circleBar'
 
 const { Text, Title } = Typography
 
@@ -106,6 +92,26 @@ const columns = (gotoDetailOrder) => [
   }
 ]
 
+const CardStatus = ({ title, count, srcImage, total }) => (
+  <Card
+    style={{
+      borderRadius: 5,
+      boxShadow: '0px 4px 4px rgba(0, 0, 0, 0.1)'
+    }}>
+    <Row align="middle" justify="space-between">
+      <Col span={12}>
+        <Text style={{ fontSize: '1rem' }}>{title}</Text>
+        <Title level={1} style={{ margin: 0, padding: 0 }}>
+          {count > 0 ? count : '-'}
+        </Title>
+      </Col>
+      <Col span={12}>
+        <CircleBar icon={srcImage} total={total} count={count} />
+      </Col>
+    </Row>
+  </Card>
+)
+
 const Detail = ({
   company,
   chartData,
@@ -121,6 +127,8 @@ const Detail = ({
   const [mode, setMode] = useState('table')
 
   const handleChange = ({ target }) => setMode(target.value)
+
+  const total = chartData.reduce((acc, prev) => acc + Number(prev.count), 0)
   const vehicleTotal = chartData
     .filter(
       ({ status }) =>
@@ -179,85 +187,39 @@ const Detail = ({
       </Col>
 
       <Col span={6}>
-        <div className={styles.cardTotalValues}>
-          <div>
-            <h1 className={styles.cardTotalTitle}>Total de solicitações</h1>
-            <h1 className={styles.cardTotalValue}>
-              {vehicleTotalSolicitacion && vehicleTotalSolicitacion.count > 0
-                ? vehicleTotalSolicitacion.count
-                : '-'}
-            </h1>
-          </div>
-          <Image
-            preview={false}
-            src={
-              vehicleTotalSolicitacion && vehicleTotalSolicitacion.count > 0
-                ? CustomersSvg
-                : EmptyStateCustomersSvg
-            }
-            alt="orders"
-          />
-        </div>
+        <CardStatus
+          title="Total de solicitações"
+          count={vehicleTotalSolicitacion?.count ?? '-'}
+          srcImage={CustomersSvg}
+          total={total}
+        />
       </Col>
 
       <Col span={6}>
-        <div className={styles.cardTotalValues}>
-          <div>
-            <h1 className={styles.cardTotalTitle}>Total de veículos</h1>
-            <h1 className={styles.cardTotalValue}>
-              {vehicleTotal > 0 ? vehicleTotal : '-'}
-            </h1>
-          </div>
-          <Image
-            preview={false}
-            src={vehicleTotal > 0 ? OrdersSvg : EmptyStateOrderSvg}
-            alt="orders"
-          />
-        </div>
+        <CardStatus
+          title="Total de veículos"
+          count={vehicleTotal || '-'}
+          srcImage={OrdersSvg}
+          total={total}
+        />
       </Col>
 
       <Col span={6}>
-        <div className={styles.cardTotalValues}>
-          <div>
-            <h1 className={styles.cardTotalTitle}>Total de Aguardando Retirada</h1>
-            <h1 className={styles.cardTotalValue}>
-              {vehicleTotalAvailable && vehicleTotalAvailable.count > 0
-                ? vehicleTotalAvailable.count
-                : '-'}
-            </h1>
-          </div>
-          <Image
-            preview={false}
-            src={
-              vehicleTotalAvailable && vehicleTotalAvailable.count > 0
-                ? AvailableSVG
-                : AvailableEmptySVG
-            }
-            alt="orders"
-          />
-        </div>
+        <CardStatus
+          title="Total de Aguardando Retirada"
+          count={vehicleTotalAvailable?.count ?? '-'}
+          srcImage={AvailableSVG}
+          total={total}
+        />
       </Col>
 
       <Col span={6}>
-        <div className={styles.cardTotalValues}>
-          <div>
-            <h1 className={styles.cardTotalTitle}>Total de concluídos</h1>
-            <h1 className={styles.cardTotalValue}>
-              {vehicleTotalFinished && vehicleTotalFinished.count > 0
-                ? vehicleTotalFinished.count
-                : '-'}
-            </h1>
-          </div>
-          <Image
-            preview={false}
-            src={
-              vehicleTotalFinished && vehicleTotalFinished.count > 0
-                ? CheckoutSvg
-                : CheckoutEmptySvg
-            }
-            alt="orders"
-          />
-        </div>
+        <CardStatus
+          title="Total de concluídos"
+          count={vehicleTotalFinished?.count ?? '-'}
+          srcImage={CheckoutSvg}
+          total={total}
+        />
       </Col>
 
       {mode === 'table' && (
