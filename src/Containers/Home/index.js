@@ -14,18 +14,16 @@ import BarChart from './BarChart'
 import VerticalChart from './VerticalChart'
 import OrdersSvg from './orders.svg'
 import CustomersSvg from './customers.svg'
-import EmptyStateOrderSvg from './empty-state-order.svg'
-import EmptyStateCustomersSvg from './empty-state-customers.svg'
 import styles from './style.module.css'
 import CheckoutSvg from './checkout.svg'
-import CheckoutEmptySvg from './checkout-empty.svg'
 import AvailableSVG from './available.svg'
-import AvailableEmptySVG from './available-empty.svg'
+
+import CircleBar from '../../Components/circleBar'
 
 const { Link, Text, Title } = Typography
 const { RangePicker } = DatePicker
 
-const CardStatus = ({ title, count, redirectPage, srcImage }) => (
+const CardStatus = ({ title, count, redirectPage, srcImage, total }) => (
   <Card
     style={{
       borderRadius: 5,
@@ -39,7 +37,7 @@ const CardStatus = ({ title, count, redirectPage, srcImage }) => (
         </Title>
       </Col>
       <Col span={12}>
-        <Image preview={false} src={srcImage} alt="orders" />
+        <CircleBar icon={srcImage} total={total} count={count} />
       </Col>
       <Col span={24}>
         <Link onClick={redirectPage}>Detalhes</Link>
@@ -77,6 +75,8 @@ const Home = ({
     .filter(({ status }) => status === 'solicitation')
     .reduce((acc, prev) => acc + Number(prev.count), 0)
 
+  const total = orderStatus.reduce((acc, prev) => acc + Number(prev.count), 0)
+
   const parserDataOrders = orderStatus.reduce((arr, next) => {
     const findItem = arr.find((item) => item.name === next.name)
     if (findItem) {
@@ -93,13 +93,6 @@ const Home = ({
   }, [])
   return (
     <Row gutter={[18, 18]}>
-      <Col span={24}>
-        <h1 className={styles.welcomeTitle}>Bem-vindo</h1>
-        <p className={styles.welcomeSubtitle}>
-          Ao <b>alxa dashboard</b> para suas análises
-        </p>
-      </Col>
-
       <Col span={24}>
         <Row justify="end">
           <Space size="middle">
@@ -141,17 +134,17 @@ const Home = ({
 
       <Col span={6}>
         <CardStatus
+          total={total}
           count={vehicleTotalSolicitacion}
           redirectPage={() => goToOrders(['solicitation'])}
           title="Total de solicitações"
-          srcImage={
-            vehicleTotalSolicitacion > 0 ? CustomersSvg : EmptyStateCustomersSvg
-          }
+          srcImage={CustomersSvg}
         />
       </Col>
 
       <Col span={6}>
         <CardStatus
+          total={total}
           count={vehicleTotal}
           redirectPage={() =>
             goToOrders([
@@ -167,27 +160,27 @@ const Home = ({
             ])
           }
           title="Total de veículos"
-          srcImage={vehicleTotal > 0 ? OrdersSvg : EmptyStateOrderSvg}
+          srcImage={OrdersSvg}
         />
       </Col>
 
       <Col span={6}>
         <CardStatus
+          total={total}
           count={vehicleTotalAvailable}
           redirectPage={() => goToOrders(['avaiable'])}
           title="Total de liberado"
-          srcImage={
-            vehicleTotalAvailable > 0 ? AvailableSVG : AvailableEmptySVG
-          }
+          srcImage={AvailableSVG}
         />
       </Col>
 
       <Col span={6}>
         <CardStatus
+          total={total}
           count={vehicleTotalfinished}
           redirectPage={() => goToOrders(['check-out'])}
           title="Total de concluídos"
-          srcImage={vehicleTotalfinished > 0 ? CheckoutSvg : CheckoutEmptySvg}
+          srcImage={CheckoutSvg}
         />
       </Col>
 

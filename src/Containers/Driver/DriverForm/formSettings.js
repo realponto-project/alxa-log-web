@@ -26,6 +26,7 @@ const formSettingsDriver = [{
     placeholder: '',
     show: false,
     typeInput: 'datepicker',
+    format: "DD/MM/YYYY",
     options: []
   },
    {
@@ -66,6 +67,7 @@ const formSettingsDriver = [{
     placeholder: '',
     show: false,
     typeInput: 'datepicker',
+    format: "DD/MM/YYYY",
     options: []
   },
    {
@@ -84,6 +86,7 @@ const formSettingsDriver = [{
     placeholder: '',
     show: false,
     typeInput: 'datepicker',
+    format: "DD/MM/YYYY",
     options: []
   },
    {

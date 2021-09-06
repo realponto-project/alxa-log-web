@@ -1,8 +1,12 @@
 import React from 'react'
-import { Table, Button, Space } from 'antd'
+import { Table, Button, Space, Tooltip, Typography, Col, Row, Switch } from 'antd'
+import { InfoCircleOutlined } from '@ant-design/icons';
 import { map } from 'ramda'
+import moment from 'moment';
 
-const columns = ({ handleClickEdit, goToDetail }) => [
+const { Title, Paragraph, Text, Link } = Typography;
+
+const columns = ({ handleClickEdit, goToDetail, handleEdit }) => [
   {
     title: 'Nome',
     dataIndex: 'name',
@@ -16,9 +20,27 @@ const columns = ({ handleClickEdit, goToDetail }) => [
     fixed: 'left'
   },
   {
+    title: 'RG',
+    dataIndex: 'rg',
+    key: 'rg',
+    fixed: 'left'
+  },
+  {
+    title: 'CPF',
+    dataIndex: 'cpf',
+    key: 'cpf',
+    fixed: 'left'
+  },
+  {
     title: 'Telefone',
     dataIndex: 'phone',
     key: 'phone',
+    fixed: 'left'
+  },
+  {
+    title: 'Vínculo',
+    dataIndex: 'bond',
+    key: 'bond',
     fixed: 'left'
   },
   {
@@ -34,6 +56,56 @@ const columns = ({ handleClickEdit, goToDetail }) => [
         </Button>
       </Space>
     )
+  },
+  {
+    title: ' ',
+    dataIndex: 'id',
+    render: (_, source) => (
+      <Tooltip placement="bottom" title={() => {
+       return(
+         <>
+         <Row>
+           <Col>
+            <Paragraph style={{color: 'white'}}>Validade ASO:</Paragraph>
+           </Col>
+           <Col>
+            <Paragraph style={{color: 'white'}}>{moment(source.expireASO).format('DD/MM/YYYY')}  -  {moment().format() > source.expireASO ? 'Ok' : 'Vencido'}</Paragraph>
+           </Col>
+         </Row>
+         <Row>
+           <Col>
+            <Paragraph style={{color: 'white'}}>Validade CNH:</Paragraph>
+           </Col>
+           <Col>
+            <Paragraph style={{color: 'white'}}>{moment(source.expireDriverLicense).format('DD/MM/YYYY')}  -  {moment().format() > source.expireDriverLicense ? 'Ok' : 'Vencido'}</Paragraph>
+           </Col>
+         </Row>
+         <Row>
+           <Col>
+            <Paragraph style={{color: 'white'}}>Validade Protocolo:</Paragraph>
+           </Col>
+           <Col>
+            <Paragraph style={{color: 'white'}}>{moment(source.expireProtocolInsuranceCompany).format('DD/MM/YYYY')}  -  {moment().format() > source.expireProtocolInsuranceCompany ? 'Ok' : 'Vencido'}</Paragraph>
+           </Col>
+         </Row>
+         </>
+       ) 
+      }}>
+        <InfoCircleOutlined />
+      </Tooltip>
+    )
+  },
+  {
+    title: ' ',
+    dataIndex: 'id',
+    render: (_, source) => (
+      <Switch 
+        checked={source.activated} 
+        checkedChildren="Ativo" 
+        unCheckedChildren="Inativo"
+        onChange={() => handleEdit({...source, activated: !source.activated})}
+      />
+    )
   }
 ]
 
@@ -43,7 +115,8 @@ const DriverList = ({
   loading,
   handleChangeTableEvent,
   offset,
-  goToDetail
+  goToDetail,
+  handleEdit
 }) => {
   return (
     <Table
@@ -54,7 +127,7 @@ const DriverList = ({
         current: offset
       }}
       onChange={handleChangeTableEvent}
-      columns={columns({ handleClickEdit, goToDetail })}
+      columns={columns({ handleClickEdit, goToDetail, handleEdit })}
       loading={loading}
       dataSource={map((row) => ({ ...row, key: row.id }), datasource.rows)}
     />
