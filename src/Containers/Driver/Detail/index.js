@@ -1,10 +1,11 @@
 import React, { useState } from 'react'
-import { Row, Col, Card, Typography, Button, Radio, Tooltip } from 'antd'
+import { Row, Col, Card, Typography, Button, Radio, Tooltip, Switch, Modal } from 'antd'
 import {
   PlusOutlined,
   BarChartOutlined,
   DatabaseOutlined,
-  LinkOutlined
+  LinkOutlined,
+  ExclamationCircleOutlined
 } from '@ant-design/icons'
 
 import IncidentForm from './IncidentForm'
@@ -39,13 +40,16 @@ const Detail = ({
   handleClickEdit,
   incidentSelected,
   userId,
-  handleEditSubmit
+  handleEditSubmit,
+  handleEdit
 }) => {
   const [showModal, setShowModal] = useState(false)
   const [showModalAuthorization, setShowModalAuthorization] = useState(false)
   const [mode, setMode] = useState('table')
   const { origin } = window.location
   const [copy, setCopy] = useState(false)
+
+  const { confirm } = Modal
 
   const handleChange = ({ target }) => setMode(target.value)
 
@@ -56,13 +60,34 @@ const Detail = ({
     setShowModal(true)
   }
 
+  const ModalStatus = (values) => {
+    confirm({
+      title: 'Deseja atualizar o status do motorista?',
+      icon: <ExclamationCircleOutlined />,
+      content: '',
+      okText: 'Cancelar',
+      okType: 'danger',
+      cancelText: 'Confirmar',
+      onOk: () => console.log('cancelar'),
+      onCancel: () => handleEdit({...values, activated: !values.activated})
+    })
+  }
+
   return (
     <Row gutter={[8, 8]}>
       <Col span={24} >
         <Card bordered={false}>
           <Row gutter={[8, 8]} style={{marginBottom: '25px'}}>
-            <Col span={24}>
+            <Col span={12}>
               <Title level={4}>Detalhes</Title>
+            </Col>
+            <Col span={12} align="right">
+              <Switch 
+                checkedChildren="Ativo" 
+                unCheckedChildren="Inativo" 
+                checked={driver.activated} 
+                onChange={() => ModalStatus(driver)}
+              />
             </Col>
             <Col span={8}>
               <Text>Nome</Text>
@@ -174,57 +199,6 @@ const Detail = ({
           <Row>
             <Col span={12}>
               <Title style={{ marginBottom: 0 }} level={4}>
-                Adicione autorizações
-              </Title>
-              <p style={{ marginBottom: 0 }}>
-                Crie e gerencie autorizações dos motoristas
-              </p>
-            </Col>
-            <Col span={12} style={{ textAlign: 'right' }}>
-              <Button
-                onClick={() => setShowModalAuthorization(true)}
-                style={{ marginRight: '16px' }}
-                icon={<PlusOutlined />}>
-                Adicionar autorização
-              </Button>
-            </Col>
-          </Row>
-        </Card>
-      </Col>
-
-      <Col span={24}>
-        <Card bordered={false}>
-          <Row>
-            <Col span={24}>
-              <FilterAuthorization
-                operations={operationsSource}
-                clearFilter={clearFilterAuthorization}
-                handleSubmit={handleFilterAuthorization}
-              />
-            </Col>
-            <Col span={24} style={{ textAlign: 'right' }}>
-              <AuthorizationList
-                datasource={authorizations.rows}
-                handleChange={handleChangeTableAuthorization}
-                handleSubmitUpdateAuthorization={
-                  handleSubmitUpdateAuthorization
-                }
-                loading={authorizationLoading}
-                pagination={{
-                  total: authorizations.count,
-                  current: authorizations.current
-                }}
-              />
-            </Col>
-          </Row>
-        </Card>
-      </Col>
-
-      <Col span={24}>
-        <Card bordered={false}>
-          <Row>
-            <Col span={12}>
-              <Title style={{ marginBottom: 0 }} level={4}>
                 Adicione incidentes
               </Title>
               <p style={{ marginBottom: 0 }}>
@@ -282,6 +256,58 @@ const Detail = ({
         </Card>
       </Col>
 
+      <Col span={24}>
+        <Card bordered={false}>
+          <Row>
+            <Col span={12}>
+              <Title style={{ marginBottom: 0 }} level={4}>
+                Adicione autorizações
+              </Title>
+              <p style={{ marginBottom: 0 }}>
+                Crie e gerencie autorizações dos motoristas
+              </p>
+            </Col>
+            <Col span={12} style={{ textAlign: 'right' }}>
+              <Button
+                onClick={() => setShowModalAuthorization(true)}
+                style={{ marginRight: '16px' }}
+                icon={<PlusOutlined />}>
+                Adicionar autorização
+              </Button>
+            </Col>
+          </Row>
+        </Card>
+      </Col>
+
+      <Col span={24}>
+        <Card bordered={false}>
+          <Row>
+            <Col span={24}>
+              <FilterAuthorization
+                operations={operationsSource}
+                clearFilter={clearFilterAuthorization}
+                handleSubmit={handleFilterAuthorization}
+              />
+            </Col>
+            <Col span={24} style={{ textAlign: 'right' }}>
+              <AuthorizationList
+                datasource={authorizations.rows}
+                handleChange={handleChangeTableAuthorization}
+                handleSubmitUpdateAuthorization={
+                  handleSubmitUpdateAuthorization
+                }
+                loading={authorizationLoading}
+                pagination={{
+                  total: authorizations.count,
+                  current: authorizations.current
+                }}
+              />
+            </Col>
+          </Row>
+        </Card>
+      </Col>
+
+      
       {showModal && (
         <IncidentForm
           handleCancel={setShowModal}
