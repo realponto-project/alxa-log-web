@@ -4,7 +4,7 @@ import { InfoCircleOutlined } from '@ant-design/icons';
 import { map } from 'ramda'
 import moment from 'moment';
 
-const { Title, Paragraph, Text, Link } = Typography;
+const { Paragraph } = Typography;
 
 const columns = ({ handleClickEdit, goToDetail, handleEdit }) => [
   {
@@ -44,69 +44,67 @@ const columns = ({ handleClickEdit, goToDetail, handleEdit }) => [
     fixed: 'left'
   },
   {
-    title: ' ',
+    title: 'Status',
     dataIndex: 'id',
-    render: (_, source) => (
-      <Space>
-        <Button type="link" onClick={() => handleClickEdit(source)}>
-          Editar
-        </Button>
-        <Button type="link" onClick={() => goToDetail(source.id)}>
-          Detalhes
-        </Button>
-      </Space>
-    )
-  },
-  {
-    title: ' ',
-    dataIndex: 'id',
-    render: (_, source) => (
-      <Tooltip placement="bottom" title={() => {
-       return(
-         <>
-         <Row>
-           <Col>
-            <Paragraph style={{color: 'white'}}>Validade ASO:</Paragraph>
-           </Col>
-           <Col>
-            <Paragraph style={{color: 'white'}}>{moment(source.expireASO).format('DD/MM/YYYY')}  -  {moment().format() > source.expireASO ? 'Ok' : 'Vencido'}</Paragraph>
-           </Col>
-         </Row>
-         <Row>
-           <Col>
-            <Paragraph style={{color: 'white'}}>Validade CNH:</Paragraph>
-           </Col>
-           <Col>
-            <Paragraph style={{color: 'white'}}>{moment(source.expireDriverLicense).format('DD/MM/YYYY')}  -  {moment().format() > source.expireDriverLicense ? 'Ok' : 'Vencido'}</Paragraph>
-           </Col>
-         </Row>
-         <Row>
-           <Col>
-            <Paragraph style={{color: 'white'}}>Validade Protocolo:</Paragraph>
-           </Col>
-           <Col>
-            <Paragraph style={{color: 'white'}}>{moment(source.expireProtocolInsuranceCompany).format('DD/MM/YYYY')}  -  {moment().format() > source.expireProtocolInsuranceCompany ? 'Ok' : 'Vencido'}</Paragraph>
-           </Col>
-         </Row>
-         </>
-       ) 
-      }}>
-        <InfoCircleOutlined />
-      </Tooltip>
-    )
-  },
-  {
-    title: ' ',
-    dataIndex: 'id',
-    render: (_, source) => (
-      <Switch 
-        checked={source.activated} 
-        checkedChildren="Ativo" 
-        unCheckedChildren="Inativo"
-        onChange={() => handleEdit({...source, activated: !source.activated})}
-      />
-    )
-  }
+    render: (_, source) => <>{source.activated ? 'Ativo' : 'Inativo'}</>
+    },
+    {
+      title: ' ',
+      dataIndex: 'id',
+      render: (_, source) => (
+        <Space>
+          <Button type="link" onClick={() => handleClickEdit(source)}>
+            Editar
+          </Button>
+          <Button type="link" onClick={() => goToDetail(source.id)}>
+            Detalhes
+          </Button>
+        </Space>
+      )
+    },
+    {
+      title: ' ',
+      dataIndex: 'id',
+      render: (_, source) => (
+        <Tooltip placement="bottom" title={() => {
+         return(
+           <>
+           <Row>
+             <Col span={24}>
+              <Paragraph style={{color: 'white'}}>Validade documentos:</Paragraph>
+             </Col>
+           <Row>
+           </Row>
+            <Col>
+              <Paragraph style={{color: 'white'}}>ASO - </Paragraph>
+             </Col>
+             <Col>
+              <Paragraph style={{color: 'white'}}>{moment().format() < source.expireASO ? 'Regular' : 'Expirado'}</Paragraph>
+             </Col>
+           </Row>
+           <Row>
+             <Col>
+              <Paragraph style={{color: 'white'}}>CNH - </Paragraph>
+             </Col>
+             <Col>
+              <Paragraph style={{color: 'white'}}>{moment().format() < source.expireDriverLicense ? 'Regular' : 'Expirado'}</Paragraph>
+             </Col>
+           </Row>
+           <Row>
+             <Col>
+              <Paragraph style={{color: 'white'}}>Protocolo - </Paragraph>
+             </Col>
+             <Col>
+              <Paragraph style={{color: 'white'}}>{moment().format() < source.expireProtocolInsuranceCompany ? 'Regular' : 'Expirado'}</Paragraph>
+             </Col>
+           </Row>
+           </>
+         ) 
+        }}>
+          <InfoCircleOutlined />
+        </Tooltip>
+      )
+    }
 ]
 
 const DriverList = ({
