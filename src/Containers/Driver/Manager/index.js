@@ -86,6 +86,7 @@ const Manager = ({
             handleChangeTableEvent={handleChangeTableEvent}
             offset={offset}
             goToDetail={goToDetail}
+            handleEdit={handleEdit}
           />
         </Card>
       </Col>

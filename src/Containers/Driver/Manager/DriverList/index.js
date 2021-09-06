@@ -1,12 +1,12 @@
 import React from 'react'
-import { Table, Button, Space, Tooltip, Typography, Col, Row } from 'antd'
+import { Table, Button, Space, Tooltip, Typography, Col, Row, Switch } from 'antd'
 import { InfoCircleOutlined } from '@ant-design/icons';
 import { map } from 'ramda'
 import moment from 'moment';
 
 const { Title, Paragraph, Text, Link } = Typography;
 
-const columns = ({ handleClickEdit, goToDetail }) => [
+const columns = ({ handleClickEdit, goToDetail, handleEdit }) => [
   {
     title: 'Nome',
     dataIndex: 'name',
@@ -94,6 +94,18 @@ const columns = ({ handleClickEdit, goToDetail }) => [
         <InfoCircleOutlined />
       </Tooltip>
     )
+  },
+  {
+    title: ' ',
+    dataIndex: 'id',
+    render: (_, source) => (
+      <Switch 
+        checked={source.activated} 
+        checkedChildren="Ativo" 
+        unCheckedChildren="Inativo"
+        onChange={() => handleEdit({...source, activated: !source.activated})}
+      />
+    )
   }
 ]
 
@@ -103,7 +115,8 @@ const DriverList = ({
   loading,
   handleChangeTableEvent,
   offset,
-  goToDetail
+  goToDetail,
+  handleEdit
 }) => {
   return (
     <Table
@@ -114,7 +127,7 @@ const DriverList = ({
         current: offset
       }}
       onChange={handleChangeTableEvent}
-      columns={columns({ handleClickEdit, goToDetail })}
+      columns={columns({ handleClickEdit, goToDetail, handleEdit })}
       loading={loading}
       dataSource={map((row) => ({ ...row, key: row.id }), datasource.rows)}
     />
