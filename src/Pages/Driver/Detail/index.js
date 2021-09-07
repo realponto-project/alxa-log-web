@@ -13,7 +13,8 @@ import {
   createDriverIncident,
   editDriverIncident,
   getIncidentsSummary,
-  getAllIncidentsByDriverId
+  getAllIncidentsByDriverId,
+  updateDriver
 } from '../../../Services/Driver'
 import {
   createAuthorization,
@@ -186,6 +187,17 @@ const Detail = ({ match, history, user }) => {
     }
   }
 
+  const handleEdit = async (values) => {
+    try {
+      await updateDriver(values)
+      success('Motorista editado com sucesso!')
+      getDriver()
+    } catch (error) {
+      window.onerror(`updateDriver: ${error.error}`, window.location.href)
+      errorMessage('Não foi possível realizar a atualização do motorista!')
+    }
+  }
+
   const handleSubmitAuthorization = async (values) => {
     try {
       await createAuthorization({
@@ -274,6 +286,7 @@ const Detail = ({ match, history, user }) => {
       handleSubmit={handleSubmit}
       handleSubmitAuthorization={handleSubmitAuthorization}
       handleSubmitUpdateAuthorization={handleSubmitUpdateAuthorization}
+      handleEdit={handleEdit}
       incidents={incidents}
       incidentsLoading={incidentsLoading}
       operationsSource={operationsData.rows}
