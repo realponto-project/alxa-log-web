@@ -14,7 +14,7 @@ const formItemsComponent = {
   datepicker: DatePicker,
 }
 
-const renderFormItems = ({
+const renderFormItems = (driverSelected) => ({
   label,
   name,
   rules,
@@ -22,7 +22,8 @@ const renderFormItems = ({
   show,
   typeInput,
   options,
-  format
+  format,
+  disabled
 }) => {
   const Component = formItemsComponent[typeInput]
 
@@ -35,6 +36,7 @@ const renderFormItems = ({
           placeholder={placeholder}
           options={options}
           format={format}
+          disabled={driverSelected ? disabled : false}
         />
       </Form.Item>
     )
@@ -103,7 +105,7 @@ const DriverForm = ({
         }}
         initialValues={driverSelected}
       >
-        {map(renderFormItems, formSettings)}
+        {map(renderFormItems(driverSelected), formSettings)}
       </Form>
     </Modal>
   )

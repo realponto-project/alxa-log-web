@@ -66,7 +66,7 @@ const MaintenanceForm = ({
   const [formSettings, setFormSettings] = useState(maintenanceSelected ? formSettingsVehicleEdit(branchsSource, driversSource, vehiclesSource, operationsSource) : formSettingsVehicle(vehiclesSource))
   const [form] = Form.useForm()
   const parseOptionItem = item => ({ value: item.id, label: item.name })
-  const parseOptionItemDriver = item => ({ value: item.id, label: `${item.name} - CNH: ${item.driverLicense}` })
+  const parseOptionItemDriver = item => ({ disabled: !item.activated, value: item.id, label: `${item.name} - CNH: ${item.driverLicense}` })
   const parseOptionItemOperation = item => ({ value: item.id, label: `${item.name} - Filial: ${item.company.name} / ${cnpj.format(item.company.document)}` })
 
   const setOpetionValue = formItem => {

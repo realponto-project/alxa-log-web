@@ -27,7 +27,7 @@ const { confirm } = Modal
 
 const menu = (handleMenuClick) => (
   <Menu onClick={handleMenuClick}>
-    <Menu.Item key="1">Cancelar Solicitação</Menu.Item>
+    <Menu.Item key="1">Cancelar solicitação</Menu.Item>
   </Menu>
 )
 
