@@ -1,12 +1,27 @@
 import React from 'react'
-import { Table, Button, Space, Tooltip, Typography, Col, Row, Switch } from 'antd'
-import { InfoCircleOutlined } from '@ant-design/icons';
+import {
+  Dropdown,
+  Table,
+  Button,
+  Space,
+  Tooltip,
+  Typography,
+  Col,
+  Row,
+  Menu
+} from 'antd'
+import { InfoCircleOutlined } from '@ant-design/icons'
 import { map } from 'ramda'
-import moment from 'moment';
+import moment from 'moment'
 
-const { Paragraph } = Typography;
+const { Paragraph } = Typography
 
-const columns = ({ handleClickEdit, goToDetail, handleEdit }) => [
+const columns = ({
+  handleClickEdit,
+  goToDetail,
+  handleEdit,
+  handleClickEditDate
+}) => [
   {
     title: 'Nome',
     dataIndex: 'name',
@@ -47,64 +62,89 @@ const columns = ({ handleClickEdit, goToDetail, handleEdit }) => [
     title: 'Status',
     dataIndex: 'id',
     render: (_, source) => <>{source.activated ? 'Ativo' : 'Inativo'}</>
-    },
-    {
-      title: ' ',
-      dataIndex: 'id',
-      render: (_, source) => (
-        <Space>
-          <Button type="link" onClick={() => handleClickEdit(source)}>
-            Editar
-          </Button>
-          <Button type="link" onClick={() => goToDetail(source.id)}>
-            Detalhes
-          </Button>
-        </Space>
-      )
-    },
-    {
-      title: ' ',
-      dataIndex: 'id',
-      render: (_, source) => (
-        <Tooltip placement="bottom" title={() => {
-         return(
-           <>
-           <Row>
-             <Col span={24}>
-              <Paragraph style={{color: 'white'}}>Validade documentos:</Paragraph>
-             </Col>
-           <Row>
-           </Row>
-            <Col>
-              <Paragraph style={{color: 'white'}}>ASO - </Paragraph>
-             </Col>
-             <Col>
-              <Paragraph style={{color: 'white'}}>{moment().format() < source.expireASO ? 'Regular' : 'Expirado'}</Paragraph>
-             </Col>
-           </Row>
-           <Row>
-             <Col>
-              <Paragraph style={{color: 'white'}}>CNH - </Paragraph>
-             </Col>
-             <Col>
-              <Paragraph style={{color: 'white'}}>{moment().format() < source.expireDriverLicense ? 'Regular' : 'Expirado'}</Paragraph>
-             </Col>
-           </Row>
-           <Row>
-             <Col>
-              <Paragraph style={{color: 'white'}}>Protocolo - </Paragraph>
-             </Col>
-             <Col>
-              <Paragraph style={{color: 'white'}}>{moment().format() < source.expireProtocolInsuranceCompany ? 'Regular' : 'Expirado'}</Paragraph>
-             </Col>
-           </Row>
-           </>
-         ) 
+  },
+  {
+    title: ' ',
+    dataIndex: 'id',
+    render: (_, source) => (
+      <Space>
+        <Button type="link" onClick={() => handleClickEdit(source)}>
+          Editar
+        </Button>
+        <Button type="link" onClick={() => goToDetail(source.id)}>
+          Detalhes
+        </Button>
+        <Dropdown.Button
+          type="link"
+          overlay={
+            <Menu>
+              <Menu.Item onClick={() => handleClickEditDate(source)} key="1">
+                Atualizar documento
+              </Menu.Item>
+            </Menu>
+          }
+        />
+      </Space>
+    )
+  },
+  {
+    title: ' ',
+    dataIndex: 'id',
+    render: (_, source) => (
+      <Tooltip
+        placement="bottom"
+        title={() => {
+          return (
+            <>
+              <Row>
+                <Col span={24}>
+                  <Paragraph style={{ color: 'white' }}>
+                    Validade documentos:
+                  </Paragraph>
+                </Col>
+                <Row></Row>
+                <Col>
+                  <Paragraph style={{ color: 'white' }}>ASO - </Paragraph>
+                </Col>
+                <Col>
+                  <Paragraph style={{ color: 'white' }}>
+                    {moment().format() < source.expireASO
+                      ? 'Regular'
+                      : 'Expirado'}
+                  </Paragraph>
+                </Col>
+              </Row>
+              <Row>
+                <Col>
+                  <Paragraph style={{ color: 'white' }}>CNH - </Paragraph>
+                </Col>
+                <Col>
+                  <Paragraph style={{ color: 'white' }}>
+                    {moment().format() < source.expireDriverLicense
+                      ? 'Regular'
+                      : 'Expirado'}
+                  </Paragraph>
+                </Col>
+              </Row>
+              <Row>
+                <Col>
+                  <Paragraph style={{ color: 'white' }}>Protocolo - </Paragraph>
+                </Col>
+                <Col>
+                  <Paragraph style={{ color: 'white' }}>
+                    {moment().format() < source.expireProtocolInsuranceCompany
+                      ? 'Regular'
+                      : 'Expirado'}
+                  </Paragraph>
+                </Col>
+              </Row>
+            </>
+          )
         }}>
-          <InfoCircleOutlined />
-        </Tooltip>
-      )
-    }
+        <InfoCircleOutlined />
+      </Tooltip>
+    )
+  }
 ]
 
 const DriverList = ({
@@ -114,6 +154,7 @@ const DriverList = ({
   handleChangeTableEvent,
   offset,
   goToDetail,
+  handleClickEditDate,
   handleEdit
 }) => {
   return (
@@ -125,7 +166,12 @@ const DriverList = ({
         current: offset
       }}
       onChange={handleChangeTableEvent}
-      columns={columns({ handleClickEdit, goToDetail, handleEdit })}
+      columns={columns({
+        handleClickEdit,
+        goToDetail,
+        handleEdit,
+        handleClickEditDate
+      })}
       loading={loading}
       dataSource={map((row) => ({ ...row, key: row.id }), datasource.rows)}
     />
