@@ -7,6 +7,7 @@ import DriverForm from '../DriverForm'
 import DriverList from './DriverList'
 import AvailableSVG from './available.svg'
 import CircleBar from '../../../Components/circleBar'
+import ModalUpdateDates from '../DriverForm/updateDates'
 
 const { Link, Title, Text } = Typography
 
@@ -50,12 +51,16 @@ const Manager = ({
   handleClickCard
 }) => {
   const [showModal, setShowModal] = useState(false)
+  const [showModalUpdateDates, setShowModalUpdateDates] = useState(false)
   const openModal = () => setShowModal(true)
   const showModalEditDriver = (value) => {
     handleSelectedDriver(value)
     setShowModal(true)
   }
-
+  const showModalEditDate = (value) => {
+    handleSelectedDriver(value)
+    setShowModalUpdateDates(true)
+  }
   const settingsCards = [
     {
       key: 'expireDriverLicense',
@@ -137,6 +142,7 @@ const Manager = ({
           <DriverList
             datasource={source}
             handleClickEdit={showModalEditDriver}
+            handleClickEditDate={showModalEditDate}
             loading={loading}
             handleChangeTableEvent={handleChangeTableEvent}
             offset={offset}
@@ -156,6 +162,13 @@ const Manager = ({
           handleEdit={handleEdit}
         />
       )}
+
+      <ModalUpdateDates
+        setShowModal={setShowModalUpdateDates}
+        visible={showModalUpdateDates}
+        handleSubmit={handleEdit}
+        driverSelected={driverSelected}
+      />
     </Row>
   )
 }
