@@ -11,7 +11,7 @@ import {
   Menu
 } from 'antd'
 import { InfoCircleOutlined } from '@ant-design/icons'
-import { map } from 'ramda'
+import { includes, map } from 'ramda'
 import moment from 'moment'
 
 const { Paragraph } = Typography
@@ -66,26 +66,49 @@ const columns = ({
   {
     title: ' ',
     dataIndex: 'id',
-    render: (_, source) => (
-      <Space>
-        <Button type="link" onClick={() => handleClickEdit(source)}>
-          Editar
-        </Button>
-        <Button type="link" onClick={() => goToDetail(source.id)}>
-          Detalhes
-        </Button>
-        <Dropdown.Button
-          type="link"
-          overlay={
-            <Menu>
-              <Menu.Item onClick={() => handleClickEditDate(source)} key="1">
-                Atualizar documento
-              </Menu.Item>
-            </Menu>
-          }
-        />
-      </Space>
-    )
+    render: (_, source) => {
+      const {
+        expireASO,
+        expireDriverLicense,
+        expireProtocolInsuranceCompany
+      } = source
+
+      const expireDates = [
+        expireASO,
+        expireDriverLicense,
+        expireProtocolInsuranceCompany
+      ]
+      const hasExpired = includes(
+        true,
+        expireDates.map((date) => moment(date) < moment())
+      )
+
+      return (
+        <Space>
+          <Button type="link" onClick={() => handleClickEdit(source)}>
+            Editar
+          </Button>
+          <Button type="link" onClick={() => goToDetail(source.id)}>
+            Detalhes
+          </Button>
+
+          {hasExpired && (
+            <Dropdown.Button
+              type="link"
+              overlay={
+                <Menu>
+                  <Menu.Item
+                    onClick={() => handleClickEditDate(source)}
+                    key="1">
+                    Atualizar documento
+                  </Menu.Item>
+                </Menu>
+              }
+            />
+          )}
+        </Space>
+      )
+    }
   },
   {
     title: ' ',

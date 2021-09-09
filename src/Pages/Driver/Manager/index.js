@@ -26,7 +26,7 @@ const errorMessage = (text) => {
 
 const Manager = ({ history }) => {
   const [driverData, setDriverData] = useState({ rows: [] })
-  const [driverSelected, setDriverSelected] = useState(null)
+  const [driverSelected, setDriverSelected] = useState({})
   const [searchValue, setSearchValue] = useState('')
   const [offset, setoffset] = useState(1)
   const [loading, setLoading] = useState(true)
@@ -108,11 +108,13 @@ const Manager = ({ history }) => {
   }
 
   const handleSelectedDriver = (driver) => {
-    setDriverSelected({ 
-      ...driver, 
+    setDriverSelected({
+      ...driver,
       expireASO: moment(pathOr('', ['expireASO'], driver)),
       expireDriverLicense: moment(pathOr('', ['expireDriverLicense'], driver)),
-      expireProtocolInsuranceCompany: moment(pathOr('', ['expireProtocolInsuranceCompany'], driver)),
+      expireProtocolInsuranceCompany: moment(
+        pathOr('', ['expireProtocolInsuranceCompany'], driver)
+      )
     })
   }
 
