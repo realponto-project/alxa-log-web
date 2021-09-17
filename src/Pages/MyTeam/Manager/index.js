@@ -1,16 +1,18 @@
 import React, { useEffect, useState } from 'react'
 import { message } from 'antd'
 import { useLocation, withRouter } from 'react-router-dom'
+import { connect } from 'react-redux'
+import { compose, isEmpty } from 'ramda'
 import { cpf } from 'cpf-cnpj-validator'
 
 import ManagerContainer from '../../../Containers/MyTeam/Manager'
 import { createUser, getAll, updateUser } from '../../../Services/User'
-import { isEmpty } from 'ramda'
+import { getAllCompanies } from '../../../Services/Company'
+
 import GAInitialize from '../../../utils/ga'
 
-const Manager = ({
-  history,
-}) => {
+const Manager = ({ history, user }) => {
+  const [companies, setCompanies] = useState([])
   const [usersData, setUsersData] = useState({ rows: [] })
   const [myTeamSelected, setMyTeamSelected] = useState(null)
   const [searchValue, setSearchValue] = useState('')
@@ -18,26 +20,42 @@ const Manager = ({
 
   const [loading, setLoading] = useState(true)
   const { search, pathname } = useLocation()
-  GAInitialize(`/my-team`)
+  GAInitialize('/my-team')
+
+  const getCompanies = async () => {
+    try {
+      const { data } = await getAllCompanies()
+
+      setCompanies(data.rows)
+    } catch (error) {
+      console.error(error)
+    }
+  }
 
   useEffect(() => {
     let query = {}
     const searchLocalStorage = localStorage.getItem('myteamSearch')
-    if(!search && searchLocalStorage) {
+    if (!search && searchLocalStorage) {
       history.push({
         pathname,
-        search: cpf.isValid(searchLocalStorage) ? `?document=${searchLocalStorage}` : `?name=${searchLocalStorage}`
+        search: cpf.isValid(searchLocalStorage)
+          ? `?document=${searchLocalStorage}`
+          : `?name=${searchLocalStorage}`
       })
       setSearchValue(searchLocalStorage)
-      query = cpf.isValid(searchLocalStorage) ? { document: searchLocalStorage.replace(/\D/g, '') } : { name: searchLocalStorage }
+      query = cpf.isValid(searchLocalStorage)
+        ? { document: searchLocalStorage.replace(/\D/g, '') }
+        : { name: searchLocalStorage }
     }
+
     getUsers(query)
+    getCompanies()
   }, [])
 
   const success = (text) => {
-    message.success(text);
+    message.success(text)
   }
-  
+
   const errorMessage = (text) => {
     message.error(text)
   }
@@ -51,13 +69,15 @@ const Manager = ({
     } catch (error) {
       setLoading(false)
       window.onerror(`allUsers: ${error.error}`, window.location.href)
-
     }
   }
 
   const handleSubmit = async (values) => {
     try {
-      await createUser({...values, document: values.document.replace(/\D/g, '') })
+      await createUser({
+        ...values,
+        document: values.document.replace(/\D/g, '')
+      })
       getUsers()
       success('Cadastro do usuário realizado com sucesso!')
     } catch (error) {
@@ -68,7 +88,10 @@ const Manager = ({
 
   const handleEdit = async (values) => {
     try {
-      await updateUser({...values, document: values.document.replace(/\D/g, '') })
+      await updateUser({
+        ...values,
+        document: values.document.replace(/\D/g, '')
+      })
       getUsers()
       success('Editado usuário com sucesso!')
     } catch (error) {
@@ -77,7 +100,7 @@ const Manager = ({
     }
   }
 
-  const handleSelectedMyTeam = user => {
+  const handleSelectedMyTeam = (user) => {
     setMyTeamSelected(user)
   }
 
@@ -86,8 +109,12 @@ const Manager = ({
       return null
     }
 
-    const queryLocal = cpf.isValid(searchValue) ? `?document=${searchValue}` : `?name=${searchValue}`
-    const query = cpf.isValid(searchValue) ? { document: searchValue.replace(/\D/g, '') } : { name: searchValue }
+    const queryLocal = cpf.isValid(searchValue)
+      ? `?document=${searchValue}`
+      : `?name=${searchValue}`
+    const query = cpf.isValid(searchValue)
+      ? { document: searchValue.replace(/\D/g, '') }
+      : { name: searchValue }
     localStorage.setItem('myteamSearch', searchValue)
     history.push({
       pathname,
@@ -97,7 +124,7 @@ const Manager = ({
     getUsers(query)
   }
 
-  const handleFilterOnchange = value => {
+  const handleFilterOnchange = (value) => {
     setSearchValue(value.target.value)
   }
 
@@ -115,9 +142,11 @@ const Manager = ({
 
   const handleChangeTableEvent = ({ current }) => {
     setoffset(current)
-    let query = { offset: (current - 1) }
+    let query = { offset: current - 1 }
     if (searchValue) {
-      const params = cpf.isValid(searchValue) ? { document: searchValue.replace(/\D/g, '') } : { name: searchValue }
+      const params = cpf.isValid(searchValue)
+        ? { document: searchValue.replace(/\D/g, '') }
+        : { name: searchValue }
       query = { ...query, ...params }
     }
 
@@ -126,6 +155,7 @@ const Manager = ({
 
   return (
     <ManagerContainer
+      companies={companies}
       source={usersData}
       loading={loading}
       handleSubmit={handleSubmit}
@@ -138,8 +168,15 @@ const Manager = ({
       clearFilter={clearFilter}
       handleChangeTableEvent={handleChangeTableEvent}
       offset={offset}
+      user={user}
     />
   )
 }
 
-export default withRouter(Manager)
+const mapStateToProps = ({ user }) => ({
+  user: user.user
+})
+
+const enhanced = compose(connect(mapStateToProps), withRouter)
+
+export default enhanced(Manager)
