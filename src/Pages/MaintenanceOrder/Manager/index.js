@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react'
-import { message } from 'antd'
+import { message, Form } from 'antd'
 import { useLocation, withRouter } from 'react-router-dom'
 import qs from 'qs'
 import {
@@ -58,6 +58,7 @@ const Manager = ({ history, match }) => {
   const [checkBoxDefaultValues, setCheckBoxDefaultValues] = useState(
     defaultValueCheckBoxDefaultValues
   )
+  const [form] = Form.useForm()
   const [loading, setLoading] = useState(true)
   const [maintenanceOrdersData, setMaintenanceOrdersData] = useState({
     rows: []
@@ -208,16 +209,18 @@ const Manager = ({ history, match }) => {
 
   const handleShowFilters = () => setMoreFilters(!moreFilters)
 
-  const handleSubmit = async (values) => {
+  const handleSubmit = async (values, resetForm) => {
     try {
       await createMaintenanceOrder({
         ...values,
         maintenanceDate: new Date(values.maintenanceDate)
       })
       getAllMaintenances()
+      form.resetFields()
       success('Manutenção criada com sucesso!')
+      resetForm()
     } catch (error) {
-      const errorMessageResponse = pathOr(null, ['data', 'error'])
+      const errorMessageResponse = pathOr(null, ['data', 'error'], error)
       let textMessage = 'Não foi possível criar a manutenção!'
 
       if (errorMessageResponse === 'Allow only one order for this plate!') {
@@ -279,6 +282,7 @@ const Manager = ({ history, match }) => {
 
   return (
     <ManagerContainer
+      form={form}
       branchsSource={branchsData.rows}
       checkBoxDefaultValues={checkBoxDefaultValues}
       clearFilter={clearFilter}

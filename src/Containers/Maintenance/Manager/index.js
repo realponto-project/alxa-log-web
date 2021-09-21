@@ -51,6 +51,7 @@ const services = [
 ]
 
 const Manager = ({
+  form,
   loading,
   vehiclesSource,
   branchsSource,
@@ -248,6 +249,7 @@ const Manager = ({
       )}
       {showModal && (
         <MaintenanceForm
+          form={form}
           handleCancel={setShowModal}
           visible={showModal}
           branchsSource={branchsSource}

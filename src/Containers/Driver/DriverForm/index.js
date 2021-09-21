@@ -44,6 +44,7 @@ const renderFormItems = (driverSelected) => ({
 }
 
 const DriverForm = ({
+  form,
   handleCancel,
   visible,
   handleSubmit,
@@ -53,7 +54,6 @@ const DriverForm = ({
 }) => {
 
   const [formSettings, setFormSettings] = useState(driverSelected ? formSettingsDriverEdit : formSettingsDriver)
-  const [form] = Form.useForm()
 
   const onValuesChangeVisableFomItem = value => {
     const formItem = formSettings.find(item => !item.show && settingsNextStep[Object.keys(value)[0]] === item.name)
@@ -97,11 +97,9 @@ const DriverForm = ({
           if (driverSelected) {
             handleEdit({ ...driverSelected, ...values })
           } else {
-            handleSubmit(values)
+            handleSubmit(values, () => setFormSettings(formSettingsDriver))
           }
           handleSelectedDriver(null)
-          setFormSettings(formSettingsDriver)
-          form.resetFields()
         }}
         initialValues={driverSelected}
       >
