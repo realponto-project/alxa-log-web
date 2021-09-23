@@ -36,6 +36,7 @@ const CardStatus = ({ title, count, srcImage, total, redirectPage }) => (
 
 const Manager = ({
   handleSelectedDriver,
+  form,
   driverSelected,
   loading,
   source,
@@ -154,6 +155,7 @@ const Manager = ({
 
       {showModal && (
         <DriverForm
+          form={form}
           handleCancel={setShowModal}
           visible={showModal}
           handleSubmit={handleSubmit}
