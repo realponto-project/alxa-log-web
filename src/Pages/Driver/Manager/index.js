@@ -27,7 +27,7 @@ const errorMessage = (text) => {
 const Manager = ({ history }) => {
   const [driverData, setDriverData] = useState({ rows: [] })
   const [form] = Form.useForm()
-  const [driverSelected, setDriverSelected] = useState(null)
+  const [driverSelected, setDriverSelected] = useState({})
   const [searchValue, setSearchValue] = useState('')
   const [offset, setoffset] = useState(1)
   const [loading, setLoading] = useState(true)
@@ -111,7 +111,7 @@ const Manager = ({ history }) => {
 
   const handleSelectedDriver = (driver) => {
 
-    if(driver){
+    if(!isEmpty(driver)){
       setDriverSelected({ 
         ...driver, 
         expireASO: moment(pathOr('', ['expireASO'], driver)),
