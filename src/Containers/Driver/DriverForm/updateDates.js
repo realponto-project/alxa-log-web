@@ -27,7 +27,7 @@ const ModalUpdateDates = ({
     }
   ]
 
-  const expireDates = filter(
+  const expireDates = driverSelected && filter(
     ({ value: field }) => moment(driverSelected[field]) < moment(),
     options
   )
