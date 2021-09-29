@@ -206,7 +206,7 @@ const Detail = ({
 
       <Col span={6}>
         <CardStatus
-          title="Total de Aguardando Retirada"
+          title="Total de liberado"
           count={vehicleTotalAvailable?.count ?? '-'}
           srcImage={AvailableSVG}
           total={total}

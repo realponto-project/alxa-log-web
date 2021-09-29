@@ -1,5 +1,7 @@
 import React from 'react'
 import { DatePicker, Form, Modal, Select } from 'antd'
+import moment from 'moment'
+import { filter, map } from 'ramda'
 
 const { Option } = Select
 
@@ -15,6 +17,20 @@ const ModalUpdateDates = ({
     setShowModal(false)
     form.resetFields()
   }
+
+  const options = [
+    { value: 'expireDriverLicense', label: 'Vencimento da CNH' },
+    { value: 'expireASO', label: 'Vencimento da ASO' },
+    {
+      value: 'expireProtocolInsuranceCompany',
+      label: 'Vencimento da seguradora'
+    }
+  ]
+
+  const expireDates = driverSelected && filter(
+    ({ value: field }) => moment(driverSelected[field]) < moment(),
+    options
+  )
 
   return (
     <Modal
@@ -35,11 +51,14 @@ const ModalUpdateDates = ({
         layout="vertical">
         <Form.Item name="field" label="Campo" rules={[{ required: true }]}>
           <Select placeholder="Selecione o campo a ser atualizado">
-            <Option value="expireDriverLicense">Vencimento da CNH</Option>
-            <Option value="expireASO">Vencimento da ASO</Option>
-            <Option value="expireProtocolInsuranceCompany">
-              Vencimento da seguradora
-            </Option>
+            {map(
+              ({ value, label }) => (
+                <Option key={value} value={value}>
+                  {label}
+                </Option>
+              ),
+              expireDates
+            )}
           </Select>
         </Form.Item>
 

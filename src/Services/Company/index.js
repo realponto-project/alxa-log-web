@@ -10,3 +10,7 @@ export const getCompanyById = async (companyId) => {
 export const createCompany = async (values) => {
   return await axios.post(baseUrl, values)
 }
+
+export const getAllCompanies = async () => {
+  return await axiosIntance.get('/companies')
+}

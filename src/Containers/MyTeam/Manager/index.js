@@ -8,6 +8,7 @@ import MyTeamList from './MyTeamList'
 const { Title } = Typography
 
 const Manager = ({
+  companies,
   loading,
   source,
   handleSubmit,
@@ -19,11 +20,12 @@ const Manager = ({
   handleFilterOnchange,
   clearFilter,
   handleChangeTableEvent,
-  offset,
+  user,
+  offset
 }) => {
   const [showModal, setShowModal] = useState(false)
   const openModal = () => setShowModal(true)
-  
+
   const showModalEditMyTeam = (value) => {
     handleSelectedMyTeam(value)
     setShowModal(true)
@@ -38,7 +40,9 @@ const Manager = ({
               <Title style={{ marginBottom: 0 }} level={4}>
                 Adicione novos usuários
               </Title>
-              <p style={{ marginBottom: 0 }}>Crie e gerencie os seus usuários</p>
+              <p style={{ marginBottom: 0 }}>
+                Crie e gerencie os seus usuários
+              </p>
             </Col>
             <Col span={12} style={{ textAlign: 'right' }}>
               <Button
@@ -51,7 +55,7 @@ const Manager = ({
           </Row>
         </Card>
       </Col>
-  
+
       <Col span={24}>
         <Card bordered={false}>
           <Row gutter={[8, 8]}>
@@ -75,11 +79,12 @@ const Manager = ({
           </Row>
         </Card>
       </Col>
-      
+
       <Col span={24}>
         <Card bordered={false}>
-          <MyTeamList 
-            datasource={source} 
+          <MyTeamList
+            user={user}
+            datasource={source}
             handleClickEdit={showModalEditMyTeam}
             loading={loading}
             handleChangeTableEvent={handleChangeTableEvent}
@@ -87,19 +92,18 @@ const Manager = ({
           />
         </Card>
       </Col>
-  
-      {
-        showModal && (
-          <MyTeamForm
-            handleCancel={setShowModal}
-            visible={showModal}
-            handleSubmit={handleSubmit}
-            myTeamSelected={myTeamSelected}
-            handleSelectedMyTeam={handleSelectedMyTeam}
-            handleEdit={handleEdit}
-          />
-        )
-      }
+
+      {showModal && (
+        <MyTeamForm
+          companies={companies}
+          handleCancel={setShowModal}
+          visible={showModal}
+          handleSubmit={handleSubmit}
+          myTeamSelected={myTeamSelected}
+          handleSelectedMyTeam={handleSelectedMyTeam}
+          handleEdit={handleEdit}
+        />
+      )}
     </Row>
   )
 }
