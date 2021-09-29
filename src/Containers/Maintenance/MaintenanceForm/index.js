@@ -60,11 +60,11 @@ const MaintenanceForm = ({
   visible,
   handleSubmit,
   handleEdit,
+  form,
   maintenanceSelected,
   handleSelectedMaintenance
 }) => {
   const [formSettings, setFormSettings] = useState(maintenanceSelected ? formSettingsVehicleEdit(branchsSource, driversSource, vehiclesSource, operationsSource) : formSettingsVehicle(vehiclesSource))
-  const [form] = Form.useForm()
   const parseOptionItem = item => ({ value: item.id, label: item.name })
   const parseOptionItemDriver = item => ({ disabled: !item.activated, value: item.id, label: `${item.name} - CNH: ${item.driverLicense}` })
   const parseOptionItemOperation = item => ({ value: item.id, label: `${item.name} - Filial: ${item.company.name} / ${cnpj.format(item.company.document)}` })
@@ -126,11 +126,10 @@ const MaintenanceForm = ({
           if (maintenanceSelected) {
             handleEdit({...maintenanceSelected, ...values})
           } else {
-            handleSubmit(values)
+            handleSubmit(values, () => setFormSettings(formSettingsVehicle(vehiclesSource)))
           }
           handleSelectedMaintenance(null)
-          setFormSettings(formSettingsVehicle(vehiclesSource))
-          form.resetFields()
+          
         }}
         initialValues={{...maintenanceSelected, maintenanceDate, driverId: maintenanceSelected ? maintenanceSelected.maintenanceOrderDrivers[0].driver.id : null }}
       >

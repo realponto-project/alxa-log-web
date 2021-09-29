@@ -12,29 +12,29 @@ const formItemsComponent = {
   select: Select
 }
 
-const renderFormItems = ({ 
-  label, 
-  name, 
-  rules, 
-  placeholder, 
-  show, 
-  typeInput, 
-  options = [], 
-  mode = null 
+const renderFormItems = ({
+  label,
+  name,
+  rules,
+  placeholder,
+  show,
+  typeInput,
+  options = [],
+  mode = null
 }) => {
   const Component = formItemsComponent[typeInput]
   return (
     show && (
       <Form.Item key={name} label={label} name={name} rules={rules}>
-        <Component 
+        <Component
           showSearch
-          name={name} 
-          placeholder={placeholder} 
-          options={options} 
-          mode={mode} 
-          filterOption={(value, option) => (
+          name={name}
+          placeholder={placeholder}
+          options={options}
+          mode={mode}
+          filterOption={(value, option) =>
             option.label.toLowerCase().indexOf(value.toLowerCase()) >= 0
-          )}
+          }
         />
       </Form.Item>
     )
@@ -43,24 +43,30 @@ const renderFormItems = ({
 
 const MyTeamForm = ({
   handleCancel,
+  companies,
   visible,
   handleSubmit,
   handleEdit,
   myTeamSelected,
   handleSelectedMyTeam
 }) => {
-  const [formSettings, setFormSettings] = useState(myTeamSelected ? formSettingsMyTeamEdit : formSettingsMyTeam)
+  const [formSettings, setFormSettings] = useState(
+    myTeamSelected
+      ? formSettingsMyTeamEdit({ companies })
+      : formSettingsMyTeam({ companies })
+  )
   const [form] = Form.useForm()
-
-
-  const onValuesChangeVisableFomItem = value => {
-    const formItem = formSettings.find(item => !item.show && settingsNextStep[Object.keys(value)[0]] === item.name)
+  const onValuesChangeVisableFomItem = (value) => {
+    const formItem = formSettings.find(
+      (item) =>
+        !item.show && settingsNextStep[Object.keys(value)[0]] === item.name
+    )
     if (formItem) {
-      setFormSettings(formSettings.map(item => (
-        item.name === formItem.name 
-          ? {...formItem, show: true } 
-          : item
-      )))
+      setFormSettings(
+        formSettings.map((item) =>
+          item.name === formItem.name ? { ...formItem, show: true } : item
+        )
+      )
     }
   }
 
@@ -69,40 +75,37 @@ const MyTeamForm = ({
       visible={visible}
       closable={false}
       footer={[
-        <Button key="back" onClick={() => {
-          handleCancel(false)
-          form.resetFields()
-          setFormSettings(formSettingsMyTeam)
-          handleSelectedMyTeam(null)
-        }}>
+        <Button
+          key="back"
+          onClick={() => {
+            handleCancel(false)
+            form.resetFields()
+            setFormSettings(formSettingsMyTeam({ companies }))
+            handleSelectedMyTeam(null)
+          }}>
           Cancelar
         </Button>,
-        <Button
-          key="submit"
-          onClick={() => form.submit()}
-          type="primary">
+        <Button key="submit" onClick={() => form.submit()} type="primary">
           Salvar
         </Button>
       ]}
-      title={`${myTeamSelected ? 'Editar' : 'Cadastrar'} usuário`}
-    >
+      title={`${myTeamSelected ? 'Editar' : 'Cadastrar'} usuário`}>
       <Form
         form={form}
         layout="vertical"
         onValuesChange={onValuesChangeVisableFomItem}
         validateTrigger="onChange"
-        onFinish={values => {
+        onFinish={(values) => {
           if (myTeamSelected) {
-            handleEdit({...myTeamSelected, ...values})
+            handleEdit({ ...myTeamSelected, ...values })
           } else {
             handleSubmit(values)
           }
           handleSelectedMyTeam(null)
-          setFormSettings(formSettingsMyTeam)
+          setFormSettings(formSettingsMyTeam({ companies }))
           form.resetFields()
         }}
-        initialValues={omit(['document'], myTeamSelected)}
-      >
+        initialValues={omit(['document'], myTeamSelected)}>
         {map(renderFormItems, formSettings)}
       </Form>
     </Modal>

@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react'
-import { message } from 'antd'
+import { message, Form } from 'antd'
 import { useLocation, withRouter } from 'react-router-dom'
 import { validateBr } from 'js-brasil'
 import moment from 'moment'
@@ -26,6 +26,7 @@ const errorMessage = (text) => {
 
 const Manager = ({ history }) => {
   const [driverData, setDriverData] = useState({ rows: [] })
+  const [form] = Form.useForm()
   const [driverSelected, setDriverSelected] = useState(null)
   const [searchValue, setSearchValue] = useState('')
   const [offset, setoffset] = useState(1)
@@ -74,6 +75,7 @@ const Manager = ({ history }) => {
       })
       getDrivers()
       success('Editado motorista com sucesso!')
+      form.resetFields()
     } catch (error) {
       window.onerror(`updateDriver: ${error.error}`, window.location.href)
       errorMessage('Não foi realizar a edição do motorista!')
@@ -108,15 +110,20 @@ const Manager = ({ history }) => {
   }
 
   const handleSelectedDriver = (driver) => {
-    setDriverSelected({ 
-      ...driver, 
-      expireASO: moment(pathOr('', ['expireASO'], driver)),
-      expireDriverLicense: moment(pathOr('', ['expireDriverLicense'], driver)),
-      expireProtocolInsuranceCompany: moment(pathOr('', ['expireProtocolInsuranceCompany'], driver)),
-    })
+
+    if(driver){
+      setDriverSelected({ 
+        ...driver, 
+        expireASO: moment(pathOr('', ['expireASO'], driver)),
+        expireDriverLicense: moment(pathOr('', ['expireDriverLicense'], driver)),
+        expireProtocolInsuranceCompany: moment(pathOr('', ['expireProtocolInsuranceCompany'], driver)),
+      })
+    } else {
+      setDriverSelected(driver)
+    }
   }
 
-  const handleSubmit = async (values) => {
+  const handleSubmit = async (values, resetForm) => {
     try {
       await createDriver({
         ...values,
@@ -130,6 +137,8 @@ const Manager = ({ history }) => {
       })
       getDrivers()
       success('Cadastro de motorista realizado com sucesso!')
+      form.resetFields()
+      resetForm()
     } catch (error) {
       window.onerror(`createDriver: ${error.error}`, window.location.href)
       errorMessage('Não foi realizar o cadastro do motorista!')
@@ -179,6 +188,7 @@ const Manager = ({ history }) => {
   return (
     <ManagerContainer
       handleClickCard={handleClickCard}
+      form={form}
       counts={counts}
       clearFilter={clearFilter}
       driverSelected={driverSelected}

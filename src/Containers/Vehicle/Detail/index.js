@@ -8,8 +8,9 @@ import { mapIcon } from '../../../Components/Map/Icons'
 import WhitoutTrackSvg from './whitoutTrack.svg'
 import FilterMaintenence from '../../../Components/Filters/Maintenance'
 import MaintenanceList from './MaintenanceList'
+import ModalAddSerialNumber from './ModalAddSerialNumber'
 
-const { Title, Text } = Typography
+const { Link, Title, Text } = Typography
 
 const renderSituation = (situation) => {
   return {
@@ -68,15 +69,19 @@ const Location = ({ tracks, plate }) => {
 }
 
 const Detail = ({
-  loading,
-  vehicle,
-  maintenances,
-  filterForm,
-  handleFilter,
+  addSerialNumber,
   clearFilter,
+  closeModalAddSerialNumber,
+  filterForm,
   gotoDetail,
+  handleChangeTable,
+  handleFilter,
+  loading,
+  maintenances,
   offset,
-  handleChangeTable
+  showModalAddSerialNumber,
+  vehicle,
+  visibleAddSerialNumber
 }) => {
   const tracks = pathOr([], ['tracks'], vehicle)
   const odometer = pathOr(0, [0, 'odometer'], tracks)
@@ -142,9 +147,14 @@ const Detail = ({
             <Col span={6}>
               <Text>Número rastreador</Text>
               <br />
-              <Text>
-                <strong>{vehicle?.serialNumber ?? '-'}</strong>
-              </Text>
+
+              {vehicle.serialNumber ? (
+                <Text>
+                  <strong>{vehicle?.serialNumber ?? '-'}</strong>
+                </Text>
+              ) : (
+                <Link onClick={showModalAddSerialNumber}>Adicionar</Link>
+              )}
             </Col>
 
             <Col span={6}>
@@ -195,6 +205,12 @@ const Detail = ({
           </Row>
         </Card>
       </Col>
+      <ModalAddSerialNumber
+        handleCancel={closeModalAddSerialNumber}
+        handleSubmit={addSerialNumber}
+        loading={loading}
+        visible={visibleAddSerialNumber}
+      />
     </Row>
   )
 }
