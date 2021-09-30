@@ -67,7 +67,7 @@ const FilterMaintenence = ({
               <Input
                 placeholder="Filtre pela placa da manutenção."
                 prefix={<SearchOutlined />}
-                readOnly
+                // readOnly
               />
             </Form.Item>
           )}
