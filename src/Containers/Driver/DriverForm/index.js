@@ -53,8 +53,6 @@ const DriverForm = ({
   handleSelectedDriver
 }) => {
 
-  console.log(">>",driverSelected);
-
   const [formSettings, setFormSettings] = useState(!isEmpty(driverSelected) ? formSettingsDriverEdit : formSettingsDriver)
 
   const onValuesChangeVisableFomItem = value => {
