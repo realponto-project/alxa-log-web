@@ -33,12 +33,13 @@
         smartlook('init', '47b40b5e1da6024223d754b95047042eac629b25');
     </script>
     <script>
+
       var _rollbarConfig = {
         accessToken: '474908ad2ba744b5a53c2b9559e0d08e',
         captureUncaught: true,
         captureUnhandledRejections: true,
         payload: {
-          environment: 'production',
+          environment: '%NODE_ENV%',
         },
       }
       // Rollbar Snippet

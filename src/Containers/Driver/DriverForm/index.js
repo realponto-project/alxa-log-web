@@ -1,6 +1,6 @@
 import React, { useState } from 'react'
 import { Button, Form, Input, Modal, Select, Radio, DatePicker } from 'antd'
-import { map } from 'ramda'
+import { map, isEmpty } from 'ramda'
 import {
   settingsNextStep,
   formSettingsDriver,
@@ -36,7 +36,7 @@ const renderFormItems = (driverSelected) => ({
           placeholder={placeholder}
           options={options}
           format={format}
-          disabled={driverSelected ? disabled : false}
+          disabled={!isEmpty(driverSelected) ? disabled : false}
         />
       </Form.Item>
     )
@@ -53,7 +53,9 @@ const DriverForm = ({
   handleSelectedDriver
 }) => {
 
-  const [formSettings, setFormSettings] = useState(driverSelected ? formSettingsDriverEdit : formSettingsDriver)
+  console.log(">>",driverSelected);
+
+  const [formSettings, setFormSettings] = useState(!isEmpty(driverSelected) ? formSettingsDriverEdit : formSettingsDriver)
 
   const onValuesChangeVisableFomItem = value => {
     const formItem = formSettings.find(item => !item.show && settingsNextStep[Object.keys(value)[0]] === item.name)
@@ -75,7 +77,7 @@ const DriverForm = ({
           handleCancel(false)
           form.resetFields()
           setFormSettings(formSettingsDriver)
-          handleSelectedDriver(null)
+          handleSelectedDriver({})
         }}>
           Cancelar
         </Button>,
@@ -86,7 +88,7 @@ const DriverForm = ({
           Salvar
         </Button>
       ]}
-      title={`${driverSelected ? 'Editar' : 'Cadastrar'} motorista`}
+      title={`${!isEmpty(driverSelected) ? 'Editar' : 'Cadastrar'} motorista`}
     >
       <Form
         form={form}
@@ -94,12 +96,12 @@ const DriverForm = ({
         onValuesChange={onValuesChangeVisableFomItem}
         validateTrigger="onChange"
         onFinish={values => {
-          if (driverSelected) {
+          if (!isEmpty(driverSelected)) {
             handleEdit({ ...driverSelected, ...values })
           } else {
             handleSubmit(values, () => setFormSettings(formSettingsDriver))
           }
-          handleSelectedDriver(null)
+          handleSelectedDriver({})
         }}
         initialValues={driverSelected}
       >
