@@ -6,3 +6,18 @@
     display: block !important;
   }
 }
+
+.companyName{
+  color: #454550;
+  font-size: 18px;
+  font-weight: bold;
+  height: 48px;
+  overflow: hidden;
+  transition: all 0.3s cubic-bezier(0.645, 0.045, 0.355, 1);
+  white-space: nowrap
+}
+
+.imgLogo{
+  position: relative;
+  margin: auto;
+}

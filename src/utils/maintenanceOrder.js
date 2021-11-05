@@ -22,6 +22,8 @@ const parseStatusColor = {
   'supply': '#17C9B2',
   'check-out': '#264ABE',
   'external_service': '#F6C21F',
+  'service_external': "#F6C21F",
+  'awaiting_budget': "#D500F2",
 }
 
 const parseStatus = {
@@ -36,7 +38,9 @@ const parseStatus = {
   'wash': 'Lavar',
   'supply': 'Abastecer',
   'check-out': 'Saída',
-  'external_service': 'Serviços externos'
+  'external_service': 'Serviços externos',
+  'service_external': 'Serviços externos',
+  'awaiting_budget': 'Aguardando orçamento',
 }
 
 export {
