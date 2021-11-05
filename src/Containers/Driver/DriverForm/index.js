@@ -36,7 +36,7 @@ const renderFormItems = (driverSelected) => ({
           placeholder={placeholder}
           options={options}
           format={format}
-          disabled={driverSelected ? disabled : false}
+          disabled={!isEmpty(driverSelected) ? disabled : false}
         />
       </Form.Item>
     )
@@ -86,7 +86,7 @@ const DriverForm = ({
           Salvar
         </Button>
       ]}
-      title={`${driverSelected ? 'Editar' : 'Cadastrar'} motorista`}
+      title={`${!isEmpty(driverSelected) ? 'Editar' : 'Cadastrar'} motorista`}
     >
       <Form
         form={form}
