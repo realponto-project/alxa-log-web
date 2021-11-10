@@ -1,5 +1,5 @@
 import React from 'react'
-import { Row, Col, Typography, Tag } from 'antd'
+import { Row, Col, Typography } from 'antd'
 import {
   BarChart,
   Bar,
@@ -10,6 +10,7 @@ import {
   Tooltip
 } from 'recharts'
 
+import Tag from '../../../Components/Tag'
 import formattedDate from '../../../utils/parserDate'
 
 const { Title } = Typography
@@ -18,7 +19,7 @@ const chartSettings = [
   { label: 'cancel', value: 'Cancelado', color: '#EA5656' },
   { label: 'solicitation', value: 'Solicitação', color: '#5DA0FC' },
   { label: 'check-in', value: 'Entrada', color: '#268E86' },
-  { label: 'dock', value: 'Doca', color: '#2D2D2D' },
+  { label: 'dock', value: 'Doca', color: '#FF9C70' },
   { label: 'courtyard', value: 'Pátio', color: '#EA5656' },
   { label: 'wash', value: 'Lavar', color: '#D588F2' },
   { label: 'parking', value: 'Estacionar', color: '#1772C9' },

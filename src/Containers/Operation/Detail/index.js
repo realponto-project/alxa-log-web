@@ -1,5 +1,5 @@
 import React, { useState } from 'react'
-import { Row, Col, Card, Typography, Tag, Radio, Table, Button } from 'antd'
+import { Row, Col, Card, Typography, Radio, Table, Button } from 'antd'
 import BarChart from './BarChart'
 import { BarChartOutlined, DatabaseOutlined } from '@ant-design/icons'
 import {
@@ -10,6 +10,7 @@ import {
 } from '../../../utils/maintenanceOrder'
 import formattedDate from '../../../utils/parserDate'
 import diffTime from '../../../utils/permananceTime'
+import Tag from '../../../Components/Tag'
 
 import OrdersSvg from './orders.svg'
 import CustomersSvg from './customers.svg'

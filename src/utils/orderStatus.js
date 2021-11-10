@@ -81,7 +81,7 @@ const statusColors = {
   technician: '#1772C9',
   outputs: '#EA5656',
   booking: '#7550D8',
-  tenancy: '#2D2D2D',
+  tenancy: '#FF9C70',
   borrowing: '#F29F03',
   in_analysis: '#D588F2',
   repair: '#F2CB03',

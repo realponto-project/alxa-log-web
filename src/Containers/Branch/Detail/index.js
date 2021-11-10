@@ -1,8 +1,9 @@
 import React, { useState } from 'react'
-import { Row, Col, Card, Typography, Tag, Radio, Table, Button } from 'antd'
+import { Row, Col, Card, Typography, Radio, Table, Button } from 'antd'
 import BarChart from './BarChart'
 import { cnpj } from 'cpf-cnpj-validator'
 import { BarChartOutlined, DatabaseOutlined } from '@ant-design/icons'
+
 import {
   parseStatus,
   parseStatusColor,
@@ -19,6 +20,7 @@ import AvailableSVG from './available.svg'
 
 import FilterMaintenence from '../../../Components/Filters/Maintenance'
 import CircleBar from '../../../Components/circleBar'
+import Tag from '../../../Components/Tag'
 
 const { Text, Title } = Typography
 

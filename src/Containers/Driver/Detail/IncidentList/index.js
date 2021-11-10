@@ -1,8 +1,9 @@
 import React from 'react'
-import { Table, Tag, Button } from 'antd'
+import { Table, Button } from 'antd'
 import { cnpj } from 'cpf-cnpj-validator'
 
 import formattedDate from '../../../../utils/parserDate'
+import Tag from '../../../../Components/Tag'
 
 const chartSettings = {
   collision: 'Colisão',
@@ -19,7 +20,7 @@ const chartSettings = {
 const colors = {
   collision: '#5DA0FC',
   accident: '#268E86',
-  vehicle_break_down: '#2D2D2D',
+  vehicle_break_down: '#FF9C70',
   refusal_of_freight: '#1772C9',
   absence_without_justification: '#D588F2',
   absence_with_justification: '#F29F03',

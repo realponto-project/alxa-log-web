@@ -1,10 +1,11 @@
 import React from 'react'
-import { Card, Col, Row, Tag, Typography, Image } from 'antd'
+import { Card, Col, Row, Typography, Image } from 'antd'
 import { MapContainer, Marker, TileLayer, Popup } from 'react-leaflet'
 import moment from 'moment'
 import { length, pathOr } from 'ramda'
 
 import { mapIcon } from '../../../Components/Map/Icons'
+import Tag from '../../../Components/Tag'
 import WhitoutTrackSvg from './whitoutTrack.svg'
 import FilterMaintenence from '../../../Components/Filters/Maintenance'
 import MaintenanceList from './MaintenanceList'

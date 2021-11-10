@@ -5,11 +5,7 @@ import { connect } from "react-redux";
 import { MenuUnfoldOutlined, MenuFoldOutlined } from "@ant-design/icons";
 
 import { compose, pathOr } from "ramda";
-import Logo from "../../Assets/logo.svg";
-import OnlyLogo from "../../Assets/bar_alxa.svg";
-import LogoPlus from "../../Assets/alxa-plus.svg";
-import styles from "./style.module.css";
-
+import { useThemeSwitcher } from "react-css-theme-switcher";
 import {
   DotChartOutlined,
   BranchesOutlined,
@@ -19,6 +15,11 @@ import {
   CarryOutOutlined,
   DiffOutlined,
 } from "@ant-design/icons";
+
+import Logo from "../../Assets/logo.svg";
+import OnlyLogo from "../../Assets/bar_alxa.svg";
+import LogoPlus from "../../Assets/alxa-plus.svg";
+import styles from "./style.module.css";
 
 const { Sider, Content } = Layout;
 const menuItems = [
@@ -61,6 +62,8 @@ const menuItems = [
 
 const LayoutComponent = ({ children, history, company }) => {
   const [collapsed, setCollapsed] = useState(false);
+  const { currentTheme } = useThemeSwitcher();
+
 
   const goTo = ({ key }) => history.push(key);
   const companyName = pathOr("", ["name"], company);
@@ -71,8 +74,7 @@ const LayoutComponent = ({ children, history, company }) => {
     <Layout className={styles.noPrint}>
       <Sider
         className={styles.slider}
-        trigger={collapsed ? <MenuUnfoldOutlined /> : <MenuFoldOutlined />}
-        theme="light"
+        theme={currentTheme}
         width={256}
         collapsible
         collapsed={collapsed}
@@ -102,7 +104,7 @@ const LayoutComponent = ({ children, history, company }) => {
         </div>
         <Menu
           className={styles.noPrint}
-          theme="ligth"
+          theme={currentTheme}
           mode="inline"
           defaultSelectedKeys={["1"]}
         >

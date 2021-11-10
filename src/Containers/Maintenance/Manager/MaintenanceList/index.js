@@ -6,7 +6,6 @@ import {
   ConfigProvider,
   Image,
   Space,
-  Tag,
   Menu,
   Dropdown,
   Modal
@@ -16,6 +15,7 @@ import formattedDate from '../../../../utils/parserDate'
 import diffTime from '../../../../utils/permananceTime'
 import { ExclamationCircleOutlined } from '@ant-design/icons'
 
+import Tag from '../../../../Components/Tag'
 import {
   parseStatus,
   parseStatusColor,

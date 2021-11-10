@@ -19,7 +19,7 @@ const chartStatus = {
 const chartSettings = [
   { label: 'accident', value: 'Acidente', color: '#268E86' },
   { label: 'collision', value: 'Colisão', color: '#5DA0FC' },
-  { label: 'vehicle_break_down', value: 'Veículo quebrado', color: '#2D2D2D' },
+  { label: 'vehicle_break_down', value: 'Veículo quebrado', color: '#FF9C70' },
 ]
 
 const Chart = ({ data }) => {

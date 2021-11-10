@@ -1,6 +1,18 @@
 import React from "react";
+import { useThemeSwitcher } from "react-css-theme-switcher";
 
 const CircleBar = ({ icon, total = 0, count = 0 }) => {
+  const { currentTheme } = useThemeSwitcher();
+
+  const fill = {
+    dark: "#303030",
+    light: "#fff",
+  }[currentTheme];
+
+  const stroke = {
+    dark: "#424242",
+    light: "#F0F2F5",
+  }[currentTheme];
 
   const a = Math.PI * ((2 * count) / total - 0.5);
   const x = 46 + 46 * Math.cos(a - 0.12202691584261159);
@@ -27,13 +39,19 @@ const CircleBar = ({ icon, total = 0, count = 0 }) => {
       fill="none"
       xmlns="http://www.w3.org/2000/svg"
     >
-      <path
-        d="M92.9409 46C92.9409 71.4051 72.2853 92 46.8052 92C21.3252 92 0.669556 71.4051 0.669556 46C0.669556 20.5949 21.3252 0 46.8052 0C72.2853 0 92.9409 20.5949 92.9409 46ZM11.1793 46C11.1793 65.6178 27.1296 81.5212 46.8052 81.5212C66.4809 81.5212 82.4312 65.6178 82.4312 46C82.4312 26.3822 66.4809 10.4788 46.8052 10.4788C27.1296 10.4788 11.1793 26.3822 11.1793 46Z"
-        fill="#F7F5FF"
-      />
+      <circle
+        cx="46"
+        cy="46"
+        r="41"
+        fill="transparent"
+        stroke-width="10"
+        stroke={stroke}
+      ></circle>
 
       {count > 0 && <path d={indicator} fill="url(#paint0_linear)"></path>}
-      <circle cx="46" cy="46" r="36" fill="white"></circle>
+      <circle cx="46" cy="46" r="36" fill="transparent"></circle>
+
+      <circle cx="46" cy="46" r="36" fill={fill}></circle>
 
       {count > 0 && (
         <circle

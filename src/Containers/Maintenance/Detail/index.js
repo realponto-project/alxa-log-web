@@ -1,10 +1,11 @@
 import React, { useState } from 'react'
-import { Row, Col, Card, Typography, Image, Tag, Timeline, Button, Tooltip } from 'antd'
+import { Row, Col, Card, Typography, Image, Timeline, Button, Tooltip } from 'antd'
 import Qrcode from 'qrcode.react'
 import { cnpj } from 'cpf-cnpj-validator'
 import { CopyOutlined } from '@ant-design/icons'
 import { map, prop, sortBy } from 'ramda'
 
+import Tag from '../../../Components/Tag'
 import fuelSVG from './fuel.svg'
 import clockSVG from './clock.svg'
 import leafSVG from './leaf.svg'
@@ -26,7 +27,7 @@ const parseStatusColor = {
   parking: '#1772C9',
   courtyard: '#EA5656',
   awaiting_repair: '#7550D8',
-  dock: '#2D2D2D',
+  dock: '#FF9C70',
   wash: '#D588F2',
   supply: '#17C9B2',
   'check-out': '#264ABE',

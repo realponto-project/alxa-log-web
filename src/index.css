@@ -35,15 +35,3 @@ body {
   color: #40a9ff;
   border-color: #40a9ff;
 }
-
-
-.ant-layout-sider-trigger{
-  top: 0;
-  text-align: end;
-  padding: 0 33px 0 0;
-  position: absolute
-}
-
-.ant-layout-sider-has-trigger{
-  position: relative
-}
