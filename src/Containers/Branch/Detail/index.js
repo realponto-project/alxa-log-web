@@ -13,10 +13,10 @@ import {
 import formattedDate from '../../../utils/parserDate'
 import diffTime from '../../../utils/permananceTime'
 
-import OrdersSvg from './orders.svg'
-import CustomersSvg from './customers.svg'
-import CheckoutSvg from './checkout.svg'
-import AvailableSVG from './available.svg'
+import OrdersSvg from '../../../Assets/orders.svg'
+import CustomersSvg from '../../../Assets/customers.svg'
+import CheckoutSvg from '../../../Assets/checkout.svg'
+import AvailableSVG from '../../../Assets/available.svg'
 
 import FilterMaintenence from '../../../Components/Filters/Maintenance'
 import CircleBar from '../../../Components/circleBar'

@@ -1,6 +1,6 @@
 import leaflet from 'leaflet'
 
-import truckPin from './truckPin.svg'
+import truckPin from '../../../Assets/truckPin.svg'
 
 export const mapIcon = leaflet.icon({
   iconUrl: truckPin,

@@ -1,7 +1,7 @@
 import React from 'react'
 import Voucher from '../../Components/Voucher'
 import { Row, Col, Button, Image } from 'antd'
-import wazePng from './waze.png'
+import wazePng from '../../Assets/waze.png'
 
 const VoucherMobile = ({ maintenanceOrder }) =>{
   const openWaze = () => {

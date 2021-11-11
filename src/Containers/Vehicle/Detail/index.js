@@ -6,7 +6,7 @@ import { length, pathOr } from 'ramda'
 
 import { mapIcon } from '../../../Components/Map/Icons'
 import Tag from '../../../Components/Tag'
-import WhitoutTrackSvg from './whitoutTrack.svg'
+import WhitoutTrackSvg from '../../../Assets/whitoutTrack.svg'
 import FilterMaintenence from '../../../Components/Filters/Maintenance'
 import MaintenanceList from './MaintenanceList'
 import ModalAddSerialNumber from './ModalAddSerialNumber'

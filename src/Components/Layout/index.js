@@ -1,9 +1,7 @@
 import React, { useState } from "react";
-import { Image, Menu, Layout } from "antd";
+import { Image, Menu, Layout, Typography } from "antd";
 import { withRouter } from "react-router-dom";
 import { connect } from "react-redux";
-import { MenuUnfoldOutlined, MenuFoldOutlined } from "@ant-design/icons";
-
 import { compose, pathOr } from "ramda";
 import { useThemeSwitcher } from "react-css-theme-switcher";
 import {
@@ -13,6 +11,7 @@ import {
   CalculatorOutlined,
   TeamOutlined,
   CarryOutOutlined,
+  CarOutlined,
   DiffOutlined,
 } from "@ant-design/icons";
 
@@ -21,6 +20,7 @@ import OnlyLogo from "../../Assets/bar_alxa.svg";
 import LogoPlus from "../../Assets/alxa-plus.svg";
 import styles from "./style.module.css";
 
+const { Paragraph } = Typography
 const { Sider, Content } = Layout;
 const menuItems = [
   {
@@ -49,7 +49,7 @@ const menuItems = [
     key: "/logged/driver/manager",
   },
   {
-    icon: <CarryOutOutlined />,
+    icon: <CarOutlined />,
     label: "Veículos",
     key: "/logged/vehicle/manager",
   },
@@ -92,15 +92,18 @@ const LayoutComponent = ({ children, history, company }) => {
             preview={false}
             src={collapsed ? OnlyLogo : Logo}
             width={collapsed ? 40 : 150}
+            style={currentTheme === 'dark' && { 
+              filter: 'invert(1)'
+            }}
           />
-            <p
+            <Paragraph
               className={[styles.noPrint, styles.companyName].join(' ')}
               style={{
                 display: collapsed ? 'none' : "block",
               }}
             >
               {parseCompanyName}
-            </p>
+            </Paragraph>
         </div>
         <Menu
           className={styles.noPrint}

@@ -5,7 +5,7 @@ import { map } from 'ramda'
 
 import DriverForm from '../DriverForm'
 import DriverList from './DriverList'
-import AvailableSVG from './available.svg'
+import DateSVG from '../../../Assets/date.svg'
 import CircleBar from '../../../Components/circleBar'
 import ModalUpdateDates from '../DriverForm/updateDates'
 
@@ -107,7 +107,8 @@ const Manager = ({
               total={source.count}
               count={count}
               title={title}
-              srcImage={AvailableSVG}
+              // srcImage={<CalendarOutlined />}
+              srcImage={DateSVG}
             />
           </Col>
         ),

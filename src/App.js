@@ -22,7 +22,6 @@ const themes = {
 };
 
 const App = ({ theme, user }) => {
-  console.log("theme >>>>", theme, user);
   return (
     <ThemeSwitcherProvider
       themeMap={themes}
@@ -33,7 +32,7 @@ const App = ({ theme, user }) => {
         renderEmpty={() => (
           <Empty
             description="Não há dados"
-            image={<Image width={85} src={NoData} preview={false} />}
+            image={<Image style={theme === 'dark' && { filter: "invert(1)" }} width={85} src={NoData} preview={false} />}
           />
         )}
       >

@@ -9,14 +9,17 @@ import {
   Space,
   DatePicker,
 } from "antd";
+import { connect } from 'react-redux'
+import { compose } from 'ramda'
+
 
 import BarChart from "./BarChart";
 import VerticalChart from "./VerticalChart";
-import OrdersSvg from "./orders.svg";
-import CustomersSvg from "./customers.svg";
+import OrdersSvg from "../../Assets/orders.svg";
+import CustomersSvg from "../../Assets/customers.svg";
 import styles from "./style.module.css";
-import CheckoutSvg from "./checkout.svg";
-import AvailableSVG from "./available.svg";
+import CheckoutSvg from "../../Assets/checkout.svg";
+import AvailableSVG from "../../Assets/available.svg";
 
 import CircleBar from "../../Components/circleBar";
 
@@ -24,12 +27,7 @@ const { Link, Text, Title } = Typography;
 const { RangePicker } = DatePicker;
 
 const CardStatus = ({ title, count, redirectPage, srcImage, total }) => (
-  <Card
-    style={{
-      borderRadius: 5,
-      boxShadow: "0px 4px 4px rgba(0, 0, 0, 0.1)",
-    }}
-  >
+  <Card className={styles.card}>
     <Row align="middle" justify="space-between">
       <Col span={12}>
         <Text style={{ fontSize: "1rem" }}>{title}</Text>
@@ -54,6 +52,7 @@ const Home = ({
   orderOperationStatus,
   orderStatus,
   querDate,
+  theme
 }) => {
   const vehicleTotal = orderStatus
     .filter(
@@ -92,6 +91,7 @@ const Home = ({
 
     return arr;
   }, []);
+
   return (
     <Row gutter={[18, 26]}>
       <Col span={24}>
@@ -100,7 +100,7 @@ const Home = ({
             <Button
               onClick={() => handleChangeDate("today")}
               ghost={dateChoosed === "today"}
-              className={dateChoosed === "today" && "btn-active"}
+              className={dateChoosed === "today" && styles[`button-activeted-${theme}`]}
               size="small"
               shape="round"
             >
@@ -109,7 +109,7 @@ const Home = ({
             <Button
               onClick={() => handleChangeDate("week")}
               ghost={dateChoosed === "week"}
-              className={dateChoosed === "week" && "btn-active"}
+              className={dateChoosed === "week" && styles[`button-activeted-${theme}`]}
               size="small"
               shape="round"
             >
@@ -118,7 +118,7 @@ const Home = ({
             <Button
               onClick={() => handleChangeDate("month")}
               ghost={dateChoosed === "month"}
-              className={dateChoosed === "month" && "btn-active"}
+              className={dateChoosed === "month" && styles[`button-activeted-${theme}`]}
               size="small"
               shape="round"
             >
@@ -128,7 +128,7 @@ const Home = ({
             <RangePicker
               format="DD-MM-YYYY"
               value={[querDate.start, querDate.end]}
-              className={dateChoosed === "custom" && "btn-active"}
+              className={dateChoosed === "custom" && styles[`button-activeted-${theme}`]}
               onChange={(dates) => handleChangeDate("custom", { dates })}
               bordered={true}
             />
@@ -207,4 +207,11 @@ const Home = ({
   );
 };
 
-export default Home;
+
+const mapStateToProps = ({ theme }) => ({
+  theme
+})
+
+const enhanced = compose(connect(mapStateToProps))
+
+export default enhanced(Home)

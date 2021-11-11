@@ -174,7 +174,6 @@ const Manager = ({ history }) => {
   }, [search])
 
   const handleClickCard = (event) => {
-    console.log('>>>', event)
     changeQueryParams(
       qs.stringify({
         [event]: [

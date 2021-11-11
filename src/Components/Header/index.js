@@ -69,7 +69,7 @@ const Header = ({
       <Menu.Item key="/logged/account-password">Alterar senha</Menu.Item>
       <Menu.Item key="theme">
         <Row justify="space-between">
-          Tema
+          <p>Tema <em>(beta)</em></p>
           <AntSwitch
             checkedChildren={<BulbFilled style={{ color: "black" }} />}
             unCheckedChildren={<BulbTwoTone twoToneColor="yellow" />}

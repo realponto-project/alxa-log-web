@@ -2,7 +2,7 @@ import React from 'react'
 import { Image, Button, Row, Col, Typography } from 'antd'
 
 import LogoSvg from '../../../Assets/logo.svg'
-import PhoneUpdateSvg from './phone_update.svg'
+import PhoneUpdateSvg from '../../../Assets/phone_update.svg'
 
 const { Title, Text } = Typography
 

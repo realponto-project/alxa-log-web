@@ -1,5 +1,5 @@
 import React from 'react'
-import { Table, Button, Empty, ConfigProvider, Image } from 'antd'
+import { Table, Button } from 'antd'
 import NoData from '../../../../Assets/noData.svg'
 
 const columns = ({ handleClickEdit }) => [
@@ -20,11 +20,6 @@ const columns = ({ handleClickEdit }) => [
 
 const FleetList = ({ datasource, handleClickEdit, loading, handleChangeTableEvent, offset }) => {
   return (
-    <ConfigProvider renderEmpty={() => <Empty 
-        description="Não há dados" 
-        image={<Image width={85} src={NoData} preview={false} />}
-      />
-    }>
       <Table 
         pagination={{ showSizeChanger: false, pageSize: 20, total: datasource.count, current: offset }}
         onChange={handleChangeTableEvent}
@@ -32,7 +27,6 @@ const FleetList = ({ datasource, handleClickEdit, loading, handleChangeTableEven
         loading={loading}
         dataSource={datasource.rows}
       />
-    </ConfigProvider>
   )
 }
 

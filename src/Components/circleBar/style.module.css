@@ -1,0 +1,17 @@
+.container{
+  width: 92px;
+  height: 92px;
+  position: relative;
+}
+
+.container svg{
+  position: absolute;
+}
+
+.container image{
+  position: absolute;
+}
+
+.icon{
+  margin: 15px
+}
