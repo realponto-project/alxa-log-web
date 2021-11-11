@@ -2,24 +2,22 @@ import React, { useState, useEffect } from 'react'
 import { Button, Form, Input, Modal, Select, DatePicker } from 'antd'
 import { map } from 'ramda'
 
-import {
-  formSettingsDriver,
-} from './formSettings'
+import { formSettingsDriver } from './formSettings'
 
 const formItemsComponent = {
   input: Input,
   select: Select,
-  textArea: Input.TextArea,
+  textArea: Input.TextArea
 }
 
-const renderFormItems = ({ 
-  label, 
-  name, 
-  rules, 
-  placeholder, 
-  show, 
-  typeInput, 
-  options = [], 
+const renderFormItems = ({
+  label,
+  name,
+  rules,
+  placeholder,
+  show,
+  typeInput,
+  options = [],
   mode = null,
   format = ''
 }) => {
@@ -28,17 +26,17 @@ const renderFormItems = ({
     show && (
       <Form.Item key={name} label={label} name={name} rules={rules}>
         {typeInput === 'date' ? (
-          <DatePicker  format={format} />
-        ): (
-          <Component 
+          <DatePicker format={format} />
+        ) : (
+          <Component
             showSearch
-            name={name} 
-            placeholder={placeholder} 
-            options={options} 
-            mode={mode} 
-            filterOption={(value, option) => (
+            name={name}
+            placeholder={placeholder}
+            options={options}
+            mode={mode}
+            filterOption={(value, option) =>
               option.label.toLowerCase().indexOf(value.toLowerCase()) >= 0
-            )}
+            }
           />
         )}
       </Form.Item>
@@ -52,9 +50,11 @@ const DriverForm = ({
   visible,
   handleSubmitDriver,
   handleSubmitUpdateDriver,
-  order,
+  order
 }) => {
-  const [formSettings, setFormSettings] = useState(formSettingsDriver(driversSource))
+  const [formSettings, setFormSettings] = useState(
+    formSettingsDriver(driversSource)
+  )
   const [form] = Form.useForm()
   const hasSecondDriver = order.maintenanceOrderDrivers.length > 1
 
@@ -67,26 +67,24 @@ const DriverForm = ({
       visible={visible}
       closable={false}
       footer={[
-        <Button key="back" onClick={() => {
-          handleCancel()
-          form.resetFields()
-        }}>
+        <Button
+          key="back"
+          onClick={() => {
+            handleCancel()
+            form.resetFields()
+          }}>
           Cancelar
         </Button>,
-        <Button
-          key="submit"
-          onClick={() => form.submit()}
-          type="primary">
+        <Button key="submit" onClick={() => form.submit()} type="primary">
           Salvar
         </Button>
       ]}
-      title={`${hasSecondDriver ? 'Editar' : 'Adicionar'} condutor do veículo`}
-    >
+      title={`${hasSecondDriver ? 'Editar' : 'Adicionar'} condutor do veículo`}>
       <Form
         form={form}
         layout="vertical"
         validateTrigger="onChange"
-        onFinish={values => {
+        onFinish={(values) => {
           if (hasSecondDriver) {
             handleSubmitUpdateDriver(values)
           } else {
@@ -94,8 +92,11 @@ const DriverForm = ({
           }
           form.resetFields()
         }}
-        initialValues={hasSecondDriver ? { driverId: order.maintenanceOrderDrivers[1].driverId } : {} }
-      >
+        initialValues={
+          hasSecondDriver
+            ? { driverId: order.maintenanceOrderDrivers[1].driverId }
+            : {}
+        }>
         {map(renderFormItems, formSettings)}
       </Form>
     </Modal>

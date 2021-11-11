@@ -110,13 +110,16 @@ const Manager = ({ history }) => {
   }
 
   const handleSelectedDriver = (driver) => {
-
-    if(!isEmpty(driver)){
-      setDriverSelected({ 
-        ...driver, 
+    if (!isEmpty(driver)) {
+      setDriverSelected({
+        ...driver,
         expireASO: moment(pathOr('', ['expireASO'], driver)),
-        expireDriverLicense: moment(pathOr('', ['expireDriverLicense'], driver)),
-        expireProtocolInsuranceCompany: moment(pathOr('', ['expireProtocolInsuranceCompany'], driver)),
+        expireDriverLicense: moment(
+          pathOr('', ['expireDriverLicense'], driver)
+        ),
+        expireProtocolInsuranceCompany: moment(
+          pathOr('', ['expireProtocolInsuranceCompany'], driver)
+        )
       })
     } else {
       setDriverSelected(driver)

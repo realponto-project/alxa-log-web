@@ -1,16 +1,16 @@
-import React from 'react';
-import { useThemeSwitcher } from 'react-css-theme-switcher';
+import React from 'react'
+import { useThemeSwitcher } from 'react-css-theme-switcher'
 
-import styles from "./style.module.css";
+import styles from './style.module.css'
 
 const Tag = ({ color, children }) => {
-  const { currentTheme } = useThemeSwitcher();
+  const { currentTheme } = useThemeSwitcher()
 
   const style = {
     dark: {
       color,
       background: color + '25',
-      borderColor: color, 
+      borderColor: color,
       boxShadow: '0 0 3px ' + color
     },
     light: {
@@ -21,10 +21,10 @@ const Tag = ({ color, children }) => {
   }[currentTheme]
 
   return (
-    <span id={styles['span-tag']} style={style} >
+    <span id={styles['span-tag']} style={style}>
       {children}
     </span>
-  );
-};
+  )
+}
 
-export default Tag;
+export default Tag

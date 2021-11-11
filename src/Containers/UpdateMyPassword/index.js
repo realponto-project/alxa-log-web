@@ -3,7 +3,6 @@ import React from 'react'
 import { Row, Col, Card, Input, Button, Form } from 'antd'
 
 const UpdateMyPassword = ({ goToOrder, handleSubmit, loading, form }) => {
-
   const validatorPassword = (passwordPropName, shouldBeEqual = false) => ({
     getFieldValue
   }) => {
@@ -42,7 +41,7 @@ const UpdateMyPassword = ({ goToOrder, handleSubmit, loading, form }) => {
               name="password"
               label="Senha"
               rules={[{ required: true, message: 'Campo obrigatório!' }]}>
-              <Input.Password placeholder="Insira sua senha atual"/>
+              <Input.Password placeholder="Insira sua senha atual" />
             </Form.Item>
             <Form.Item
               name="newPassword"
@@ -51,7 +50,7 @@ const UpdateMyPassword = ({ goToOrder, handleSubmit, loading, form }) => {
                 validatorPassword('password', false),
                 { required: true, message: 'Campo obrigatório!' }
               ]}>
-              <Input.Password placeholder="Insira sua nova senha"/>
+              <Input.Password placeholder="Insira sua nova senha" />
             </Form.Item>
             <Form.Item
               name="confirmPassword"
@@ -60,7 +59,7 @@ const UpdateMyPassword = ({ goToOrder, handleSubmit, loading, form }) => {
                 validatorPassword('newPassword', true),
                 { required: true, message: 'Campo obrigatório!' }
               ]}>
-              <Input.Password placeholder="Confirme sua senha"/>
+              <Input.Password placeholder="Confirme sua senha" />
             </Form.Item>
 
             <Col span={24} style={{ textAlign: 'right' }}>

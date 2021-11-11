@@ -3,25 +3,22 @@ import { Button, Form, Input, Modal, Select, DatePicker } from 'antd'
 import { map } from 'ramda'
 import { cnpj } from 'cpf-cnpj-validator'
 
-import {
-  settingsNextStep,
-  formSettingsAuthorization,
-} from './formSettings'
+import { settingsNextStep, formSettingsAuthorization } from './formSettings'
 
 const formItemsComponent = {
   input: Input,
   select: Select,
-  textArea: Input.TextArea,
+  textArea: Input.TextArea
 }
 
-const renderFormItems = ({ 
-  label, 
-  name, 
-  rules, 
-  placeholder, 
-  show, 
-  typeInput, 
-  options = [], 
+const renderFormItems = ({
+  label,
+  name,
+  rules,
+  placeholder,
+  show,
+  typeInput,
+  options = [],
   mode = null,
   format = ''
 }) => {
@@ -30,17 +27,17 @@ const renderFormItems = ({
     show && (
       <Form.Item key={name} label={label} name={name} rules={rules}>
         {typeInput === 'date' ? (
-          <DatePicker  format={format} />
-        ): (
-          <Component 
+          <DatePicker format={format} />
+        ) : (
+          <Component
             showSearch
-            name={name} 
-            placeholder={placeholder} 
-            options={options} 
-            mode={mode} 
-            filterOption={(value, option) => (
+            name={name}
+            placeholder={placeholder}
+            options={options}
+            mode={mode}
+            filterOption={(value, option) =>
               option.label.toLowerCase().indexOf(value.toLowerCase()) >= 0
-            )}
+            }
           />
         )}
       </Form.Item>
@@ -53,13 +50,20 @@ const AuthorizationForm = ({
   operationsSource,
   handleCancel,
   visible,
-  handleSubmit,
+  handleSubmit
 }) => {
-  const [formSettings, setFormSettings] = useState(formSettingsAuthorization(vehiclesSource))
+  const [formSettings, setFormSettings] = useState(
+    formSettingsAuthorization(vehiclesSource)
+  )
   const [form] = Form.useForm()
-  const parseOptionItemOperation = item => ({ value: item.id, label: `${item.name} - Filial: ${item.company.name} / ${cnpj.format(item.company.document)}` })
+  const parseOptionItemOperation = (item) => ({
+    value: item.id,
+    label: `${item.name} - Filial: ${item.company.name} / ${cnpj.format(
+      item.company.document
+    )}`
+  })
 
-  const setOpetionValue = formItem => {
+  const setOpetionValue = (formItem) => {
     switch (formItem.name) {
       case 'operationId':
         return operationsSource.map(parseOptionItemOperation)
@@ -68,14 +72,19 @@ const AuthorizationForm = ({
     }
   }
 
-  const onValuesChangeVisableFomItem = value => {
-    const formItem = formSettings.find(item => !item.show && settingsNextStep[Object.keys(value)[0]] === item.name)
+  const onValuesChangeVisableFomItem = (value) => {
+    const formItem = formSettings.find(
+      (item) =>
+        !item.show && settingsNextStep[Object.keys(value)[0]] === item.name
+    )
     if (formItem) {
-      setFormSettings(formSettings.map(item => (
-        item.name === formItem.name 
-          ? {...formItem, show: true, options: setOpetionValue(formItem) } 
-          : item
-      )))
+      setFormSettings(
+        formSettings.map((item) =>
+          item.name === formItem.name
+            ? { ...formItem, show: true, options: setOpetionValue(formItem) }
+            : item
+        )
+      )
     }
   }
 
@@ -84,33 +93,30 @@ const AuthorizationForm = ({
       visible={visible}
       closable={false}
       footer={[
-        <Button key="back" onClick={() => {
-          handleCancel(false)
-          form.resetFields()
-          setFormSettings(formSettingsAuthorization(vehiclesSource))
-        }}>
+        <Button
+          key="back"
+          onClick={() => {
+            handleCancel(false)
+            form.resetFields()
+            setFormSettings(formSettingsAuthorization(vehiclesSource))
+          }}>
           Cancelar
         </Button>,
-        <Button
-          key="submit"
-          onClick={() => form.submit()}
-          type="primary">
+        <Button key="submit" onClick={() => form.submit()} type="primary">
           Salvar
         </Button>
       ]}
-      title='Cadastrar nova autorização'
-    >
+      title="Cadastrar nova autorização">
       <Form
         form={form}
         layout="vertical"
         onValuesChange={onValuesChangeVisableFomItem}
         validateTrigger="onChange"
-        onFinish={values => {
+        onFinish={(values) => {
           handleSubmit(values)
           setFormSettings(formSettingsAuthorization(vehiclesSource))
           form.resetFields()
-        }}
-      >
+        }}>
         {map(renderFormItems, formSettings)}
       </Form>
     </Modal>

@@ -4,12 +4,11 @@ import userReducer from './user'
 import companyReducer from './company'
 import themeReducer from './theme'
 
-const appReducer =  combineReducers({
+const appReducer = combineReducers({
   user: userReducer,
   company: companyReducer,
   theme: themeReducer
 })
-
 
 const rootReducer = (state, action) => {
   if (action.type === 'USER_LOGOUT') {

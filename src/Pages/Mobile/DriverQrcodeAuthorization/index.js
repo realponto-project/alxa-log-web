@@ -2,9 +2,7 @@ import React from 'react'
 import DriverAuthorizationQrcodeContainer from '../../../Containers/Mobile/DriverAuthorizationQrcode'
 
 const DriverAuthorizationQrcode = () => {
-  return (
-    <DriverAuthorizationQrcodeContainer />
-  )
+  return <DriverAuthorizationQrcodeContainer />
 }
 
 export default DriverAuthorizationQrcode

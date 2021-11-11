@@ -36,52 +36,56 @@ const myInfoMask = ({ name, value }) => {
   return { name, value: applyMask(value) }
 }
 
-const parseValuePTbr= value => {
-  const replaceValue =  String(value).replace(/\D/g, '')
-  const price = replaceValue.length === 4 ? String(Number(replaceValue)) : replaceValue
-    
-    if ( price.length === 1 && price === '0') {
-      return 'R$ 0,00'
-    }
+const parseValuePTbr = (value) => {
+  const replaceValue = String(value).replace(/\D/g, '')
+  const price =
+    replaceValue.length === 4 ? String(Number(replaceValue)) : replaceValue
 
-    if ( price.length === 1) {
-      return price.replace(/(\d{1,2})/, 'R$ 0,$1')
-    }
-    
-    if ( price.length === 3) {
-      return price.replace(/(\d{1})(\d{2})/, 'R$ $1,$2')
-    }
+  if (price.length === 1 && price === '0') {
+    return 'R$ 0,00'
+  }
 
-    if ( price.length <= 5) {
-      return price.replace(/(\d{2,3})(\d{2})/, 'R$ $1,$2')
-    }
-    if ( price.length === 6) {
-      return price.replace(/(\d{1})(\d{3})(\d{2})/, 'R$ $1.$2,$3')
-    }
-    if ( price.length <= 8) {
-      return price.replace(/(\d{2,3})(\d{3})(\d{2})/, 'R$ $1.$2,$3')
-    }
-    
-    if ( price.length <= 9) {
-      return price.replace(/(\d{1})(\d{3})(\d{3})(\d{2})/, 'R$ $1.$2.$3,$4')
-    }
+  if (price.length === 1) {
+    return price.replace(/(\d{1,2})/, 'R$ 0,$1')
+  }
 
-    if ( price.length <= 11) {
-      return price.replace(/(\d{2,3})(\d{3})(\d{3})(\d{2})/, 'R$ $1.$2.$3,$4')
-    }
+  if (price.length === 3) {
+    return price.replace(/(\d{1})(\d{2})/, 'R$ $1,$2')
+  }
 
-    if ( price.length <= 12) {
-      return price.replace(/(\d{1})(\d{3})(\d{3})(\d{3})(\d{2})/, 'R$ $1.$2.$3.$4,$5')
-    }
-    
-    if ( price.length <= 14) {
-      return price.replace(/(\d{2,3})(\d{3})(\d{3})(\d{3})(\d{2})/, 'R$ $1.$2.$3.$4,$5')
-    }
+  if (price.length <= 5) {
+    return price.replace(/(\d{2,3})(\d{2})/, 'R$ $1,$2')
+  }
+  if (price.length === 6) {
+    return price.replace(/(\d{1})(\d{3})(\d{2})/, 'R$ $1.$2,$3')
+  }
+  if (price.length <= 8) {
+    return price.replace(/(\d{2,3})(\d{3})(\d{2})/, 'R$ $1.$2,$3')
+  }
 
-    return value.slice(0, 21)
+  if (price.length <= 9) {
+    return price.replace(/(\d{1})(\d{3})(\d{3})(\d{2})/, 'R$ $1.$2.$3,$4')
+  }
+
+  if (price.length <= 11) {
+    return price.replace(/(\d{2,3})(\d{3})(\d{3})(\d{2})/, 'R$ $1.$2.$3,$4')
+  }
+
+  if (price.length <= 12) {
+    return price.replace(
+      /(\d{1})(\d{3})(\d{3})(\d{3})(\d{2})/,
+      'R$ $1.$2.$3.$4,$5'
+    )
+  }
+
+  if (price.length <= 14) {
+    return price.replace(
+      /(\d{2,3})(\d{3})(\d{3})(\d{3})(\d{2})/,
+      'R$ $1.$2.$3.$4,$5'
+    )
+  }
+
+  return value.slice(0, 21)
 }
 
-export {
-  parseValuePTbr,
-  myInfoMask,
-}
+export { parseValuePTbr, myInfoMask }

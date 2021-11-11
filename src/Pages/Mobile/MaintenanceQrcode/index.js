@@ -4,12 +4,10 @@ import { getMobileQrCode } from '../../../Services/MaintenanceOrders'
 import VoucherMobile from '../../../Containers/VoucherMobile'
 import GAInitialize from '../../../utils/ga'
 
-const MaintenanceQrcode = ({
-  match
-}) => {
+const MaintenanceQrcode = ({ match }) => {
   const [maintenanceOrder, setMaintenanceOrder] = useState({
     company: {
-      street: null,
+      street: null
     },
     companyId: null,
     costCenter: null,
@@ -30,7 +28,7 @@ const MaintenanceQrcode = ({
     status: null,
     updatedAt: null,
     userId: null,
-    supplies: [],
+    supplies: []
   })
 
   GAInitialize(`/maintenance-order-qrcode-driver/${match.params.id}`)
@@ -39,22 +37,21 @@ const MaintenanceQrcode = ({
     getOrder()
   }, [])
 
-  const getOrder = async() => {
+  const getOrder = async () => {
     try {
       const { data } = await getMobileQrCode(match.params.id)
-      if(data) {
+      if (data) {
         setMaintenanceOrder(data)
       }
     } catch (error) {
-      window.onerror(`driverQrcodeVoucher: ${error.error}`, window.location.href)
+      window.onerror(
+        `driverQrcodeVoucher: ${error.error}`,
+        window.location.href
+      )
     }
   }
 
-  return (
-    <VoucherMobile 
-      maintenanceOrder={maintenanceOrder}
-    />
-  )
+  return <VoucherMobile maintenanceOrder={maintenanceOrder} />
 }
 
 export default withRouter(MaintenanceQrcode)

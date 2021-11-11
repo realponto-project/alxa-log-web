@@ -29,7 +29,7 @@ const colors = {
   lack_of_cargo_lashing: '#F6C21F'
 }
 
-const columns = (handleClickEdit, userId) => ([
+const columns = (handleClickEdit, userId) => [
   {
     title: 'Data do incidente',
     dataIndex: 'incidentDate',
@@ -82,17 +82,24 @@ const columns = (handleClickEdit, userId) => ([
     dataIndex: 'id',
     key: 'id',
     fixed: 'left',
-    render: (_, source) => (
+    render: (_, source) =>
       userId === source.userId && (
         <Button type="link" onClick={() => handleClickEdit(source)}>
           Editar
         </Button>
       )
-    )
   }
-])
+]
 
-const IncidentList = ({ rows, count, current, loading, handleChange, handleClickEdit, userId }) => {
+const IncidentList = ({
+  rows,
+  count,
+  current,
+  loading,
+  handleChange,
+  handleClickEdit,
+  userId
+}) => {
   return (
     <Table
       columns={columns(handleClickEdit, userId)}

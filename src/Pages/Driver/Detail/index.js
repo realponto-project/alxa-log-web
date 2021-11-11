@@ -1,10 +1,9 @@
 import React, { useEffect, useState } from 'react'
 import { message } from 'antd'
 import { useLocation, withRouter } from 'react-router-dom'
-import { map, omit, pathOr, pipe, prop } from 'ramda'
+import { map, omit, pathOr, pipe, prop, compose } from 'ramda'
 
 import { connect } from 'react-redux'
-import { compose } from 'ramda'
 
 import GAInitialize from '../../../utils/ga'
 import DriverDetail from '../../../Containers/Driver/Detail'
@@ -176,7 +175,7 @@ const Detail = ({ match, history, user }) => {
     try {
       await editDriverIncident({
         ...values,
-        incidentDate: new Date(values.incidentDate),
+        incidentDate: new Date(values.incidentDate)
       })
       getIncidents()
       summaryChartIncidents()
@@ -303,10 +302,6 @@ const mapStateToProps = ({ user }) => ({
   user
 })
 
-const enhanced = compose(
-  connect(mapStateToProps),
-  withRouter
-)
+const enhanced = compose(connect(mapStateToProps), withRouter)
 
 export default enhanced(Detail)
-

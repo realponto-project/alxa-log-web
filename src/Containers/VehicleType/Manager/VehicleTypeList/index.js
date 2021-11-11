@@ -12,21 +12,33 @@ const columns = ({ handleClickEdit }) => [
   {
     title: ' ',
     dataIndex: 'id',
-    render: (_, source) =>  <Button type="link" onClick={() => handleClickEdit(source)}>
-      Editar
-    </Button>
+    render: (_, source) => <Button type="link" onClick={() => handleClickEdit(source)}>
+        Editar
+      </Button>
+    
   }
 ]
 
-const FleetList = ({ datasource, handleClickEdit, loading, handleChangeTableEvent, offset }) => {
+const FleetList = ({
+  datasource,
+  handleClickEdit,
+  loading,
+  handleChangeTableEvent,
+  offset
+}) => {
   return (
-      <Table 
-        pagination={{ showSizeChanger: false, pageSize: 20, total: datasource.count, current: offset }}
-        onChange={handleChangeTableEvent}
-        columns={columns({ handleClickEdit })} 
-        loading={loading}
-        dataSource={datasource.rows}
-      />
+    <Table
+      pagination={{
+        showSizeChanger: false,
+        pageSize: 20,
+        total: datasource.count,
+        current: offset
+      }}
+      onChange={handleChangeTableEvent}
+      columns={columns({ handleClickEdit })}
+      loading={loading}
+      dataSource={datasource.rows}
+    />
   )
 }
 

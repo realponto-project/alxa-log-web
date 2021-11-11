@@ -3,7 +3,6 @@ import { Row, Col, Typography } from 'antd'
 import { cnpj } from 'cpf-cnpj-validator'
 
 import Tag from '../../../Components/Tag'
-const { Title } = Typography
 
 import {
   ComposedChart,
@@ -12,8 +11,9 @@ import {
   XAxis,
   CartesianGrid,
   Tooltip,
-  ResponsiveContainer,
-} from "recharts"
+  ResponsiveContainer
+} from 'recharts'
+const { Title } = Typography
 
 const chartSettings = [
   { label: 'cancel', value: 'Cancelado', color: '#EA5656' },
@@ -23,26 +23,34 @@ const chartSettings = [
   { label: 'courtyard', value: 'Pátio', color: '#EA5656' },
   { label: 'wash', value: 'Lavar', color: '#D588F2' },
   { label: 'parking', value: 'Estacionar', color: '#1772C9' },
-  { label: 'awaiting_repair', value: 'Aguardando peça', color: '#7550D8' }, 
+  { label: 'awaiting_repair', value: 'Aguardando peça', color: '#7550D8' },
   { label: 'supply', value: 'Abastecer', color: '#17C9B2' },
   { label: 'avaiable', value: 'Aguardando Retirada', color: '#F29F03' },
   { label: 'check-out', value: 'Saída', color: '#264ABE' },
-  { label: 'external_service', value: 'Serviços externos', color: '#F6C21F' },
+  { label: 'external_service', value: 'Serviços externos', color: '#F6C21F' }
 ]
 
 const VerticalChart = ({ orderOperationStatus }) => {
-  const data = orderOperationStatus.map(({ operation, count, status }) =>({ status, count, name: `${operation.name} \n ${operation.company ? cnpj.format(operation.company.document) : '' }` }))
+  const data = orderOperationStatus.map(({ operation, count, status }) => ({
+    status,
+    count,
+    name: `${operation.name} \n ${
+      operation.company ? cnpj.format(operation.company.document) : ''
+    }`
+  }))
   const parserDataOrders = data.reduce((arr, next) => {
-    const findItem = arr.find(item => item.name === next.name)
-    if(findItem) {
-      arr = arr.map(item => item.name === next.name ? {...item, [next.status]: next.count } : item)
+    const findItem = arr.find((item) => item.name === next.name)
+    if (findItem) {
+      arr = arr.map((item) =>
+        item.name === next.name ? { ...item, [next.status]: next.count } : item
+      )
     }
-  
-    if(!findItem) {
+
+    if (!findItem) {
       arr = [...arr, { name: next.name, [next.status]: next.count }]
     }
-  
-   return arr
+
+    return arr
   }, [])
   return (
     <Row>
@@ -60,8 +68,7 @@ const VerticalChart = ({ orderOperationStatus }) => {
               right: 20,
               bottom: 20,
               left: 100
-            }}
-          >
+            }}>
             <CartesianGrid stroke="#f5f5f5" />
             <XAxis type="number" />
             <YAxis dataKey="name" type="category" scale="band" />
@@ -79,18 +86,18 @@ const VerticalChart = ({ orderOperationStatus }) => {
               />
             ))}
           </ComposedChart>
-        </ResponsiveContainer>              
+        </ResponsiveContainer>
       </Col>
       <Col span={24}>
         <Row style={{ marginTop: '20px' }} gutter={[8, 8]} wrap={true}>
-            <Col span={24}>
-              <Title level={5}>LEGENDAS</Title>
+          <Col span={24}>
+            <Title level={5}>LEGENDAS</Title>
+          </Col>
+          {chartSettings.map(({ color, value, label }) => (
+            <Col key={`${color}-${value}`} xs={6} sm={6} md={4} lg={4} xl={4}>
+              <Tag color={color}>{value}</Tag>
             </Col>
-            {chartSettings.map(({ color, value, label }) => (
-              <Col key={`${color}-${value}`} xs={6} sm={6} md={4} lg={4} xl={4}>
-                <Tag color={color}>{value}</Tag>
-              </Col>
-            ))}
+          ))}
         </Row>
       </Col>
     </Row>

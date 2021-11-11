@@ -12,29 +12,29 @@ const formItemsComponent = {
   select: Select
 }
 
-const renderFormItems = ({ 
-  label, 
-  name, 
-  rules, 
-  placeholder, 
-  show, 
-  typeInput, 
-  options = [], 
-  mode = null 
+const renderFormItems = ({
+  label,
+  name,
+  rules,
+  placeholder,
+  show,
+  typeInput,
+  options = [],
+  mode = null
 }) => {
   const Component = formItemsComponent[typeInput]
   return (
     show && (
       <Form.Item key={name} label={label} name={name} rules={rules}>
-        <Component 
+        <Component
           showSearch
-          name={name} 
-          placeholder={placeholder} 
-          options={options} 
-          mode={mode} 
-          filterOption={(value, option) => (
+          name={name}
+          placeholder={placeholder}
+          options={options}
+          mode={mode}
+          filterOption={(value, option) =>
             option.label.toLowerCase().indexOf(value.toLowerCase()) >= 0
-          )}
+          }
         />
       </Form.Item>
     )
@@ -50,27 +50,36 @@ const VehicleForm = ({
   vehicleSelected,
   handleSelectedVehicle
 }) => {
-  const [formSettings, setFormSettings] = useState(vehicleSelected ? formSettingsVehicleEdit(vehicleTypesSource) : formSettingsVehicle)
+  const [formSettings, setFormSettings] = useState(
+    vehicleSelected
+      ? formSettingsVehicleEdit(vehicleTypesSource)
+      : formSettingsVehicle
+  )
   const [form] = Form.useForm()
 
-  const parseOptionItem = item => ({ value: item.id, label: item.name })
-  const setOpetionValue = formItem => {
+  const parseOptionItem = (item) => ({ value: item.id, label: item.name })
+  const setOpetionValue = (formItem) => {
     switch (formItem.name) {
       case 'vehicleTypeId':
-        return vehicleTypesSource.map(parseOptionItem)    
+        return vehicleTypesSource.map(parseOptionItem)
       default:
         return []
     }
   }
 
-  const onValuesChangeVisableFomItem = value => {
-    const formItem = formSettings.find(item => !item.show && settingsNextStep[Object.keys(value)[0]] === item.name)
+  const onValuesChangeVisableFomItem = (value) => {
+    const formItem = formSettings.find(
+      (item) =>
+        !item.show && settingsNextStep[Object.keys(value)[0]] === item.name
+    )
     if (formItem) {
-      setFormSettings(formSettings.map(item => (
-        item.name === formItem.name 
-          ? {...formItem, show: true, options: setOpetionValue(formItem) } 
-          : item
-      )))
+      setFormSettings(
+        formSettings.map((item) =>
+          item.name === formItem.name
+            ? { ...formItem, show: true, options: setOpetionValue(formItem) }
+            : item
+        )
+      )
     }
   }
 
@@ -79,31 +88,29 @@ const VehicleForm = ({
       visible={visible}
       closable={false}
       footer={[
-        <Button key="back" onClick={() => {
-          handleCancel(false)
-          form.resetFields()
-          setFormSettings(formSettingsVehicle)
-          handleSelectedVehicle(null)
-        }}>
+        <Button
+          key="back"
+          onClick={() => {
+            handleCancel(false)
+            form.resetFields()
+            setFormSettings(formSettingsVehicle)
+            handleSelectedVehicle(null)
+          }}>
           Cancelar
         </Button>,
-        <Button
-          key="submit"
-          onClick={() => form.submit()}
-          type="primary">
+        <Button key="submit" onClick={() => form.submit()} type="primary">
           Salvar
         </Button>
       ]}
-      title={`${vehicleSelected ? 'Editar' : 'Cadastrar'} veículo`}
-    >
+      title={`${vehicleSelected ? 'Editar' : 'Cadastrar'} veículo`}>
       <Form
         form={form}
         layout="vertical"
         onValuesChange={onValuesChangeVisableFomItem}
         validateTrigger="onChange"
-        onFinish={values => {
+        onFinish={(values) => {
           if (vehicleSelected) {
-            handleEdit({...vehicleSelected, ...values})
+            handleEdit({ ...vehicleSelected, ...values })
           } else {
             handleSubmit(values)
           }
@@ -111,8 +118,7 @@ const VehicleForm = ({
           setFormSettings(formSettingsVehicle)
           form.resetFields()
         }}
-        initialValues={vehicleSelected}
-      >
+        initialValues={vehicleSelected}>
         {map(renderFormItems, formSettings)}
       </Form>
     </Modal>

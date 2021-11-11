@@ -9,27 +9,23 @@ import { getCompanyById } from '../../Services/Company'
 import testMobile from '../../utils/isMobile'
 import GAInitialize from '../../utils/ga'
 
-const isMobile = window.mobileCheck() || testMobile ? true : false
+const isMobile = !!(window.mobileCheck() || testMobile)
 
-const Login = ({
-  history,
-  loggedUser,
-  setCompany,
-}) => {
+const Login = ({ history, loggedUser, setCompany }) => {
   const [isVisibleMessageError, setIsVisibleMessageError] = useState(false)
   const [loading, setLoading] = useState(false)
-  
+
   const authentication = (values) => {
     let redirectPage = '/logged/dashboard'
     setLoading(true)
-    Auth({...values, document: values.document.trim().replace(/\D/g, '') })
+    Auth({ ...values, document: values.document.trim().replace(/\D/g, '') })
       .then(({ data }) => {
         loggedUser(data)
         if (data.firstAccess) {
           redirectPage = '/user/onboarding'
         }
 
-        if(isMobile) {
+        if (isMobile) {
           redirectPage = '/logged/mobile-maintenance'
         }
 
@@ -63,7 +59,7 @@ const Login = ({
 
 const mapDispatchToProps = (dispatch) => ({
   loggedUser: (payload) => dispatch({ type: 'USER_LOGGED', payload }),
-  setCompany: (payload) => dispatch({ type: 'SET_COMPANY', payload }),
+  setCompany: (payload) => dispatch({ type: 'SET_COMPANY', payload })
 })
 
 const enhanced = compose(connect(null, mapDispatchToProps), withRouter)

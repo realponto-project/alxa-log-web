@@ -90,9 +90,7 @@ const FilterMaintenence = ({
         </Col>
         {moreFilters && (
           <Col span={24}>
-            <div
-              className={styles.wrapperMoreFilters}
-              >
+            <div className={styles.wrapperMoreFilters}>
               <Row>
                 <Col span={10}>
                   <Title level={5}>Status</Title>

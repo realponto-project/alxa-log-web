@@ -10,20 +10,23 @@ import {
   Tooltip
 } from 'recharts'
 
-const chartStatus = { 
-  collision: 'Colisão', 
-  accident: 'Acidente', 
+const chartStatus = {
+  collision: 'Colisão',
+  accident: 'Acidente',
   vehicle_break_down: 'Veículo quebrado'
 }
 
 const chartSettings = [
   { label: 'accident', value: 'Acidente', color: '#268E86' },
   { label: 'collision', value: 'Colisão', color: '#5DA0FC' },
-  { label: 'vehicle_break_down', value: 'Veículo quebrado', color: '#FF9C70' },
+  { label: 'vehicle_break_down', value: 'Veículo quebrado', color: '#FF9C70' }
 ]
 
 const Chart = ({ data }) => {
-  const parserChart = data.map(({ incidentType, count }) => ({ name: incidentType, [incidentType]: count }))
+  const parserChart = data.map(({ incidentType, count }) => ({
+    name: incidentType,
+    [incidentType]: count
+  }))
   return (
     <Row gutter={[0, 16]}>
       <Col span={24}>
@@ -58,10 +61,7 @@ const Chart = ({ data }) => {
               tick={{ fontSize: 13 }}
             />
             <CartesianGrid stroke="#d7d7d7" vertical={false} />
-            <Tooltip
-              cursor={{ fillOpacity: 0.3 }}
-              labelFormatter={() => ''}
-            />
+            <Tooltip cursor={{ fillOpacity: 0.3 }} labelFormatter={() => ''} />
             {chartSettings.map(({ label, color, value }) => (
               <Bar
                 dataKey={label}

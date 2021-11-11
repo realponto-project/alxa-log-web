@@ -44,18 +44,18 @@ const MyTeamList = ({
   offset
 }) => {
   return (
-      <Table
-        pagination={{
-          showSizeChanger: false,
-          pageSize: 20,
-          total: datasource.count,
-          current: offset
-        }}
-        onChange={handleChangeTableEvent}
-        columns={columns({ handleClickEdit, user })}
-        loading={loading}
-        dataSource={datasource.rows}
-      />
+    <Table
+      pagination={{
+        showSizeChanger: false,
+        pageSize: 20,
+        total: datasource.count,
+        current: offset
+      }}
+      onChange={handleChangeTableEvent}
+      columns={columns({ handleClickEdit, user })}
+      loading={loading}
+      dataSource={datasource.rows}
+    />
   )
 }
 

@@ -4,15 +4,15 @@ import { Button, Image, Typography } from 'antd'
 import styles from './style.module.css'
 import Logo from '../../../Assets/logo.svg'
 
-const { Text } = Typography 
+const { Text } = Typography
 
 const DriverOperationMobile = () => {
-  return(
+  return (
     <div className={styles.divMain}>
-      <Image alt="" src={Logo} width="161px" height="161px"/>
+      <Image alt="" src={Logo} width="161px" height="161px" />
       <div className={styles.divText}>
         <Text style={{ color: '#8E8D92' }} level={4}>
-        Selecione a operação, que você deseja estacionar ou retirar o veículo.
+          Selecione a operação, que você deseja estacionar ou retirar o veículo.
         </Text>
       </div>
       <Button className={styles.buttonOperation}>CHEVROLET</Button>

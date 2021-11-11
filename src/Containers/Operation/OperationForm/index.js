@@ -10,32 +10,32 @@ import {
 const formItemsComponent = {
   input: Input,
   select: Select,
-  textArea: Input.TextArea,
+  textArea: Input.TextArea
 }
 
-const renderFormItems = ({ 
-  label, 
-  name, 
-  rules, 
-  placeholder, 
-  show, 
-  typeInput, 
-  options = [], 
-  mode = null 
+const renderFormItems = ({
+  label,
+  name,
+  rules,
+  placeholder,
+  show,
+  typeInput,
+  options = [],
+  mode = null
 }) => {
   const Component = formItemsComponent[typeInput]
   return (
     show && (
       <Form.Item key={name} label={label} name={name} rules={rules}>
-        <Component 
+        <Component
           showSearch
-          name={name} 
-          placeholder={placeholder} 
-          options={options} 
-          mode={mode} 
-          filterOption={(value, option) => (
+          name={name}
+          placeholder={placeholder}
+          options={options}
+          mode={mode}
+          filterOption={(value, option) =>
             option.label.toLowerCase().indexOf(value.toLowerCase()) >= 0
-          )}
+          }
         />
       </Form.Item>
     )
@@ -51,26 +51,35 @@ const OperationForm = ({
   operationSelected,
   handleSelectedOperation
 }) => {
-  const [formSettings, setFormSettings] = useState(operationSelected ? formSettingsBranchEdit(branchsSource) : formSettingsBranch)
+  const [formSettings, setFormSettings] = useState(
+    operationSelected
+      ? formSettingsBranchEdit(branchsSource)
+      : formSettingsBranch
+  )
   const [form] = Form.useForm()
-  const parseOptionItem = item => ({ value: item.id, label: item.name })
-  const setOpetionValue = formItem => {
+  const parseOptionItem = (item) => ({ value: item.id, label: item.name })
+  const setOpetionValue = (formItem) => {
     switch (formItem.name) {
       case 'companyId':
-        return branchsSource.rows.map(parseOptionItem)   
+        return branchsSource.rows.map(parseOptionItem)
       default:
         return formItem.options
     }
   }
 
-  const onValuesChangeVisableFomItem = value => {
-    const formItem = formSettings.find(item => !item.show && settingsNextStep[Object.keys(value)[0]] === item.name)
+  const onValuesChangeVisableFomItem = (value) => {
+    const formItem = formSettings.find(
+      (item) =>
+        !item.show && settingsNextStep[Object.keys(value)[0]] === item.name
+    )
     if (formItem) {
-      setFormSettings(formSettings.map(item => (
-        item.name === formItem.name 
-          ? {...formItem, show: true, options: setOpetionValue(formItem) } 
-          : item
-      )))
+      setFormSettings(
+        formSettings.map((item) =>
+          item.name === formItem.name
+            ? { ...formItem, show: true, options: setOpetionValue(formItem) }
+            : item
+        )
+      )
     }
   }
 
@@ -79,31 +88,29 @@ const OperationForm = ({
       visible={visible}
       closable={false}
       footer={[
-        <Button key="back" onClick={() => {
-          handleCancel(false)
-          form.resetFields()
-          setFormSettings(formSettingsBranch)
-          handleSelectedOperation(null)
-        }}>
+        <Button
+          key="back"
+          onClick={() => {
+            handleCancel(false)
+            form.resetFields()
+            setFormSettings(formSettingsBranch)
+            handleSelectedOperation(null)
+          }}>
           Cancelar
         </Button>,
-        <Button
-          key="submit"
-          onClick={() => form.submit()}
-          type="primary">
+        <Button key="submit" onClick={() => form.submit()} type="primary">
           Salvar
         </Button>
       ]}
-      title={`${operationSelected ? 'Editar' : 'Cadastrar'} operação`}
-    >
+      title={`${operationSelected ? 'Editar' : 'Cadastrar'} operação`}>
       <Form
         form={form}
         layout="vertical"
         onValuesChange={onValuesChangeVisableFomItem}
         validateTrigger="onChange"
-        onFinish={values => {
+        onFinish={(values) => {
           if (operationSelected) {
-            handleEdit({...operationSelected, ...values})
+            handleEdit({ ...operationSelected, ...values })
           } else {
             handleSubmit(values)
           }
@@ -111,8 +118,7 @@ const OperationForm = ({
           setFormSettings(formSettingsBranch)
           form.resetFields()
         }}
-        initialValues={operationSelected}
-      >
+        initialValues={operationSelected}>
         {map(renderFormItems, formSettings)}
       </Form>
     </Modal>

@@ -24,7 +24,7 @@ const Manager = ({
 }) => {
   const [showModal, setShowModal] = useState(false)
   const openModal = () => setShowModal(true)
-  
+
   const showModalEditBranch = (value) => {
     handleSelectedBranch(value)
     setShowModal(true)
@@ -52,7 +52,7 @@ const Manager = ({
           </Row>
         </Card>
       </Col>
-  
+
       <Col span={24}>
         <Card bordered={false}>
           <Row gutter={[8, 8]}>
@@ -76,12 +76,12 @@ const Manager = ({
           </Row>
         </Card>
       </Col>
-      
+
       <Col span={24}>
         <Card bordered={false}>
-          <BranchList 
+          <BranchList
             handleChangeTableEvent={handleChangeTableEvent}
-            datasource={source} 
+            datasource={source}
             handleClickEdit={showModalEditBranch}
             loading={loading}
             offset={offset}
@@ -89,19 +89,17 @@ const Manager = ({
           />
         </Card>
       </Col>
-  
-      {
-        showModal && (
-          <BranchForm
-            handleCancel={setShowModal}
-            visible={showModal}
-            handleSubmit={handleSubmit}
-            branchSelected={branchSelected}
-            handleSelectedBranch={handleSelectedBranch}
-            handleEdit={handleEdit}
-          />
-        )
-      }
+
+      {showModal && (
+        <BranchForm
+          handleCancel={setShowModal}
+          visible={showModal}
+          handleSubmit={handleSubmit}
+          branchSelected={branchSelected}
+          handleSelectedBranch={handleSelectedBranch}
+          handleEdit={handleEdit}
+        />
+      )}
     </Row>
   )
 }

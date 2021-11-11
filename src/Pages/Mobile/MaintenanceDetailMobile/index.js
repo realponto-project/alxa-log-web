@@ -10,10 +10,7 @@ const errorMessage = (text) => {
   message.error(text)
 }
 
-const Manager = ({
-  history,
-  match
-}) => {
+const Manager = ({ history, match }) => {
   const [maintenanceOrder, setMaintenanceOrder] = useState({
     company: {},
     companyId: null,
@@ -33,9 +30,9 @@ const Manager = ({
     userId: null,
     supplies: [],
     maintenanceOrderDrivers: [
-      { driver: { name: '', phone: '', driverLicense: ''}},
-      { driver: { name: '', phone: '', driverLicense: ''}}
-  ],
+      { driver: { name: '', phone: '', driverLicense: '' } },
+      { driver: { name: '', phone: '', driverLicense: '' } }
+    ]
   })
 
   const [driversSource, setDriversSource] = useState([])
@@ -63,22 +60,23 @@ const Manager = ({
 
       const { data } = await updateEvents(match.params.id, values)
       setMaintenanceOrder(data)
-      message.success('Eventos atualizado com sucesso!');
+      message.success('Eventos atualizado com sucesso!')
       setShowModal(false)
     } catch (error) {
       window.onerror(`createEvent: ${error.error}`, window.location.href)
       const errorMessageResponse = pathOr(null, ['data', 'error'])
       let textMessage = 'Não foi possível adicionar esse evento!'
-      
-      if (errorMessageResponse === 'Don\'t have a second driver') {
-        textMessage = `Precisa associar o motorista que está retirando o veículo`
+
+      if (errorMessageResponse === "Don't have a second driver") {
+        textMessage =
+          'Precisa associar o motorista que está retirando o veículo'
       }
-      
+
       errorMessage(textMessage)
     }
   }
 
-  const getOrder = async() => {
+  const getOrder = async () => {
     try {
       const { data } = await getById(match.params.id)
       setMaintenanceOrder(data)
@@ -90,7 +88,7 @@ const Manager = ({
   const goBack = () => history.push('/logged/mobile-maintenance')
 
   return (
-    <MaintenanceDetailMobile 
+    <MaintenanceDetailMobile
       goBack={goBack}
       handleSubmit={handleSubmit}
       maintenanceOrder={maintenanceOrder}

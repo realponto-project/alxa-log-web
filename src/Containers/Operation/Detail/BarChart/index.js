@@ -11,18 +11,18 @@ import {
 } from 'recharts'
 
 const chartStatus = {
-  'cancel': 'Cancelado',
-  'solicitation': 'Solicitação',
+  cancel: 'Cancelado',
+  solicitation: 'Solicitação',
   'check-in': 'Entrada',
-  'avaiable': 'Aguardando Retirada',
-  'parking': 'Estacionar',
-  'courtyard': 'Pátio',
-  'awaiting_repair': 'Aguardando peça',
-  'dock': 'Doca',
-  'wash': 'Lavar',
-  'supply': 'Abastecer',
+  avaiable: 'Aguardando Retirada',
+  parking: 'Estacionar',
+  courtyard: 'Pátio',
+  awaiting_repair: 'Aguardando peça',
+  dock: 'Doca',
+  wash: 'Lavar',
+  supply: 'Abastecer',
   'check-out': 'Saída',
-  'external_service': 'Serviços externos',
+  external_service: 'Serviços externos'
 }
 
 const chartSettings = [
@@ -33,15 +33,18 @@ const chartSettings = [
   { label: 'courtyard', value: 'Pátio', color: '#EA5656' },
   { label: 'wash', value: 'Lavar', color: '#D588F2' },
   { label: 'parking', value: 'Estacionar', color: '#1772C9' },
-  { label: 'awaiting_repair', value: 'Aguardando peça', color: '#7550D8' }, 
+  { label: 'awaiting_repair', value: 'Aguardando peça', color: '#7550D8' },
   { label: 'supply', value: 'Abastecer', color: '#17C9B2' },
   { label: 'avaiable', value: 'Aguardando Retirada', color: '#F29F03' },
   { label: 'check-out', value: 'Saída', color: '#264ABE' },
-  { label: 'external_service', value: 'Serviços externos', color: '#F6C21F' },
+  { label: 'external_service', value: 'Serviços externos', color: '#F6C21F' }
 ]
 
 const Chart = ({ data }) => {
-  const parserChart = data.map(({ status, count }) => ({ name: status, [status]: count }))
+  const parserChart = data.map(({ status, count }) => ({
+    name: status,
+    [status]: count
+  }))
   return (
     <Row gutter={[0, 16]}>
       <Col span={24}>
@@ -68,18 +71,13 @@ const Chart = ({ data }) => {
                   transform="rotate(270, 13, 143)"
                   x="120"
                   y="140">
-                  <tspan>
-                    Os totais estão por quantidade em cada status!
-                  </tspan>
+                  <tspan>Os totais estão por quantidade em cada status!</tspan>
                 </text>
               }
               tick={{ fontSize: 13 }}
             />
             <CartesianGrid stroke="#d7d7d7" vertical={false} />
-            <Tooltip
-              cursor={{ fillOpacity: 0.3 }}
-              labelFormatter={() => ''}
-            />
+            <Tooltip cursor={{ fillOpacity: 0.3 }} labelFormatter={() => ''} />
             {chartSettings.map(({ label, color, value }) => (
               <Bar
                 dataKey={label}

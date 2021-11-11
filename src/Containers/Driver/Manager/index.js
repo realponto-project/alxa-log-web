@@ -166,13 +166,14 @@ const Manager = ({
         />
       )}
 
-      { driverSelected && <ModalUpdateDates
+      {driverSelected && (
+        <ModalUpdateDates
           setShowModal={setShowModalUpdateDates}
           visible={showModalUpdateDates}
           handleSubmit={handleEdit}
           driverSelected={driverSelected}
         />
-      }
+      )}
     </Row>
   )
 }

@@ -1,30 +1,30 @@
-import React from "react";
-import { Table, Button, Space } from "antd";
-import NoData from "../../../../Assets/noData.svg";
+import React from 'react'
+import { Table, Button, Space } from 'antd'
+import NoData from '../../../../Assets/noData.svg'
 
 const columns = ({ handleClickEdit, goToDetail }) => [
   {
-    title: "Operação",
-    dataIndex: "name",
-    key: "name",
-    fixed: "left",
+    title: 'Operação',
+    dataIndex: 'name',
+    key: 'name',
+    fixed: 'left'
   },
   {
-    title: "Filial",
-    dataIndex: "companyId",
-    key: "companyId",
-    fixed: "left",
-    render: (_, source) => source.company.name,
+    title: 'Filial',
+    dataIndex: 'companyId',
+    key: 'companyId',
+    fixed: 'left',
+    render: (_, source) => source.company.name
   },
   {
-    title: "Vagas contratadas",
-    dataIndex: "vacancy",
-    key: "vacancy",
-    fixed: "left",
+    title: 'Vagas contratadas',
+    dataIndex: 'vacancy',
+    key: 'vacancy',
+    fixed: 'left'
   },
   {
-    title: " ",
-    dataIndex: "id",
+    title: ' ',
+    dataIndex: 'id',
     render: (_, source) => (
       <Space>
         <Button type="link" onClick={() => handleClickEdit(source)}>
@@ -34,9 +34,9 @@ const columns = ({ handleClickEdit, goToDetail }) => [
           Detalhes
         </Button>
       </Space>
-    ),
-  },
-];
+    )
+  }
+]
 
 const OperationList = ({
   datasource,
@@ -44,7 +44,7 @@ const OperationList = ({
   loading,
   handleChangeTableEvent,
   offset,
-  goToDetail,
+  goToDetail
 }) => {
   return (
     <Table
@@ -52,14 +52,14 @@ const OperationList = ({
         showSizeChanger: false,
         pageSize: 20,
         total: datasource.count,
-        current: offset,
+        current: offset
       }}
       onChange={handleChangeTableEvent}
       columns={columns({ handleClickEdit, goToDetail })}
       loading={loading}
       dataSource={datasource.rows}
     />
-  );
-};
+  )
+}
 
-export default OperationList;
+export default OperationList

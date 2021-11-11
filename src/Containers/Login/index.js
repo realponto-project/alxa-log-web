@@ -12,7 +12,7 @@ const Login = ({
   authentication,
   isVisibleMessageError,
   loading,
-  isMobile,
+  isMobile
 }) => {
   const onFinish = (values) => {
     authentication(values)
@@ -20,7 +20,7 @@ const Login = ({
 
   return (
     <Row gutter={10} style={{ height: '100vh', margin: 0 }} align="middle">
-      { !isMobile && (
+      {!isMobile && (
         <Col span={16}>
           <div className={styles.contentPublicity}>
             <Row style={{ height: '100%' }} align="middle">
@@ -34,9 +34,9 @@ const Login = ({
                 <Row justify="center">
                   <Col span={16}>
                     <Paragraph style={{ textAlign: 'center' }}>
-                      Gestão de verdade para o seu négocio, fácil, rápido e preço
-                      justo, com o alxa, você tem ao seu alcance, gestão de
-                      clientes, véiculos, manutenção e muito mais!
+                      Gestão de verdade para o seu négocio, fácil, rápido e
+                      preço justo, com o alxa, você tem ao seu alcance, gestão
+                      de clientes, véiculos, manutenção e muito mais!
                     </Paragraph>
                   </Col>
                 </Row>

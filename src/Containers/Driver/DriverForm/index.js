@@ -11,7 +11,7 @@ const formItemsComponent = {
   input: Input,
   select: Select,
   radio: Radio.Group,
-  datepicker: DatePicker,
+  datepicker: DatePicker
 }
 
 const renderFormItems = (driverSelected) => ({
@@ -52,18 +52,21 @@ const DriverForm = ({
   driverSelected,
   handleSelectedDriver
 }) => {
+  const [formSettings, setFormSettings] = useState(
+    !isEmpty(driverSelected) ? formSettingsDriverEdit : formSettingsDriver
+  )
 
-
-  const [formSettings, setFormSettings] = useState(!isEmpty(driverSelected) ? formSettingsDriverEdit : formSettingsDriver)
-
-  const onValuesChangeVisableFomItem = value => {
-    const formItem = formSettings.find(item => !item.show && settingsNextStep[Object.keys(value)[0]] === item.name)
+  const onValuesChangeVisableFomItem = (value) => {
+    const formItem = formSettings.find(
+      (item) =>
+        !item.show && settingsNextStep[Object.keys(value)[0]] === item.name
+    )
     if (formItem) {
-      setFormSettings(formSettings.map(item => (
-        item.name === formItem.name
-          ? { ...formItem, show: true }
-          : item
-      )))
+      setFormSettings(
+        formSettings.map((item) =>
+          item.name === formItem.name ? { ...formItem, show: true } : item
+        )
+      )
     }
   }
 
@@ -72,29 +75,27 @@ const DriverForm = ({
       visible={visible}
       closable={false}
       footer={[
-        <Button key="back" onClick={() => {
-          handleCancel(false)
-          form.resetFields()
-          setFormSettings(formSettingsDriver)
-          handleSelectedDriver({})
-        }}>
+        <Button
+          key="back"
+          onClick={() => {
+            handleCancel(false)
+            form.resetFields()
+            setFormSettings(formSettingsDriver)
+            handleSelectedDriver({})
+          }}>
           Cancelar
         </Button>,
-        <Button
-          key="submit"
-          onClick={() => form.submit()}
-          type="primary">
+        <Button key="submit" onClick={() => form.submit()} type="primary">
           Salvar
         </Button>
       ]}
-      title={`${!isEmpty(driverSelected) ? 'Editar' : 'Cadastrar'} motorista`}
-    >
+      title={`${!isEmpty(driverSelected) ? 'Editar' : 'Cadastrar'} motorista`}>
       <Form
         form={form}
         layout="vertical"
         onValuesChange={onValuesChangeVisableFomItem}
         validateTrigger="onChange"
-        onFinish={values => {
+        onFinish={(values) => {
           if (!isEmpty(driverSelected)) {
             handleEdit({ ...driverSelected, ...values })
           } else {
@@ -102,8 +103,7 @@ const DriverForm = ({
           }
           handleSelectedDriver({})
         }}
-        initialValues={driverSelected}
-      >
+        initialValues={driverSelected}>
         {map(renderFormItems(driverSelected), formSettings)}
       </Form>
     </Modal>

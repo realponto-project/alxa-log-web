@@ -69,8 +69,7 @@ const FilterIncident = ({ handleSubmit, clearFilter, operations }) => {
               style={{
                 marginBottom: '20px'
               }}
-              className={styles.wrapperMoreFilters}
-              >
+              className={styles.wrapperMoreFilters}>
               <Row>
                 <Col span={24}>
                   <Title level={5}>Incidentes</Title>
