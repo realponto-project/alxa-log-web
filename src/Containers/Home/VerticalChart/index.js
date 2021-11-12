@@ -1,9 +1,5 @@
-import React from 'react'
-import { Row, Col, Typography } from 'antd'
-import { cnpj } from 'cpf-cnpj-validator'
-
-import Tag from '../../../Components/Tag'
-
+import React, { useEffect, useState } from "react";
+import { Row, Col, Typography } from "antd";
 import {
   ComposedChart,
   Bar,
@@ -11,47 +7,50 @@ import {
   XAxis,
   CartesianGrid,
   Tooltip,
-  ResponsiveContainer
-} from 'recharts'
-const { Title } = Typography
+  ResponsiveContainer,
+} from "recharts";
+import { cnpj } from "cpf-cnpj-validator";
 
-const chartSettings = [
-  { label: 'cancel', value: 'Cancelado', color: '#EA5656' },
-  { label: 'solicitation', value: 'Solicitação', color: '#5DA0FC' },
-  { label: 'check-in', value: 'Entrada', color: '#268E86' },
-  { label: 'dock', value: 'Doca', color: '#FF9C70' },
-  { label: 'courtyard', value: 'Pátio', color: '#EA5656' },
-  { label: 'wash', value: 'Lavar', color: '#D588F2' },
-  { label: 'parking', value: 'Estacionar', color: '#1772C9' },
-  { label: 'awaiting_repair', value: 'Aguardando peça', color: '#7550D8' },
-  { label: 'supply', value: 'Abastecer', color: '#17C9B2' },
-  { label: 'avaiable', value: 'Aguardando Retirada', color: '#F29F03' },
-  { label: 'check-out', value: 'Saída', color: '#264ABE' },
-  { label: 'external_service', value: 'Serviços externos', color: '#F6C21F' }
-]
+import Tag from "../../../Components/Tag";
+import { statusValues } from "../../../constants/Maintenance/status";
+import { adjust } from "ramda";
 
-const VerticalChart = ({ orderOperationStatus }) => {
+const { Title } = Typography;
+
+const chartSettingsInitial = statusValues.map((elem) => ({
+  ...elem,
+  disabled: false,
+}));
+
+const VerticalChart = ({ orderOperationStatus, onChange }) => {
+  const [chartSettings, setChartSettings] = useState(chartSettingsInitial);
+
   const data = orderOperationStatus.map(({ operation, count, status }) => ({
     status,
     count,
     name: `${operation.name} \n ${
-      operation.company ? cnpj.format(operation.company.document) : ''
-    }`
-  }))
+      operation.company ? cnpj.format(operation.company.document) : ""
+    }`,
+  }));
   const parserDataOrders = data.reduce((arr, next) => {
-    const findItem = arr.find((item) => item.name === next.name)
+    const findItem = arr.find((item) => item.name === next.name);
     if (findItem) {
       arr = arr.map((item) =>
         item.name === next.name ? { ...item, [next.status]: next.count } : item
-      )
+      );
     }
 
     if (!findItem) {
-      arr = [...arr, { name: next.name, [next.status]: next.count }]
+      arr = [...arr, { name: next.name, [next.status]: next.count }];
     }
 
-    return arr
-  }, [])
+    return arr;
+  }, []);
+
+  useEffect(() => {
+    onChange(chartSettings);
+  }, [chartSettings]);
+
   return (
     <Row>
       <Col span={24}>
@@ -67,8 +66,9 @@ const VerticalChart = ({ orderOperationStatus }) => {
               top: 50,
               right: 20,
               bottom: 20,
-              left: 100
-            }}>
+              left: 100,
+            }}
+          >
             <CartesianGrid stroke="#f5f5f5" />
             <XAxis type="number" />
             <YAxis dataKey="name" type="category" scale="band" />
@@ -89,19 +89,33 @@ const VerticalChart = ({ orderOperationStatus }) => {
         </ResponsiveContainer>
       </Col>
       <Col span={24}>
-        <Row style={{ marginTop: '20px' }} gutter={[8, 8]} wrap={true}>
+        <Row style={{ marginTop: "20px" }} gutter={[8, 8]} wrap={true}>
           <Col span={24}>
             <Title level={5}>LEGENDAS</Title>
           </Col>
-          {chartSettings.map(({ color, value, label }) => (
-            <Col key={`${color}-${value}`} xs={6} sm={6} md={4} lg={4} xl={4}>
-              <Tag color={color}>{value}</Tag>
+          {chartSettings.map(({ color, value, label, disabled }, idx) => (
+            <Col key={label} xs={6} sm={6} md={4} lg={4} xl={4}>
+              <Tag
+                onClick={() => {
+                  setChartSettings(
+                    adjust(
+                      idx,
+                      (elem) => ({ ...elem, disabled: !elem.disabled }),
+                      chartSettings
+                    )
+                  );
+                }}
+                  disabled={disabled}
+                color={color}
+              >
+                {value}
+              </Tag>
             </Col>
           ))}
         </Row>
       </Col>
     </Row>
-  )
-}
+  );
+};
 
-export default VerticalChart
+export default VerticalChart;

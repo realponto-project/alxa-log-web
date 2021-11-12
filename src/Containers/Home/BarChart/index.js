@@ -1,5 +1,5 @@
-import React from 'react'
-import { Row, Col, Typography } from 'antd'
+import React, { useEffect, useState } from "react";
+import { Row, Col, Typography } from "antd";
 import {
   BarChart,
   Bar,
@@ -7,31 +7,28 @@ import {
   XAxis,
   YAxis,
   CartesianGrid,
-  Tooltip
-} from 'recharts'
+  Tooltip,
+} from "recharts";
+import { adjust } from "ramda";
 
-import Tag from '../../../Components/Tag'
-import formattedDate from '../../../utils/parserDate'
+import Tag from "../../../Components/Tag";
+import formattedDate from "../../../utils/parserDate";
+import { statusValues } from "../../../constants/Maintenance/status";
 
-const { Title } = Typography
+const { Title } = Typography;
 
-const chartSettings = [
-  { label: 'cancel', value: 'Cancelado', color: '#EA5656' },
-  { label: 'solicitation', value: 'Solicitação', color: '#5DA0FC' },
-  { label: 'check-in', value: 'Entrada', color: '#268E86' },
-  { label: 'dock', value: 'Doca', color: '#FF9C70' },
-  { label: 'courtyard', value: 'Pátio', color: '#EA5656' },
-  { label: 'wash', value: 'Lavar', color: '#D588F2' },
-  { label: 'parking', value: 'Estacionar', color: '#1772C9' },
-  { label: 'awaiting_repair', value: 'Aguardando peça', color: '#7550D8' },
-  { label: 'supply', value: 'Abastecer', color: '#17C9B2' },
-  { label: 'avaiable', value: 'Aguardando Retirada', color: '#F29F03' },
-  { label: 'check-out', value: 'Saída', color: '#264ABE' },
-  { label: 'external_service', value: 'Serviços externos', color: '#F6C21F' }
-]
+const chartSettingsInitial = statusValues.map((elem) => ({
+  ...elem,
+  disabled: false,
+}));
 
-const Chart = ({ data }) => {
-  const dataParse = data.sort((a, b) => new Date(a.name) - new Date(b.name))
+const Chart = ({ data, onChange }) => {
+  const [chartSettings, setChartSettings] = useState(chartSettingsInitial);
+  const dataParse = data.sort((a, b) => new Date(a.name) - new Date(b.name));
+
+  useEffect(() => {
+    onChange(chartSettings);
+  }, [chartSettings]);
 
   return (
     <Row gutter={[0, 16]}>
@@ -44,9 +41,10 @@ const Chart = ({ data }) => {
             data={dataParse}
             height={380}
             margin={{ left: 15 }}
-            maxBarSize={13}>
+            maxBarSize={13}
+          >
             <XAxis
-              dataKey={({ name }) => formattedDate(name, 'DD/MM/YYYY')}
+              dataKey={({ name }) => formattedDate(name, "DD/MM/YYYY")}
               axisLine={false}
               tick={{ fontSize: 13 }}
               tickMargin={10}
@@ -60,7 +58,8 @@ const Chart = ({ data }) => {
                   textAnchor="end"
                   transform="rotate(270, 13, 143)"
                   x="120"
-                  y="140">
+                  y="140"
+                >
                   <tspan>
                     Os totais estão por quantidade de veículos em cada status!
                   </tspan>
@@ -85,21 +84,35 @@ const Chart = ({ data }) => {
         </ResponsiveContainer>
       </Col>
       <Col span={24}>
-        <Row style={{ marginTop: '20px' }} gutter={[8, 8]} wrap={true}>
+        <Row style={{ marginTop: "20px" }} gutter={[8, 8]} wrap={true}>
           <Col span={24}>
             <Title level={5}>LEGENDAS</Title>
           </Col>
           {chartSettings
             .sort((a, b) => a.value - b.value)
-            .map(({ color, value, label }) => (
+            .map(({ color, value, disabled }, idx) => (
               <Col key={`${color}-${value}`} xs={6} sm={6} md={4} lg={4} xl={4}>
-                <Tag color={color}>{value}</Tag>
+                <Tag
+                  onClick={() => {
+                    setChartSettings(
+                      adjust(
+                        idx,
+                        (elem) => ({ ...elem, disabled: !elem.disabled }),
+                        chartSettings
+                      )
+                    );
+                  }}
+                  disabled={disabled}
+                  color={color}
+                >
+                  {value}
+                </Tag>
               </Col>
             ))}
         </Row>
       </Col>
     </Row>
-  )
-}
+  );
+};
 
-export default Chart
+export default Chart;

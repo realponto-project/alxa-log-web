@@ -20,7 +20,7 @@ import CheckoutSvg from '../../../Assets/checkout.svg'
 import AvailableSVG from '../../../Assets/available.svg'
 
 import FilterMaintenence from '../../../Components/Filters/Maintenance'
-import CircleBar from '../../../Components/circleBar'
+import { CardStatus } from '../../../Components/CardStatus'
 
 const { Text, Title } = Typography
 
@@ -93,26 +93,6 @@ const columns = (gotoDetailOrder) => [
     )
   }
 ]
-
-const CardStatus = ({ title, count, srcImage, total }) => (
-  <Card
-    style={{
-      borderRadius: 5,
-      boxShadow: '0px 4px 4px rgba(0, 0, 0, 0.1)'
-    }}>
-    <Row align="middle" justify="space-between">
-      <Col span={12}>
-        <Text style={{ fontSize: '1rem' }}>{title}</Text>
-        <Title level={1} style={{ margin: 0, padding: 0 }}>
-          {count > 0 ? count : '-'}
-        </Title>
-      </Col>
-      <Col span={12}>
-        <CircleBar icon={srcImage} total={total} count={count} />
-      </Col>
-    </Row>
-  </Card>
-)
 
 const Detail = ({
   operation,
@@ -187,7 +167,7 @@ const Detail = ({
       <Col span={6}>
         <CardStatus
           title="Total de solicitações"
-          count={vehicleTotalSolicitacion?.count ?? '-'}
+          count={vehicleTotalSolicitacion?.count ?? '0'}
           srcImage={CustomersSvg}
           total={total}
         />
@@ -196,7 +176,7 @@ const Detail = ({
       <Col span={6}>
         <CardStatus
           title="Total de veículos"
-          count={vehicleTotal || '-'}
+          count={vehicleTotal || '0'}
           srcImage={OrdersSvg}
           total={total}
         />
@@ -205,7 +185,7 @@ const Detail = ({
       <Col span={6}>
         <CardStatus
           title="Total de liberado"
-          count={vehicleTotalAvailable?.count ?? '-'}
+          count={vehicleTotalAvailable?.count ?? '0'}
           srcImage={AvailableSVG}
           total={total}
         />
@@ -214,7 +194,7 @@ const Detail = ({
       <Col span={6}>
         <CardStatus
           title="Total de concluídos"
-          count={vehicleTotalFinished?.count ?? '-'}
+          count={vehicleTotalFinished?.count ?? '0'}
           srcImage={CheckoutSvg}
           total={total}
         />

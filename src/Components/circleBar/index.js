@@ -19,12 +19,13 @@ const CircleBar = ({ icon, total = 0, count = 0 }) => {
 
   const primaryColor = {
     dark: '#E76F00',
-    light: '#1890FF'
+    light: '#AFD9FF'
+    // light: '#17C9B2'
   }[currentTheme]
-
+  
   const secundaryColor = {
     dark: '#A64B00',
-    light: '#17C9B2'
+    light: '#1890FF'
   }[currentTheme]
 
   const styleIcon = {

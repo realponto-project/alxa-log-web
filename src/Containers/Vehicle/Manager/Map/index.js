@@ -50,7 +50,6 @@ const MyMap = () => {
       dark: 'navigation-guidance-night-v4',
       light: 'navigation-guidance-day-v4'
     }[currentTheme || 'light']
-    console.log(themeMap)
 
     const url = `https://api.mapbox.com/styles/v1/mapbox/${themeMap}/tiles/256/{z}/{x}/{y}@2x?access_token=${process.env.REACT_APP_MAPBOX_TOKEN}`
 
