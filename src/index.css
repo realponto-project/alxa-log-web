@@ -8,6 +8,7 @@ body {
 
 * {
   font-family: 'Lato', sans-serif !important;
+  transition: all 0.1s ease 0.1s, color 0.05s ease 0s!important;
 }
 
 @page {

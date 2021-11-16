@@ -1,74 +1,100 @@
-import React from 'react'
-import { Switch, Route, Redirect } from 'react-router-dom'
-import { ConfigProvider, Empty, Image } from 'antd'
-import { ThemeSwitcherProvider } from 'react-css-theme-switcher'
-import { connect } from 'react-redux'
-import { compose, isEmpty } from 'ramda'
-import ptBR from 'antd/lib/locale/pt_BR'
-import 'leaflet/dist/leaflet.css'
+import React, { useEffect, useState } from "react";
+import { Switch, Route, Redirect } from "react-router-dom";
+import { ConfigProvider, Empty, Image, Spin } from "antd";
+import {
+  ThemeSwitcherProvider,
+  useThemeSwitcher,
+} from "react-css-theme-switcher";
+import { connect } from "react-redux";
+import { compose, isEmpty } from "ramda";
+import ptBR from "antd/lib/locale/pt_BR";
+import "leaflet/dist/leaflet.css";
 
-import MaintenanceQrcode from './Pages/Mobile/MaintenanceQrcode'
-import DriverAuthorizationQrcode from './Pages/Mobile/DriverQrcodeAuthorization'
-import MobileDriver from './Pages/Mobile/DriverMobile'
-import MobileDriverSuccess from './Pages/Mobile/DriverMobileSuccess'
+import MaintenanceQrcode from "./Pages/Mobile/MaintenanceQrcode";
+import DriverAuthorizationQrcode from "./Pages/Mobile/DriverQrcodeAuthorization";
+import MobileDriver from "./Pages/Mobile/DriverMobile";
+import MobileDriverSuccess from "./Pages/Mobile/DriverMobileSuccess";
 
-import Login from './Pages/Login'
-import Logged from './Pages/Logged'
-import NoData from './Assets/noData.svg'
+import Login from "./Pages/Login";
+import Logged from "./Pages/Logged";
+import NoData from "./Assets/noData.svg";
+import LayoutComponent from './Components/Layout'
 
 const themes = {
   dark: `${process.env.PUBLIC_URL}/dark-theme.css`,
-  light: `${process.env.PUBLIC_URL}/light-theme.css`
-}
+  light: `${process.env.PUBLIC_URL}/light-theme.css`,
+};
+
+const ChildrenApp = () => {
+  const [isLoading, setIsLoading] = useState(false);
+  const { currentTheme, status } = useThemeSwitcher();
+
+  console.log('> >> >>>', status)
+
+  useEffect(() => {
+    if(!isLoading && status === 'loaded') {
+      setIsLoading(true)
+    }
+  }, [status]);
+
+  if(!isLoading) return(
+    <div>
+      <Spin />
+    </div>)
+
+
+  return (
+    <ConfigProvider
+      locale={ptBR}
+      renderEmpty={() => (
+        <Empty
+          description="Não há dados"
+          image={
+            <Image
+              style={currentTheme === "dark" && { filter: "invert(1)" }}
+              width={85}
+              src={NoData}
+              preview={false}
+            />
+          }
+        />
+      )}
+    >
+      <Switch>
+        <Route path="/login" component={Login} />
+        <Route path="/mobile-driver/:id" component={MobileDriver} />
+        <Route
+          path="/mobile-driver-success/:id"
+          component={MobileDriverSuccess}
+        />
+        <Route
+          path="/authorization-qrcode"
+          component={DriverAuthorizationQrcode}
+        />
+        <Route path="/mobile-qrcode-detail/:id" component={MaintenanceQrcode} />
+        <Route path="/logged" component={Logged} />
+        <Redirect from="*" to="/login" />
+      </Switch>
+    </ConfigProvider>
+  );
+};
 
 const App = ({ theme, user }) => {
   return (
     <ThemeSwitcherProvider
       themeMap={themes}
-      defaultTheme={isEmpty(user) ? 'light' : theme}>
-      <ConfigProvider
-        locale={ptBR}
-        renderEmpty={() => (
-          <Empty
-            description="Não há dados"
-            image={
-              <Image
-                style={theme === 'dark' && { filter: 'invert(1)' }}
-                width={85}
-                src={NoData}
-                preview={false}
-              />
-            }
-          />
-        )}>
-        <Switch>
-          <Route path="/login" component={Login} />
-          <Route path="/mobile-driver/:id" component={MobileDriver} />
-          <Route
-            path="/mobile-driver-success/:id"
-            component={MobileDriverSuccess}
-          />
-          <Route
-            path="/authorization-qrcode"
-            component={DriverAuthorizationQrcode}
-          />
-          <Route
-            path="/mobile-qrcode-detail/:id"
-            component={MaintenanceQrcode}
-          />
-          <Route path="/logged" component={Logged} />
-          <Redirect from="*" to="/login" />
-        </Switch>
-      </ConfigProvider>
+      defaultTheme={isEmpty(user) ? "light" : theme}
+    >
+      <ChildrenApp />
     </ThemeSwitcherProvider>
-  )
-}
+  );
+};
 
 const mapStateToProps = ({ theme, user }) => ({
   theme,
-  user
-})
+  user,
+});
 
-const enhanced = compose(connect(mapStateToProps))
+const enhanced = compose(connect(mapStateToProps));
 
-export default enhanced(App)
+export default enhanced(App);

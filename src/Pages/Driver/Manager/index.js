@@ -194,7 +194,7 @@ const Manager = ({ history }) => {
       counts={counts}
       clearFilter={clearFilter}
       driverSelected={driverSelected}
-      goToDetail={(id) => history.push(`/logged/driver-detail/${id}`)}
+      goToDetail={(id) => history.push(`/logged/driver/detail/${id}`)}
       handleChangeTableEvent={handleChangeTableEvent}
       handleEdit={handleEdit}
       handleFilter={handleFilter}

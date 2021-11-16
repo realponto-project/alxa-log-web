@@ -1,4 +1,4 @@
-import React from 'react'
+import React from "react";
 import {
   Dropdown,
   Table,
@@ -8,80 +8,80 @@ import {
   Typography,
   Col,
   Row,
-  Menu
-} from 'antd'
-import { InfoCircleOutlined } from '@ant-design/icons'
-import { includes, map } from 'ramda'
-import moment from 'moment'
+  Menu,
+} from "antd";
+import { InfoCircleOutlined } from "@ant-design/icons";
+import { includes, map } from "ramda";
+import moment from "moment";
 
-const { Paragraph } = Typography
+const { Paragraph } = Typography;
 
 const columns = ({
   handleClickEdit,
   goToDetail,
   handleEdit,
-  handleClickEditDate
+  handleClickEditDate,
 }) => [
   {
-    title: 'Nome',
-    dataIndex: 'name',
-    key: 'name',
-    fixed: 'left'
+    title: "Nome",
+    dataIndex: "name",
+    key: "name",
+    fixed: "left",
   },
   {
-    title: 'Cnh',
-    dataIndex: 'driverLicense',
-    key: 'driverLicense',
-    fixed: 'left'
+    title: "Cnh",
+    dataIndex: "driverLicense",
+    key: "driverLicense",
+    fixed: "left",
   },
   {
-    title: 'RG',
-    dataIndex: 'rg',
-    key: 'rg',
-    fixed: 'left'
+    title: "RG",
+    dataIndex: "rg",
+    key: "rg",
+    fixed: "left",
   },
   {
-    title: 'CPF',
-    dataIndex: 'cpf',
-    key: 'cpf',
-    fixed: 'left'
+    title: "CPF",
+    dataIndex: "cpf",
+    key: "cpf",
+    fixed: "left",
   },
   {
-    title: 'Telefone',
-    dataIndex: 'phone',
-    key: 'phone',
-    fixed: 'left'
+    title: "Telefone",
+    dataIndex: "phone",
+    key: "phone",
+    fixed: "left",
   },
   {
-    title: 'Vínculo',
-    dataIndex: 'bond',
-    key: 'bond',
-    fixed: 'left'
+    title: "Vínculo",
+    dataIndex: "bond",
+    key: "bond",
+    fixed: "left",
   },
   {
-    title: 'Status',
-    dataIndex: 'id',
-    render: (_, source) => <>{source.activated ? 'Ativo' : 'Inativo'}</>
+    title: "Status",
+    dataIndex: "id",
+    render: (_, source) => <>{source.activated ? "Ativo" : "Inativo"}</>,
   },
   {
-    title: ' ',
-    dataIndex: 'id',
+    title: " ",
+    dataIndex: "id",
     render: (_, source) => {
       const {
         expireASO,
         expireDriverLicense,
-        expireProtocolInsuranceCompany
-      } = source
+        expireProtocolInsuranceCompany,
+      } = source;
 
       const expireDates = [
         expireASO,
         expireDriverLicense,
-        expireProtocolInsuranceCompany
-      ]
+        expireProtocolInsuranceCompany,
+      ];
       const hasExpired = includes(
         true,
         expireDates.map((date) => moment(date) < moment())
-      )
+      );
 
       return (
         <Space>
@@ -99,7 +99,8 @@ const columns = ({
                 <Menu>
                   <Menu.Item
                     onClick={() => handleClickEditDate(source)}
-                    key="1">
+                    key="1"
+                  >
                     Atualizar documento
                   </Menu.Item>
                 </Menu>
@@ -107,68 +108,57 @@ const columns = ({
             />
           )}
         </Space>
-      )
-    }
+      );
+    },
   },
   {
-    title: ' ',
-    dataIndex: 'id',
+    title: " ",
+    key: "id",
+    dataIndex: "id",
     render: (_, source) => (
       <Tooltip
-        placement="bottom"
-        title={() => {
-          return (
-            <>
-              <Row>
-                <Col span={24}>
-                  <Paragraph style={{ color: 'white' }}>
-                    Validade documentos:
-                  </Paragraph>
-                </Col>
-                <Row></Row>
-                <Col>
-                  <Paragraph style={{ color: 'white' }}>ASO - </Paragraph>
-                </Col>
-                <Col>
-                  <Paragraph style={{ color: 'white' }}>
-                    {moment().format() < source.expireASO
-                      ? 'Regular'
-                      : 'Expirado'}
-                  </Paragraph>
-                </Col>
-              </Row>
-              <Row>
-                <Col>
-                  <Paragraph style={{ color: 'white' }}>CNH - </Paragraph>
-                </Col>
-                <Col>
-                  <Paragraph style={{ color: 'white' }}>
-                    {moment().format() < source.expireDriverLicense
-                      ? 'Regular'
-                      : 'Expirado'}
-                  </Paragraph>
-                </Col>
-              </Row>
-              <Row>
-                <Col>
-                  <Paragraph style={{ color: 'white' }}>Protocolo - </Paragraph>
-                </Col>
-                <Col>
-                  <Paragraph style={{ color: 'white' }}>
-                    {moment().format() < source.expireProtocolInsuranceCompany
-                      ? 'Regular'
-                      : 'Expirado'}
-                  </Paragraph>
-                </Col>
-              </Row>
-            </>
-          )
-        }}>
+        placement="bottomRight"
+        title={
+          <Row>
+            <Col span={24}>
+              <Paragraph style={{ color: "white" }}>
+                Validade documentos:
+              </Paragraph>
+            </Col>
+
+            <Col span={24}>
+              <Paragraph style={{ color: "white" }}>
+                ASO -{" "}
+                {moment().format() < source.expireASO ? "Regular" : "Expirado"}
+              </Paragraph>
+            </Col>
+
+            <Col span={24}>
+              <Paragraph style={{ color: "white" }}>
+                CNH -
+                {moment().format() < source.expireDriverLicense
+                  ? "Regular"
+                  : "Expirado"}
+              </Paragraph>
+            </Col>
+
+            <Col span={24}>
+              <Paragraph style={{ color: "white" }}>
+                Protocolo -
+                {moment().format() < source.expireProtocolInsuranceCompany
+                  ? "Regular"
+                  : "Expirado"}
+              </Paragraph>
+            </Col>
+          </Row>
+        }
+      >
         <InfoCircleOutlined />
       </Tooltip>
-    )
-  }
-]
+    ),
+  },
+
+];
 
 const DriverList = ({
   datasource,
@@ -178,7 +168,7 @@ const DriverList = ({
   offset,
   goToDetail,
   handleClickEditDate,
-  handleEdit
+  handleEdit,
 }) => {
   return (
     <Table
@@ -186,19 +176,19 @@ const DriverList = ({
         showSizeChanger: false,
         pageSize: 20,
         total: datasource.count,
-        current: offset
+        current: offset,
       }}
       onChange={handleChangeTableEvent}
       columns={columns({
         handleClickEdit,
         goToDetail,
         handleEdit,
-        handleClickEditDate
+        handleClickEditDate,
       })}
       loading={loading}
       dataSource={map((row) => ({ ...row, key: row.id }), datasource.rows)}
     />
-  )
-}
+  );
+};
 
-export default DriverList
+export default DriverList;

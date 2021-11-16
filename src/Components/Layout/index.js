@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { Image, Menu, Layout, Typography } from "antd";
-import { withRouter } from "react-router-dom";
+import { withRouter, useRouteMatch } from "react-router-dom";
 import { connect } from "react-redux";
 import { compose, pathOr } from "ramda";
 import { useThemeSwitcher } from "react-css-theme-switcher";
@@ -25,44 +25,52 @@ const menuItems = [
     icon: <DotChartOutlined />,
     label: "Resumo",
     key: "/logged/dashboard",
+    urlRedirect: "/logged/dashboard",
   },
   {
     icon: <BranchesOutlined />,
     label: "Unidades",
-    key: "/logged/branch/manager",
+    key: "/logged/branch",
+    urlRedirect: "/logged/branch/manager",
   },
   {
     icon: <CalculatorOutlined />,
     label: "Operação",
-    key: "/logged/operation/manager",
+    key: "/logged/operation",
+    urlRedirect: "/logged/operation/manager",
   },
   {
     icon: <DiffOutlined />,
     label: "Tipo de veículos",
-    key: "/logged/vehicle-type/manager",
+    key: "/logged/vehicle-type",
+    urlRedirect: "/logged/vehicle-type/manager",
   },
   {
     icon: <TeamOutlined />,
     label: "Motorista",
-    key: "/logged/driver/manager",
+    key: "/logged/driver",
+    urlRedirect: "/logged/driver/manager",
   },
   {
     icon: <CarOutlined />,
     label: "Veículos",
-    key: "/logged/vehicle/manager",
+    key: "/logged/vehicle",
+    urlRedirect: "/logged/vehicle/manager",
   },
   {
     icon: <ToolOutlined />,
     label: "Manutenção",
-    key: "/logged/maintenance/manager",
+    key: "/logged/maintenance",
+    urlRedirect: "/logged/maintenance/manager",
   },
 ];
 
 const LayoutComponent = ({ children, history, company }) => {
   const [collapsed, setCollapsed] = useState(false);
   const { currentTheme } = useThemeSwitcher();
-
-  const goTo = ({ key }) => history.push(key);
+  let match = useRouteMatch("/logged/:slug");
+  
+  const goTo = history.push
   const companyName = pathOr("", ["name"], company);
   const parseCompanyName =
     companyName.length > 22 ? `${companyName.substr(0, 22)}...` : companyName;
@@ -106,14 +114,14 @@ const LayoutComponent = ({ children, history, company }) => {
           className={styles.noPrint}
           theme={currentTheme}
           mode="inline"
-          defaultSelectedKeys={["1"]}
+          selectedKeys={[match.url]}
         >
           {menuItems.map((menuItem) => (
             <Menu.Item
-              className={styles.noPrint}
               {...menuItem}
+              className={styles.noPrint}
               key={menuItem.key}
-              onClick={goTo}
+              onClick={() => goTo(menuItem.urlRedirect)}
             >
               {menuItem.label}
             </Menu.Item>

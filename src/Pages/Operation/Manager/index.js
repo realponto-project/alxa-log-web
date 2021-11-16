@@ -139,7 +139,7 @@ const Manager = ({ history }) => {
     <ManagerContainer
       branchsSource={branchsData}
       clearFilter={clearFilter}
-      goToDetail={(id) => history.push(`/logged/operation-detail/${id}`)}
+      goToDetail={(id) => history.push(`/logged/operation/detail/${id}`)}
       handleChangeTableEvent={handleChangeTableEvent}
       handleEdit={handleEdit}
       handleFilter={handleFilter}

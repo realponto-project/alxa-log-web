@@ -185,7 +185,7 @@ const Detail = ({
                   id: maintenanceOrder.id || '',
                   origin: 'solicitation'
                 })}
-                style={{ maxHeight: '89px', width: '89px' }}
+                style={{ maxHeight: '89px', width: '89px',  }}
               />
             </Col>
             <Col span={24}>
@@ -217,7 +217,7 @@ const Detail = ({
             <Col span={12}>
               <Row>
                 <Col span={24} style={{ textAlign: 'center' }}>
-                  <Image src={fuelSVG} alt="fuel" height={72} />
+                  <Image preview={false} src={fuelSVG} alt="fuel" height={72} />
                 </Col>
                 <Col span={24} style={{ textAlign: 'center' }}>
                   <Text>
@@ -240,7 +240,7 @@ const Detail = ({
             <Col span={12}>
               <Row>
                 <Col span={24} style={{ textAlign: 'center' }}>
-                  <Image src={leafSVG} alt="fuel" height={72} />
+                  <Image preview={false} src={leafSVG} alt="fuel" height={72} />
                 </Col>
                 <Col span={24} style={{ textAlign: 'center' }}>
                   <Text>
@@ -264,7 +264,7 @@ const Detail = ({
             <Col span={12}>
               <Row>
                 <Col span={24} style={{ textAlign: 'center' }}>
-                  <Image src={clockSVG} alt="fuel" />
+                  <Image preview={false} src={clockSVG} alt="fuel" />
                 </Col>
                 <Col span={24} style={{ textAlign: 'center' }}>
                   <Text>

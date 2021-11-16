@@ -121,28 +121,28 @@ const RootRoutes = [
   {
     component: MaintenanceDetail,
     title: 'DETALHES DA MANUTENÇÃO',
-    path: '/logged/maintenance-detail/:id',
+    path: '/logged/maintenance/detail/:id',
     exact: true,
     goBack: true
   },
   {
     component: DriverDetail,
     title: 'DETALHES DO MOTORISTA',
-    path: '/logged/driver-detail/:id',
+    path: '/logged/driver/detail/:id',
     exact: true,
     goBack: true
   },
   {
     component: BranchDetail,
     title: 'DETALHES DA FILIAL',
-    path: '/logged/branch-detail/:id',
+    path: '/logged/branch/detail/:id',
     exact: true,
     goBack: true
   },
   {
     component: OperationDetail,
     title: 'DETALHES DA OPERAÇÃO',
-    path: '/logged/operation-detail/:id',
+    path: '/logged/operation/detail/:id',
     exact: true,
     goBack: true
   },

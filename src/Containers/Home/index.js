@@ -121,7 +121,7 @@ const Home = ({
           total={total}
           count={vehicleTotalSolicitacion}
           redirectPage={() => goToOrders(["solicitation"])}
-          title="Total de solicitações"
+          title="Solicitações"
           srcImage={CustomersSvg}
         />
       </Col>
@@ -143,7 +143,7 @@ const Home = ({
               "external_service",
             ])
           }
-          title="Total de veículos"
+          title="Em serviço"
           srcImage={OrdersSvg}
         />
       </Col>
@@ -153,7 +153,7 @@ const Home = ({
           total={total}
           count={vehicleTotalAvailable}
           redirectPage={() => goToOrders(["avaiable"])}
-          title="Total de liberado"
+          title="Liberados"
           srcImage={AvailableSVG}
         />
       </Col>
@@ -163,7 +163,7 @@ const Home = ({
           total={total}
           count={vehicleTotalfinished}
           redirectPage={() => goToOrders(["check-out"])}
-          title="Total de concluídos"
+          title="Concluídos"
           srcImage={CheckoutSvg}
         />
       </Col>

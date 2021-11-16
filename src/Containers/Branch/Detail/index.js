@@ -170,7 +170,7 @@ const Detail = ({
 
       <Col span={6}>
         <CardStatus
-          title="Total de solicitações"
+          title="Solicitações"
           count={vehicleTotalSolicitacion?.count ?? '-'}
           srcImage={CustomersSvg}
           total={total}
@@ -179,7 +179,7 @@ const Detail = ({
 
       <Col span={6}>
         <CardStatus
-          title="Total de veículos"
+          title="Em serviço"
           count={vehicleTotal || '-'}
           srcImage={OrdersSvg}
           total={total}
@@ -188,7 +188,7 @@ const Detail = ({
 
       <Col span={6}>
         <CardStatus
-          title="Total de liberado"
+          title="Liberados"
           count={vehicleTotalAvailable?.count ?? '-'}
           srcImage={AvailableSVG}
           total={total}
@@ -197,7 +197,7 @@ const Detail = ({
 
       <Col span={6}>
         <CardStatus
-          title="Total de concluídos"
+          title="Concluídos"
           count={vehicleTotalFinished?.count ?? '-'}
           srcImage={CheckoutSvg}
           total={total}

@@ -74,7 +74,7 @@ const Detail = ({ match, history }) => {
       handleChangeTableEvent={handleChangeTableEvent}
       offset={offset}
       datasource={datasource}
-      gotoDetailOrder={(id) => history.push(`/logged/maintenance-detail/${id}`)}
+      gotoDetailOrder={(id) => history.push(`/logged/maintenance/detail/${id}`)}
       handleFilter={(values) => {
         setQuery(values)
         setOffset(1)
