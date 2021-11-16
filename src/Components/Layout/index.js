@@ -72,8 +72,6 @@ const LayoutComponent = ({ children, history, company }) => {
   
   const goTo = history.push
   const companyName = pathOr("", ["name"], company);
-  const parseCompanyName =
-    companyName.length > 22 ? `${companyName.substr(0, 22)}...` : companyName;
 
   return (
     <Layout className={styles.noPrint}>
@@ -104,17 +102,17 @@ const LayoutComponent = ({ children, history, company }) => {
             className={[styles.noPrint, styles.companyName].join(" ")}
             style={{
               // display: collapsed ? "none" : "block",
-              width: collapsed ? 0 : '100%'
+              width: collapsed ? 0 : '100%',
             }}
           >
-            {parseCompanyName}
+            {companyName}
           </Paragraph>
         </div>
         <Menu
           className={styles.noPrint}
           theme={currentTheme}
           mode="inline"
-          selectedKeys={[match.url]}
+          selectedKeys={[match?.url ?? '']}
         >
           {menuItems.map((menuItem) => (
             <Menu.Item
