@@ -8,8 +8,8 @@ const { Text, Title } = Typography
 const DriverAuthorizationMobile = ({ handleSubmit }) => {
   return (
     <Form onFinish={handleSubmit}>
-      <Row style={{ padding: "16px" }} gutter={[8, 8]}>
-        <Col span={24} style={{ textAlign: "center" }}>
+      <Row style={{ padding: '16px' }} gutter={[8, 8]}>
+        <Col span={24} style={{ textAlign: 'center' }}>
           <Image
             alt="logo"
             src={Logo}
@@ -18,18 +18,16 @@ const DriverAuthorizationMobile = ({ handleSubmit }) => {
             preview={false}
           />
         </Col>
-        <Col span={24} style={{ textAlign: "center" }}>
-          <Title level={4}>
-            Buscar autorização de acesso!
-            </Title>
+        <Col span={24} style={{ textAlign: 'center' }}>
+          <Title level={4}>Buscar autorização de acesso!</Title>
         </Col>
-        <Col span={24} style={{ textAlign: "center" }}>
+        <Col span={24} style={{ textAlign: 'center' }}>
           <Text style={{ color: '#8E8D92' }} level={4}>
-            Informe a placa do veículo que irá ficar estacionado ou retirado
-            da filial.
-            </Text>
+            Informe a placa do veículo que irá ficar estacionado ou retirado da
+            filial.
+          </Text>
         </Col>
-        <Col span={24} style={{ textAlign: "center" }}>
+        <Col span={24} style={{ textAlign: 'center' }}>
           <Form.Item name="plate">
             <Input
               size="large"
@@ -38,14 +36,9 @@ const DriverAuthorizationMobile = ({ handleSubmit }) => {
             />
           </Form.Item>
         </Col>
-        <Col span={24} style={{ textAlign: "center" }}>
+        <Col span={24} style={{ textAlign: 'center' }}>
           <Form.Item>
-            <Button
-              htmlType="submit"
-              type="primary"
-              size="large"
-              block
-            >
+            <Button htmlType="submit" type="primary" size="large" block>
               Buscar autorização
             </Button>
           </Form.Item>

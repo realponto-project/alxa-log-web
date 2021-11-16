@@ -4,28 +4,23 @@ import classNames from 'classnames'
 
 import styles from './style.module.css'
 
-const ModalMobile = ({
-  children,
-  show,
-}) => (
+const ModalMobile = ({ children, show }) => (
   <div
     className={classNames(styles.bgModal, {
-      [styles.show]: show,
-    })}
-  >
+      [styles.show]: show
+    })}>
     <div
       className={classNames(styles.modal, {
-        [styles.show]: show,
-      })}
-    >
+        [styles.show]: show
+      })}>
       {children}
     </div>
-   </div>
+  </div>
 )
 
 ModalMobile.propTypes = {
   children: PropTypes.node.isRequired,
-  show: PropTypes.bool.isRequired,
+  show: PropTypes.bool.isRequired
 }
 
 export default ModalMobile

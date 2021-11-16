@@ -140,7 +140,7 @@ const Manager = ({ history }) => {
     <ManagerContainer
       branchSelected={branchSelected}
       clearFilter={clearFilter}
-      goToDetail={(id) => history.push(`/logged/branch-detail/${id}`)}
+      goToDetail={(id) => history.push(`/logged/branch/detail/${id}`)}
       handleChangeTableEvent={handleChangeTableEvent}
       handleEdit={handleEdit}
       handleFilter={handleFilter}

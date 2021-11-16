@@ -5,38 +5,39 @@ import styles from './style.module.css'
 import formattedDate from '../../../utils/parserDate'
 
 const parseStatusColor = {
-  'solicitation': '#5DA0FC',
+  solicitation: '#5DA0FC',
   'check-in': '#268E86',
-  'avaiable': '#F29F03',
-  'parking': '#1772C9',
-  'courtyard': '#EA5656',
-  'awaiting_repair': '#7550D8',
-  'dock': '#2D2D2D',
-  'wash': '#D588F2',
-  'supply': '#17C9B2',
+  avaiable: '#F29F03',
+  parking: '#1772C9',
+  courtyard: '#EA5656',
+  awaiting_repair: '#7550D8',
+  dock: '#FF9C70',
+  wash: '#D588F2',
+  supply: '#17C9B2',
   'check-out': '#264ABE',
-  'external_service': '#F6C21F',
+  external_service: '#F6C21F'
 }
 
 const parseStatus = {
-  'solicitation': 'Solicitação',
+  solicitation: 'Solicitação',
   'check-in': 'Entrada',
-  'avaiable': 'Aguardando Retirada',
-  'parking': 'Estacionar',
-  'courtyard': 'Pátio',
-  'awaiting_repair': 'Aguardando peça',
-  'dock': 'Doca',
-  'wash': 'Lavar',
-  'supply': 'Abastecer',
+  avaiable: 'Aguardando Retirada',
+  parking: 'Estacionar',
+  courtyard: 'Pátio',
+  awaiting_repair: 'Aguardando peça',
+  dock: 'Doca',
+  wash: 'Lavar',
+  supply: 'Abastecer',
   'check-out': 'Saída',
-  'external_service': 'Serviços externos',
+  external_service: 'Serviços externos'
 }
 
 const { Title } = Typography
-const PieChartHome = ({
-  data
-}) => {
-  const dataChart = data.map(({ status, count }) => ({ name: parseStatus[status], value: Number(count)}))
+const PieChartHome = ({ data }) => {
+  const dataChart = data.map(({ status, count }) => ({
+    name: parseStatus[status],
+    value: Number(count)
+  }))
 
   return (
     <Row gutter={[0, 16]}>
@@ -52,8 +53,7 @@ const PieChartHome = ({
               outerRadius={125}
               fill="#E6E6E6"
               paddingAngle={0}
-              dataKey="value"
-            >
+              dataKey="value">
               {data.map(({ status }, index) => (
                 <Cell key={`cell-${index}`} fill={parseStatusColor[status]} />
               ))}

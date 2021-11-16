@@ -20,10 +20,4 @@ const getSummary = async (id) => {
   return await axiosIntance.get(`/companies-summary-orders/${id}`)
 }
 
-export { 
-  getAll, 
-  getById,
-  createBranch, 
-  updateBranch, 
-  getSummary,
-}
+export { getAll, getById, createBranch, updateBranch, getSummary }

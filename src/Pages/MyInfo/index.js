@@ -31,7 +31,7 @@ const MyInfo = ({ user, loggedUser }) => {
     />
   )
 }
-GAInitialize(`/my-info`)
+GAInitialize('/my-info')
 
 const mapStateToProps = ({ user }) => ({
   user

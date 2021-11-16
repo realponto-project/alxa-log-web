@@ -1,8 +1,8 @@
 import React from 'react'
 import { Button, Image, Row, Col, Input, Typography, List } from 'antd'
 import QrReader from 'react-qr-reader'
-import QrCode from './qrcode.png'
-import TypingPng from './typography.png'
+import QrCode from '../../../Assets/qrcode.png'
+import TypingPng from '../../../Assets/typography.png'
 import Modal from '../../../Components/ModalMobile'
 import { CloseOutlined } from '@ant-design/icons'
 

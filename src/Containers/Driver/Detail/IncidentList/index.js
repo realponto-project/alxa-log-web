@@ -1,8 +1,9 @@
 import React from 'react'
-import { Table, Tag, Button } from 'antd'
+import { Table, Button } from 'antd'
 import { cnpj } from 'cpf-cnpj-validator'
 
 import formattedDate from '../../../../utils/parserDate'
+import Tag from '../../../../Components/Tag'
 
 const chartSettings = {
   collision: 'Colisão',
@@ -19,7 +20,7 @@ const chartSettings = {
 const colors = {
   collision: '#5DA0FC',
   accident: '#268E86',
-  vehicle_break_down: '#2D2D2D',
+  vehicle_break_down: '#FF9C70',
   refusal_of_freight: '#1772C9',
   absence_without_justification: '#D588F2',
   absence_with_justification: '#F29F03',
@@ -28,7 +29,7 @@ const colors = {
   lack_of_cargo_lashing: '#F6C21F'
 }
 
-const columns = (handleClickEdit, userId) => ([
+const columns = (handleClickEdit, userId) => [
   {
     title: 'Data do incidente',
     dataIndex: 'incidentDate',
@@ -81,17 +82,24 @@ const columns = (handleClickEdit, userId) => ([
     dataIndex: 'id',
     key: 'id',
     fixed: 'left',
-    render: (_, source) => (
+    render: (_, source) =>
       userId === source.userId && (
         <Button type="link" onClick={() => handleClickEdit(source)}>
           Editar
         </Button>
       )
-    )
   }
-])
+]
 
-const IncidentList = ({ rows, count, current, loading, handleChange, handleClickEdit, userId }) => {
+const IncidentList = ({
+  rows,
+  count,
+  current,
+  loading,
+  handleChange,
+  handleClickEdit,
+  userId
+}) => {
   return (
     <Table
       columns={columns(handleClickEdit, userId)}

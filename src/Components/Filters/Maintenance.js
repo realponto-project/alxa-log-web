@@ -12,6 +12,8 @@ import {
 } from 'antd'
 import { SearchOutlined, DownOutlined, UpOutlined } from '@ant-design/icons'
 
+import styles from './style.module.css'
+
 const { RangePicker } = DatePicker
 const { Title } = Typography
 
@@ -88,11 +90,7 @@ const FilterMaintenence = ({
         </Col>
         {moreFilters && (
           <Col span={24}>
-            <div
-              style={{
-                backgroundColor: '#f4f4f4',
-                padding: '14px'
-              }}>
+            <div className={styles.wrapperMoreFilters}>
               <Row>
                 <Col span={10}>
                   <Title level={5}>Status</Title>

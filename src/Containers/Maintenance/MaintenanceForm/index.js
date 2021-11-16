@@ -14,17 +14,17 @@ import {
 const formItemsComponent = {
   input: Input,
   select: Select,
-  textArea: Input.TextArea,
+  textArea: Input.TextArea
 }
 
-const renderFormItems = ({ 
-  label, 
-  name, 
-  rules, 
-  placeholder, 
-  show, 
-  typeInput, 
-  options = [], 
+const renderFormItems = ({
+  label,
+  name,
+  rules,
+  placeholder,
+  show,
+  typeInput,
+  options = [],
   mode = null,
   format = ''
 }) => {
@@ -34,16 +34,16 @@ const renderFormItems = ({
       <Form.Item key={name} label={label} name={name} rules={rules}>
         {typeInput === 'date' ? (
           <DatePicker format={format} />
-        ): (
-          <Component 
+        ) : (
+          <Component
             showSearch
-            name={name} 
-            placeholder={placeholder} 
-            options={options} 
-            mode={mode} 
-            filterOption={(value, option) => (
+            name={name}
+            placeholder={placeholder}
+            options={options}
+            mode={mode}
+            filterOption={(value, option) =>
               option.label.toLowerCase().indexOf(value.toLowerCase()) >= 0
-            )}
+            }
           />
         )}
       </Form.Item>
@@ -64,15 +64,33 @@ const MaintenanceForm = ({
   maintenanceSelected,
   handleSelectedMaintenance
 }) => {
-  const [formSettings, setFormSettings] = useState(maintenanceSelected ? formSettingsVehicleEdit(branchsSource, driversSource, vehiclesSource, operationsSource) : formSettingsVehicle(vehiclesSource))
-  const parseOptionItem = item => ({ value: item.id, label: item.name })
-  const parseOptionItemDriver = item => ({ disabled: !item.activated, value: item.id, label: `${item.name} - CNH: ${item.driverLicense}` })
-  const parseOptionItemOperation = item => ({ value: item.id, label: `${item.name} - Filial: ${item.company.name} / ${cnpj.format(item.company.document)}` })
+  const [formSettings, setFormSettings] = useState(
+    maintenanceSelected
+      ? formSettingsVehicleEdit(
+          branchsSource,
+          driversSource,
+          vehiclesSource,
+          operationsSource
+        )
+      : formSettingsVehicle(vehiclesSource)
+  )
+  const parseOptionItem = (item) => ({ value: item.id, label: item.name })
+  const parseOptionItemDriver = (item) => ({
+    disabled: !item.activated,
+    value: item.id,
+    label: `${item.name} - CNH: ${item.driverLicense}`
+  })
+  const parseOptionItemOperation = (item) => ({
+    value: item.id,
+    label: `${item.name} - Filial: ${item.company.name} / ${cnpj.format(
+      item.company.document
+    )}`
+  })
 
-  const setOpetionValue = formItem => {
+  const setOpetionValue = (formItem) => {
     switch (formItem.name) {
       case 'companyId':
-        return branchsSource.map(parseOptionItem)   
+        return branchsSource.map(parseOptionItem)
       case 'driverId':
         return driversSource.map(parseOptionItemDriver)
       case 'operationId':
@@ -82,57 +100,69 @@ const MaintenanceForm = ({
     }
   }
 
-  const onValuesChangeVisableFomItem = value => {
-    const formItem = formSettings.find(item => !item.show && settingsNextStep[Object.keys(value)[0]] === item.name)
+  const onValuesChangeVisableFomItem = (value) => {
+    const formItem = formSettings.find(
+      (item) =>
+        !item.show && settingsNextStep[Object.keys(value)[0]] === item.name
+    )
     if (formItem) {
-      setFormSettings(formSettings.map(item => (
-        item.name === formItem.name 
-          ? {...formItem, show: true, options: setOpetionValue(formItem) } 
-          : item
-      )))
+      setFormSettings(
+        formSettings.map((item) =>
+          item.name === formItem.name
+            ? { ...formItem, show: true, options: setOpetionValue(formItem) }
+            : item
+        )
+      )
     }
   }
 
-  const maintenanceDate = maintenanceSelected && maintenanceSelected.maintenanceDate ? moment(maintenanceSelected.maintenanceDate) : undefined
+  const maintenanceDate =
+    maintenanceSelected && maintenanceSelected.maintenanceDate
+      ? moment(maintenanceSelected.maintenanceDate)
+      : undefined
 
   return (
     <Modal
       visible={visible}
       closable={false}
       footer={[
-        <Button key="back" onClick={() => {
-          handleCancel(false)
-          form.resetFields()
-          setFormSettings(formSettingsVehicle(vehiclesSource))
-          handleSelectedMaintenance(null)
-        }}>
+        <Button
+          key="back"
+          onClick={() => {
+            handleCancel(false)
+            form.resetFields()
+            setFormSettings(formSettingsVehicle(vehiclesSource))
+            handleSelectedMaintenance(null)
+          }}>
           Cancelar
         </Button>,
-        <Button
-          key="submit"
-          onClick={() => form.submit()}
-          type="primary">
+        <Button key="submit" onClick={() => form.submit()} type="primary">
           Salvar
         </Button>
       ]}
-      title={`${maintenanceSelected ? 'Editar' : 'Cadastrar'} nova manutenção`}
-    >
+      title={`${maintenanceSelected ? 'Editar' : 'Cadastrar'} nova manutenção`}>
       <Form
         form={form}
         layout="vertical"
         onValuesChange={onValuesChangeVisableFomItem}
         validateTrigger="onChange"
-        onFinish={values => {
+        onFinish={(values) => {
           if (maintenanceSelected) {
-            handleEdit({...maintenanceSelected, ...values})
+            handleEdit({ ...maintenanceSelected, ...values })
           } else {
-            handleSubmit(values, () => setFormSettings(formSettingsVehicle(vehiclesSource)))
+            handleSubmit(values, () =>
+              setFormSettings(formSettingsVehicle(vehiclesSource))
+            )
           }
           handleSelectedMaintenance(null)
-          
         }}
-        initialValues={{...maintenanceSelected, maintenanceDate, driverId: maintenanceSelected ? maintenanceSelected.maintenanceOrderDrivers[0].driver.id : null }}
-      >
+        initialValues={{
+          ...maintenanceSelected,
+          maintenanceDate,
+          driverId: maintenanceSelected
+            ? maintenanceSelected.maintenanceOrderDrivers[0].driver.id
+            : null
+        }}>
         {map(renderFormItems, formSettings)}
       </Form>
     </Modal>

@@ -1,21 +1,10 @@
 import React from 'react'
-import {
-  Table,
-  Button,
-  Empty,
-  ConfigProvider,
-  Image,
-  Space,
-  Tag,
-  Menu,
-  Dropdown,
-  Modal
-} from 'antd'
-import NoData from '../../../../Assets/noData.svg'
+import { Table, Button, Space, Menu, Dropdown, Modal } from 'antd'
 import formattedDate from '../../../../utils/parserDate'
 import diffTime from '../../../../utils/permananceTime'
 import { ExclamationCircleOutlined } from '@ant-design/icons'
 
+import Tag from '../../../../Components/Tag'
 import {
   parseStatus,
   parseStatusColor,
@@ -160,32 +149,24 @@ const MaintenanceList = ({
   }
 
   return (
-    <ConfigProvider
-      renderEmpty={() => (
-        <Empty
-          description="Não há dados"
-          image={<Image width={85} src={NoData} preview={false} />}
-        />
-      )}>
-      <Table
-        pagination={{
-          showSizeChanger: false,
-          pageSize: 20,
-          total: datasource.count,
-          current: offset
-        }}
-        onChange={handleChangeTableEvent}
-        columns={columns({
-          handleClickEdit,
-          handleShowVoucher,
-          gotoDetail,
-          handleMenuClick
-        })}
-        loading={loading}
-        dataSource={datasource.rows}
-        size="small"
-      />
-    </ConfigProvider>
+    <Table
+      pagination={{
+        showSizeChanger: false,
+        pageSize: 20,
+        total: datasource.count,
+        current: offset
+      }}
+      onChange={handleChangeTableEvent}
+      columns={columns({
+        handleClickEdit,
+        handleShowVoucher,
+        gotoDetail,
+        handleMenuClick
+      })}
+      loading={loading}
+      dataSource={datasource.rows}
+      size="small"
+    />
   )
 }
 

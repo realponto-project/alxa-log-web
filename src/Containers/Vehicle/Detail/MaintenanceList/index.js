@@ -1,8 +1,9 @@
 import React from 'react'
-import { Table, Button, Tag } from 'antd'
+import { Table, Button } from 'antd'
 import formattedDate from '../../../../utils/parserDate'
 import diffTime from '../../../../utils/permananceTime'
 
+import Tag from '../../../../Components/Tag'
 import {
   parseStatus,
   parseStatusColor,

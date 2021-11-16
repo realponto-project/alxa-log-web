@@ -1,0 +1,30 @@
+#span-tag {
+  cursor: pointer;
+  box-sizing: border-box;
+  margin: 0 8px 0 0;
+  font-size: 14px;
+  font-variant: tabular-nums;
+  line-height: 1.5715;
+  list-style: none;
+  font-feature-settings: "tnum";
+  display: inline-block;
+  height: auto;
+  padding: 0 7px;
+  font-size: 12px;
+  line-height: 20px;
+  white-space: nowrap;
+  background: #fafafa;
+  border-radius: 2px;
+  opacity: 1;
+  transition: all .3s;
+
+}
+
+#span-tag[disabled]{
+  filter: opacity(0.3);
+  box-shadow: 0 0 0 0!important
+}
+
+#span-tag:hover{
+  filter: opacity(1);
+}

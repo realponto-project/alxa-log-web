@@ -1,0 +1,4 @@
+.wrapperMoreFilters {
+  backdrop-filter: invert(.03);
+  padding: 14px;
+}

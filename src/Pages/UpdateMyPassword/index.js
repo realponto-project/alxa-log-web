@@ -8,7 +8,7 @@ import GAInitialize from '../../utils/ga'
 const UpdateMyPassword = ({ history }) => {
   const [loading, setLoading] = useState(false)
   const [form] = Form.useForm()
-  GAInitialize(`/update-password`)
+  GAInitialize('/update-password')
 
   const handleSubmit = async (values) => {
     setLoading(true)

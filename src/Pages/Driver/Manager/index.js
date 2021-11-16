@@ -110,13 +110,16 @@ const Manager = ({ history }) => {
   }
 
   const handleSelectedDriver = (driver) => {
-
-    if(!isEmpty(driver)){
-      setDriverSelected({ 
-        ...driver, 
+    if (!isEmpty(driver)) {
+      setDriverSelected({
+        ...driver,
         expireASO: moment(pathOr('', ['expireASO'], driver)),
-        expireDriverLicense: moment(pathOr('', ['expireDriverLicense'], driver)),
-        expireProtocolInsuranceCompany: moment(pathOr('', ['expireProtocolInsuranceCompany'], driver)),
+        expireDriverLicense: moment(
+          pathOr('', ['expireDriverLicense'], driver)
+        ),
+        expireProtocolInsuranceCompany: moment(
+          pathOr('', ['expireProtocolInsuranceCompany'], driver)
+        )
       })
     } else {
       setDriverSelected(driver)
@@ -174,7 +177,6 @@ const Manager = ({ history }) => {
   }, [search])
 
   const handleClickCard = (event) => {
-    console.log('>>>', event)
     changeQueryParams(
       qs.stringify({
         [event]: [
@@ -192,7 +194,7 @@ const Manager = ({ history }) => {
       counts={counts}
       clearFilter={clearFilter}
       driverSelected={driverSelected}
-      goToDetail={(id) => history.push(`/logged/driver-detail/${id}`)}
+      goToDetail={(id) => history.push(`/logged/driver/detail/${id}`)}
       handleChangeTableEvent={handleChangeTableEvent}
       handleEdit={handleEdit}
       handleFilter={handleFilter}

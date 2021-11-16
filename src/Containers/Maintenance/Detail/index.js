@@ -1,13 +1,23 @@
 import React, { useState } from 'react'
-import { Row, Col, Card, Typography, Image, Tag, Timeline, Button, Tooltip } from 'antd'
+import {
+  Row,
+  Col,
+  Card,
+  Typography,
+  Image,
+  Timeline,
+  Button,
+  Tooltip
+} from 'antd'
 import Qrcode from 'qrcode.react'
 import { cnpj } from 'cpf-cnpj-validator'
 import { CopyOutlined } from '@ant-design/icons'
 import { map, prop, sortBy } from 'ramda'
 
-import fuelSVG from './fuel.svg'
-import clockSVG from './clock.svg'
-import leafSVG from './leaf.svg'
+import Tag from '../../../Components/Tag'
+import fuelSVG from '../../../Assets/fuel.svg'
+import clockSVG from '../../../Assets/clock.svg'
+import leafSVG from '../../../Assets/leaf.svg'
 import diffTime from '../../../utils/permananceTime'
 import formattedDate from '../../../utils/parserDate'
 import DriverForm from './DriverForm'
@@ -26,11 +36,11 @@ const parseStatusColor = {
   parking: '#1772C9',
   courtyard: '#EA5656',
   awaiting_repair: '#7550D8',
-  dock: '#2D2D2D',
+  dock: '#FF9C70',
   wash: '#D588F2',
   supply: '#17C9B2',
   'check-out': '#264ABE',
-  'external_service': '#F6C21F' ,
+  external_service: '#F6C21F'
 }
 
 const services = {
@@ -50,7 +60,7 @@ const parseStatus = {
   wash: 'Lavar',
   supply: 'Abastecer',
   'check-out': 'Saída',
-  'external_service':'Serviços externos'
+  external_service: 'Serviços externos'
 }
 
 const { Text, Title } = Typography
@@ -62,8 +72,17 @@ const Detail = ({
   setShowModal,
   showModal
 }) => {
-  const checkIn = maintenanceOrder.maintenanceOrderEvents.find(item => item.status === 'check-in')
-  const permananceTimeDetail = checkIn ? diffTime(checkIn.createdAt, maintenanceOrder.updatedAt, maintenanceOrder.status, true) : { time: '-', descriptionTime: '' }
+  const checkIn = maintenanceOrder.maintenanceOrderEvents.find(
+    (item) => item.status === 'check-in'
+  )
+  const permananceTimeDetail = checkIn
+    ? diffTime(
+        checkIn.createdAt,
+        maintenanceOrder.updatedAt,
+        maintenanceOrder.status,
+        true
+      )
+    : { time: '-', descriptionTime: '' }
   const [copy, setCopy] = useState(false)
 
   return (
@@ -117,12 +136,12 @@ const Detail = ({
               <Text>Operação </Text>
               <br />
               <Text>
-                <strong>
-                  {maintenanceOrder.operation.name}
-                  
-                </strong>
-                <br/>
-                <small>{maintenanceOrder.operation.company.name} - {cnpj.format(maintenanceOrder.operation.company.document)}</small>
+                <strong>{maintenanceOrder.operation.name}</strong>
+
+                <small>
+                  {maintenanceOrder.operation.company.name} -{' '}
+                  {cnpj.format(maintenanceOrder.operation.company.document)}
+                </small>
               </Text>
             </Col>
 
@@ -130,9 +149,7 @@ const Detail = ({
               <Text>Manutenção realizada por</Text>
               <br />
               <Text>
-                <strong>
-                  {maintenanceOrder.company.name}
-                </strong>
+                <strong>{maintenanceOrder.company.name}</strong>
                 <br />
                 <small>{cnpj.format(maintenanceOrder.company.document)}</small>
               </Text>
@@ -158,7 +175,9 @@ const Detail = ({
       </Col>
 
       <Col span={3} style={{ textAlign: 'center' }}>
-        <Card bordered={false} bodyStyle={{ padding: "20px 0", height: "140px" }}>
+        <Card
+          bordered={false}
+          bodyStyle={{ padding: '20px 0', height: '140px' }}>
           <Row>
             <Col span={24}>
               <Qrcode
@@ -166,7 +185,7 @@ const Detail = ({
                   id: maintenanceOrder.id || '',
                   origin: 'solicitation'
                 })}
-                style={{ maxHeight: "89px", width: "89px" }}
+                style={{ maxHeight: '89px', width: '89px',  }}
               />
             </Col>
             <Col span={24}>
@@ -180,8 +199,7 @@ const Detail = ({
                     )
                     setCopy(true)
                     setTimeout(() => setCopy(false), 2000)
-                  }
-                  }>
+                  }}>
                   <CopyOutlined />
                   Copiar link
                 </Button>
@@ -199,7 +217,7 @@ const Detail = ({
             <Col span={12}>
               <Row>
                 <Col span={24} style={{ textAlign: 'center' }}>
-                  <Image src={fuelSVG} alt="fuel" height={72} />
+                  <Image preview={false} src={fuelSVG} alt="fuel" height={72} />
                 </Col>
                 <Col span={24} style={{ textAlign: 'center' }}>
                   <Text>
@@ -222,7 +240,7 @@ const Detail = ({
             <Col span={12}>
               <Row>
                 <Col span={24} style={{ textAlign: 'center' }}>
-                  <Image src={leafSVG} alt="fuel" height={72} />
+                  <Image preview={false} src={leafSVG} alt="fuel" height={72} />
                 </Col>
                 <Col span={24} style={{ textAlign: 'center' }}>
                   <Text>
@@ -239,12 +257,14 @@ const Detail = ({
           <Row>
             <Col span={12}>
               <Title level={1}>{permananceTimeDetail.time}</Title>
-              <p level={1}><strong>{permananceTimeDetail.descriptionTime}</strong></p>
+              <p level={1}>
+                <strong>{permananceTimeDetail.descriptionTime}</strong>
+              </p>
             </Col>
             <Col span={12}>
               <Row>
                 <Col span={24} style={{ textAlign: 'center' }}>
-                  <Image src={clockSVG} alt="fuel" />
+                  <Image preview={false} src={clockSVG} alt="fuel" />
                 </Col>
                 <Col span={24} style={{ textAlign: 'center' }}>
                   <Text>
@@ -359,24 +379,25 @@ const Detail = ({
             </Col>
             <Col span={24}>
               <Timeline>
-                {
-                  map(
-                    (item) => (
-                      <Timeline.Item color="green" key={item.id}>
-                        <Row>
-                          <Col span={12}>
-                            <p>
-                              {parseStatus[item.status]} -{' '}
-                              {item.user && item.user.name} <br />{' '}
-                              {formattedDate(item.createdAt, 'DD/MMM/YYYY HH:mm')}
-                            </p>
-                          </Col>
-                        </Row>
-                      </Timeline.Item>
-                    ),
-                    sortBy(prop('createdAt'), maintenanceOrder.maintenanceOrderEvents)
+                {map(
+                  (item) => (
+                    <Timeline.Item color="green" key={item.id}>
+                      <Row>
+                        <Col span={12}>
+                          <p>
+                            {parseStatus[item.status]} -{' '}
+                            {item.user && item.user.name} <br />{' '}
+                            {formattedDate(item.createdAt, 'DD/MMM/YYYY HH:mm')}
+                          </p>
+                        </Col>
+                      </Row>
+                    </Timeline.Item>
+                  ),
+                  sortBy(
+                    prop('createdAt'),
+                    maintenanceOrder.maintenanceOrderEvents
                   )
-                }
+                )}
               </Timeline>
             </Col>
           </Row>

@@ -1,5 +1,15 @@
 import React, { useState } from 'react'
-import { Row, Col, Card, Typography, Button, Radio, Tooltip, Switch, Modal } from 'antd'
+import {
+  Row,
+  Col,
+  Card,
+  Typography,
+  Button,
+  Radio,
+  Tooltip,
+  Switch,
+  Modal
+} from 'antd'
 import {
   PlusOutlined,
   BarChartOutlined,
@@ -69,23 +79,23 @@ const Detail = ({
       okType: 'danger',
       cancelText: 'Confirmar',
       onOk: () => console.log('cancelar'),
-      onCancel: () => handleEdit({...values, activated: !values.activated})
+      onCancel: () => handleEdit({ ...values, activated: !values.activated })
     })
   }
 
   return (
     <Row gutter={[8, 8]}>
-      <Col span={24} >
+      <Col span={24}>
         <Card bordered={false}>
-          <Row gutter={[8, 8]} style={{marginBottom: '25px'}}>
+          <Row gutter={[8, 8]} style={{ marginBottom: '25px' }}>
             <Col span={12}>
               <Title level={4}>Detalhes</Title>
             </Col>
             <Col span={12} align="right">
-              <Switch 
-                checkedChildren="Ativo" 
-                unCheckedChildren="Inativo" 
-                checked={driver.activated} 
+              <Switch
+                checkedChildren="Ativo"
+                unCheckedChildren="Inativo"
+                checked={driver.activated}
                 onChange={() => ModalStatus(driver)}
               />
             </Col>
@@ -119,7 +129,7 @@ const Detail = ({
             </Col>
           </Row>
 
-          <Row gutter={[8, 8]} style={{marginBottom: '25px'}}>
+          <Row gutter={[8, 8]} style={{ marginBottom: '25px' }}>
             <Col span={8}>
               <Text>CPF</Text>
               <br />
@@ -131,7 +141,10 @@ const Detail = ({
               <Text>Validade CNH</Text>
               <br />
               <Text>
-                <strong>{formattedDate(driver.expireDriverLicense, 'DD/MM/YYYY') || '-'}</strong>
+                <strong>
+                  {formattedDate(driver.expireDriverLicense, 'DD/MM/YYYY') ||
+                    '-'}
+                </strong>
               </Text>
             </Col>
 
@@ -144,7 +157,12 @@ const Detail = ({
             <Col span={4}>
               <Text>Validade protocolo</Text>
               <br />
-              <Text strong>{formattedDate(driver.expireProtocolInsuranceCompany, 'DD/MM/YYYY') || '-'}</Text>
+              <Text strong>
+                {formattedDate(
+                  driver.expireProtocolInsuranceCompany,
+                  'DD/MM/YYYY'
+                ) || '-'}
+              </Text>
             </Col>
           </Row>
 
@@ -153,7 +171,9 @@ const Detail = ({
               <Text>Validade ASO</Text>
               <br />
               <Text>
-                <strong>{formattedDate(driver.expireASO, 'DD/MM/YYYY') || '-'}</strong>
+                <strong>
+                  {formattedDate(driver.expireASO, 'DD/MM/YYYY') || '-'}
+                </strong>
               </Text>
             </Col>
             <Col span={6}>
@@ -175,7 +195,10 @@ const Detail = ({
               <br />
 
               {driver.id && (
-                <Tooltip placement="bottom" title="Link copiado!" visible={copy}>
+                <Tooltip
+                  placement="bottom"
+                  title="Link copiado!"
+                  visible={copy}>
                   <Button
                     style={{ paddingLeft: 0 }}
                     type="link"
@@ -307,7 +330,6 @@ const Detail = ({
         </Card>
       </Col>
 
-      
       {showModal && (
         <IncidentForm
           handleCancel={setShowModal}

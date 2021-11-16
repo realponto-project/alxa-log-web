@@ -1,6 +1,5 @@
 import React from 'react'
-import { Table, Button, Empty, ConfigProvider, Image } from 'antd'
-import NoData from '../../../../Assets/noData.svg'
+import { Table, Button } from 'antd'
 
 const columns = ({ handleClickEdit, user }) => [
   {
@@ -45,27 +44,18 @@ const MyTeamList = ({
   offset
 }) => {
   return (
-    <ConfigProvider
-      renderEmpty={() => (
-        <Empty
-          description="Não há dados"
-          image={<Image width={85} src={NoData} preview={false} />}
-        />
-      )}>
-      {console.log('datasource', datasource)}
-      <Table
-        pagination={{
-          showSizeChanger: false,
-          pageSize: 20,
-          total: datasource.count,
-          current: offset
-        }}
-        onChange={handleChangeTableEvent}
-        columns={columns({ handleClickEdit, user })}
-        loading={loading}
-        dataSource={datasource.rows}
-      />
-    </ConfigProvider>
+    <Table
+      pagination={{
+        showSizeChanger: false,
+        pageSize: 20,
+        total: datasource.count,
+        current: offset
+      }}
+      onChange={handleChangeTableEvent}
+      columns={columns({ handleClickEdit, user })}
+      loading={loading}
+      dataSource={datasource.rows}
+    />
   )
 }
 

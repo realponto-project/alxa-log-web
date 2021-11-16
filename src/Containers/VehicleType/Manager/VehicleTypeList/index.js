@@ -1,5 +1,5 @@
 import React from 'react'
-import { Table, Button, Empty, ConfigProvider, Image } from 'antd'
+import { Table, Button } from 'antd'
 import NoData from '../../../../Assets/noData.svg'
 
 const columns = ({ handleClickEdit }) => [
@@ -12,27 +12,33 @@ const columns = ({ handleClickEdit }) => [
   {
     title: ' ',
     dataIndex: 'id',
-    render: (_, source) =>  <Button type="link" onClick={() => handleClickEdit(source)}>
-      Editar
-    </Button>
+    render: (_, source) => <Button type="link" onClick={() => handleClickEdit(source)}>
+        Editar
+      </Button>
+    
   }
 ]
 
-const FleetList = ({ datasource, handleClickEdit, loading, handleChangeTableEvent, offset }) => {
+const FleetList = ({
+  datasource,
+  handleClickEdit,
+  loading,
+  handleChangeTableEvent,
+  offset
+}) => {
   return (
-    <ConfigProvider renderEmpty={() => <Empty 
-        description="Não há dados" 
-        image={<Image width={85} src={NoData} preview={false} />}
-      />
-    }>
-      <Table 
-        pagination={{ showSizeChanger: false, pageSize: 20, total: datasource.count, current: offset }}
-        onChange={handleChangeTableEvent}
-        columns={columns({ handleClickEdit })} 
-        loading={loading}
-        dataSource={datasource.rows}
-      />
-    </ConfigProvider>
+    <Table
+      pagination={{
+        showSizeChanger: false,
+        pageSize: 20,
+        total: datasource.count,
+        current: offset
+      }}
+      onChange={handleChangeTableEvent}
+      columns={columns({ handleClickEdit })}
+      loading={loading}
+      dataSource={datasource.rows}
+    />
   )
 }
 

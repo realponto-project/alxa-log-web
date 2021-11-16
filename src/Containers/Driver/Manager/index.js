@@ -5,34 +5,14 @@ import { map } from 'ramda'
 
 import DriverForm from '../DriverForm'
 import DriverList from './DriverList'
-import AvailableSVG from './available.svg'
-import CircleBar from '../../../Components/circleBar'
+
+import DateSVG from '../../../Assets/date.svg'
+import CalendarOutlinedSVG from '../../../Assets/calendarOutlined.svg'
+
 import ModalUpdateDates from '../DriverForm/updateDates'
+import { CardStatus } from '../../../Components/CardStatus'
 
-const { Link, Title, Text } = Typography
-
-const CardStatus = ({ title, count, srcImage, total, redirectPage }) => (
-  <Card
-    style={{
-      borderRadius: 5,
-      boxShadow: '0px 4px 4px rgba(0, 0, 0, 0.1)'
-    }}>
-    <Row align="middle" justify="space-between">
-      <Col span={12}>
-        <Text style={{ fontSize: '1rem' }}>{title}</Text>
-        <Title level={1} style={{ margin: 0, padding: 0 }}>
-          {count > 0 ? count : '-'}
-        </Title>
-      </Col>
-      <Col span={12}>
-        <CircleBar icon={srcImage} total={total} count={count} />
-      </Col>
-      <Col span={24}>
-        <Link onClick={redirectPage}>Detalhes</Link>
-      </Col>
-    </Row>
-  </Card>
-)
+const { Title } = Typography
 
 const Manager = ({
   handleSelectedDriver,
@@ -107,7 +87,8 @@ const Manager = ({
               total={source.count}
               count={count}
               title={title}
-              srcImage={AvailableSVG}
+              srcImage={CalendarOutlinedSVG}
+              // srcImage={DateSVG}
             />
           </Col>
         ),
@@ -165,13 +146,14 @@ const Manager = ({
         />
       )}
 
-      { driverSelected && <ModalUpdateDates
+      {driverSelected && (
+        <ModalUpdateDates
           setShowModal={setShowModalUpdateDates}
           visible={showModalUpdateDates}
           handleSubmit={handleEdit}
           driverSelected={driverSelected}
         />
-      }
+      )}
     </Row>
   )
 }

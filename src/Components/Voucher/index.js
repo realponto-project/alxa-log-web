@@ -37,11 +37,10 @@ const Voucher = ({ maintenanceSelected, showButton = true }) => {
     city = null,
     zipcode = null
   } = company
-  const driverName = (
-    maintenanceOrderDrivers.length > 1 
-      ? maintenanceOrderDrivers[1].driver.name 
+  const driverName =
+    maintenanceOrderDrivers.length > 1
+      ? maintenanceOrderDrivers[1].driver.name
       : maintenanceOrderDrivers[0].driver.name
-  )
   return (
     <div className={styles.cardticket}>
       <div className={styles.cardheader}>

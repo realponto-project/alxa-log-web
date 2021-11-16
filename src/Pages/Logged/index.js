@@ -8,17 +8,16 @@ import Header from '../../Components/Header'
 import Layout from '../../Components/Layout'
 import testMobile from '../../utils/isMobile'
 
-const isMobile = window.mobileCheck() || testMobile ? true : false
 
 const renderRoute = (route) => <ProtectedRoute key={route.path} {...route} />
 
-export const Logged = () => (
-  window.mobileCheck() || testMobile
-    ? (
+export const Logged = () => {
+  const isMobile = !!(window.mobileCheck() || testMobile)
+  
+  return isMobile ? 
       <Switch>{rootRoutes.map(renderRoute)}</Switch>
-    ) 
-    : (
-        <Layout>
+    : 
+      <Layout>
         <Row gutter={[8, 8]}>
           <Col span={24}>
             <Header rootRoutes={rootRoutes} />
@@ -28,7 +27,7 @@ export const Logged = () => (
           </Col>
         </Row>
       </Layout>
-    )
-)
+}
+
 
 export default Logged

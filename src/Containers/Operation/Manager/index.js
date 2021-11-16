@@ -21,12 +21,12 @@ const Manager = ({
   clearFilter,
   handleChangeTableEvent,
   offset,
-  goToDetail,
+  goToDetail
 }) => {
   const [showModal, setShowModal] = useState(false)
 
   const openModal = () => setShowModal(true)
-  
+
   const showModalEditOperation = (value) => {
     handleSelectedOperation(value)
     setShowModal(true)
@@ -54,7 +54,7 @@ const Manager = ({
           </Row>
         </Card>
       </Col>
-  
+
       <Col span={24}>
         <Card bordered={false}>
           <Row gutter={[8, 8]}>
@@ -78,11 +78,11 @@ const Manager = ({
           </Row>
         </Card>
       </Col>
-      
+
       <Col span={24}>
         <Card bordered={false}>
-          <OperationList 
-            datasource={source} 
+          <OperationList
+            datasource={source}
             handleClickEdit={showModalEditOperation}
             loading={loading}
             handleChangeTableEvent={handleChangeTableEvent}
@@ -91,19 +91,17 @@ const Manager = ({
           />
         </Card>
       </Col>
-      {
-        showModal && (
-          <OperationForm
-            handleCancel={setShowModal}
-            visible={showModal}
-            branchsSource={branchsSource}
-            handleSubmit={handleSubmit}
-            operationSelected={operationSelected}
-            handleSelectedOperation={handleSelectedOperation}
-            handleEdit={handleEdit}
-          />
-        )
-      }
+      {showModal && (
+        <OperationForm
+          handleCancel={setShowModal}
+          visible={showModal}
+          branchsSource={branchsSource}
+          handleSubmit={handleSubmit}
+          operationSelected={operationSelected}
+          handleSelectedOperation={handleSelectedOperation}
+          handleEdit={handleEdit}
+        />
+      )}
     </Row>
   )
 }

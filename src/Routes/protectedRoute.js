@@ -7,9 +7,8 @@ const ProtectedRoute = (props) => {
   if (isAuthenticated) {
     return <Route {...props} />
   }
-  
-  return <Redirect to={{ pathname: '/login' }} />
 
+  return <Redirect to={{ pathname: '/login' }} />
 }
 
 export default ProtectedRoute

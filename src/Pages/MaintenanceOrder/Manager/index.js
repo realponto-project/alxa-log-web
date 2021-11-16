@@ -287,7 +287,7 @@ const Manager = ({ history, match }) => {
       checkBoxDefaultValues={checkBoxDefaultValues}
       clearFilter={clearFilter}
       driversSource={driversData.rows}
-      gotoDetail={(id) => history.push(`/logged/maintenance-detail/${id}`)}
+      gotoDetail={(id) => history.push(`/logged/maintenance/detail/${id}`)}
       handleCancelOrder={handleCancelOrder}
       handleChangeTableEvent={handleChangeTableEvent}
       handleEdit={handleEdit}

@@ -14,6 +14,7 @@ import { SearchOutlined, DownOutlined, UpOutlined } from '@ant-design/icons'
 import { map } from 'ramda'
 
 import { incidentTypes } from '../../constants/Driver'
+import styles from './style.module.css'
 
 const { Title } = Typography
 const { RangePicker } = DatePicker
@@ -66,10 +67,9 @@ const FilterIncident = ({ handleSubmit, clearFilter, operations }) => {
           <Col span={24}>
             <div
               style={{
-                backgroundColor: '#f4f4f4',
-                padding: '14px',
                 marginBottom: '20px'
-              }}>
+              }}
+              className={styles.wrapperMoreFilters}>
               <Row>
                 <Col span={24}>
                   <Title level={5}>Incidentes</Title>

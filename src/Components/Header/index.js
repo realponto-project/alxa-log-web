@@ -1,11 +1,27 @@
-import React from 'react'
-import { PageHeader, Button, Menu, Dropdown, Row, Col } from 'antd'
-import { DownOutlined, LeftOutlined } from '@ant-design/icons'
+import React, { useState } from 'react'
+import {
+  PageHeader,
+  Button,
+  Menu,
+  Dropdown,
+  Row,
+  Col,
+  Switch as AntSwitch
+} from 'antd'
+import {
+  BulbFilled,
+  BulbOutlined,
+  BulbTwoTone,
+  DownOutlined,
+  LeftOutlined
+} from '@ant-design/icons'
 import { Switch, Route, withRouter } from 'react-router-dom'
+import { useThemeSwitcher } from 'react-css-theme-switcher'
 
 import { connect } from 'react-redux'
 import { compose } from 'ramda'
 import styles from './style.module.css'
+import { SET_DARK_THEME, SET_LIGHT_THEME } from '../../Redux/actions/theme'
 
 const Header = ({
   rootRoutes,
@@ -13,8 +29,26 @@ const Header = ({
   loggoutUser,
   user,
   unSubscribe,
+  setDarkTheme,
+  setLightTheme,
+  theme
 }) => {
+  const { switcher, currentTheme, status, themes } = useThemeSwitcher()
+  const [isDarkMode, setIsDarkMode] = useState(theme === 'dark')
+
+  const toggleTheme = (isChecked) => {
+    setIsDarkMode(isChecked)
+    switcher({ theme: isChecked ? themes.dark : themes.light })
+    if (isChecked) {
+      setDarkTheme()
+    } else {
+      setLightTheme()
+    }
+  }
+
   const handleNavegator = ({ key }) => {
+    if (key === 'theme') return
+
     if (key === 'loggout') {
       localStorage.removeItem('token')
       localStorage.removeItem('user.name')
@@ -33,6 +67,20 @@ const Header = ({
         Gerenciamento de equipe
       </Menu.Item>
       <Menu.Item key="/logged/account-password">Alterar senha</Menu.Item>
+      <Menu.Item key="theme">
+        <Row justify="space-between">
+          <p>
+            Tema <em>(beta)</em>
+          </p>
+          <AntSwitch
+            checkedChildren={<BulbFilled style={{ color: 'black' }} />}
+            unCheckedChildren={<BulbTwoTone twoToneColor="yellow" />}
+            size="small"
+            checked={isDarkMode}
+            onChange={toggleTheme}
+          />
+        </Row>
+      </Menu.Item>
       <Menu.Item key="loggout">Sair</Menu.Item>
     </Menu>
   )
@@ -89,13 +137,16 @@ const Header = ({
   )
 }
 
-const mapStateToProps = ({ user }) => ({
-  user
+const mapStateToProps = ({ user, theme }) => ({
+  user,
+  theme
 })
 
 const mapDispatchToProps = (dispatch) => ({
   loggoutUser: () => dispatch({ type: 'USER_LOGOUT' }),
-  unSubscribe: () => dispatch({ type: 'UNSET_SUBSCRIPTION' })
+  unSubscribe: () => dispatch({ type: 'UNSET_SUBSCRIPTION' }),
+  setDarkTheme: () => dispatch({ type: SET_DARK_THEME }),
+  setLightTheme: () => dispatch({ type: SET_LIGHT_THEME })
 })
 
 const enhanced = compose(

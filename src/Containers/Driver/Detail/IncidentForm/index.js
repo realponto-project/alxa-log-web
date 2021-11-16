@@ -13,17 +13,17 @@ import moment from 'moment'
 const formItemsComponent = {
   input: Input,
   select: Select,
-  textArea: Input.TextArea,
+  textArea: Input.TextArea
 }
 
-const renderFormItems = ({ 
-  label, 
-  name, 
-  rules, 
-  placeholder, 
-  show, 
-  typeInput, 
-  options = [], 
+const renderFormItems = ({
+  label,
+  name,
+  rules,
+  placeholder,
+  show,
+  typeInput,
+  options = [],
   mode = null,
   format = ''
 }) => {
@@ -32,17 +32,17 @@ const renderFormItems = ({
     show && (
       <Form.Item key={name} label={label} name={name} rules={rules}>
         {typeInput === 'date' ? (
-          <DatePicker  format={format} />
-        ): (
-          <Component 
+          <DatePicker format={format} />
+        ) : (
+          <Component
             showSearch
-            name={name} 
-            placeholder={placeholder} 
-            options={options} 
-            mode={mode} 
-            filterOption={(value, option) => (
+            name={name}
+            placeholder={placeholder}
+            options={options}
+            mode={mode}
+            filterOption={(value, option) =>
               option.label.toLowerCase().indexOf(value.toLowerCase()) >= 0
-            )}
+            }
           />
         )}
       </Form.Item>
@@ -58,13 +58,22 @@ const IncidentForm = ({
   handleSubmit,
   incidentSelected,
   handleEditSubmit,
-  handleSelectedIncident,
+  handleSelectedIncident
 }) => {
-  const [formSettings, setFormSettings] = useState(incidentSelected ? formSettingsIncidentEdit(vehiclesSource, operationsSource) : formSettingsIncident(vehiclesSource))
+  const [formSettings, setFormSettings] = useState(
+    incidentSelected
+      ? formSettingsIncidentEdit(vehiclesSource, operationsSource)
+      : formSettingsIncident(vehiclesSource)
+  )
   const [form] = Form.useForm()
-  const parseOptionItemOperation = item => ({ value: item.id, label: `${item.name} - Filial: ${item.company.name} / ${cnpj.format(item.company.document)}` })
+  const parseOptionItemOperation = (item) => ({
+    value: item.id,
+    label: `${item.name} - Filial: ${item.company.name} / ${cnpj.format(
+      item.company.document
+    )}`
+  })
 
-  const setOpetionValue = formItem => {
+  const setOpetionValue = (formItem) => {
     switch (formItem.name) {
       case 'operationId':
         return operationsSource.map(parseOptionItemOperation)
@@ -73,51 +82,53 @@ const IncidentForm = ({
     }
   }
 
-  const onValuesChangeVisableFomItem = value => {
-    const formItem = formSettings.find(item => !item.show && settingsNextStep[Object.keys(value)[0]] === item.name)
+  const onValuesChangeVisableFomItem = (value) => {
+    const formItem = formSettings.find(
+      (item) =>
+        !item.show && settingsNextStep[Object.keys(value)[0]] === item.name
+    )
     if (formItem) {
-      setFormSettings(formSettings.map(item => (
-        item.name === formItem.name 
-          ? {...formItem, show: true, options: setOpetionValue(formItem) } 
-          : item
-      )))
+      setFormSettings(
+        formSettings.map((item) =>
+          item.name === formItem.name
+            ? { ...formItem, show: true, options: setOpetionValue(formItem) }
+            : item
+        )
+      )
     }
   }
 
-  const incidentDate = (
+  const incidentDate =
     incidentSelected && incidentSelected.incidentDate
       ? moment(incidentSelected.incidentDate)
       : undefined
-  )
 
   return (
     <Modal
       visible={visible}
       closable={false}
       footer={[
-        <Button key="back" onClick={() => {
-          handleCancel(false)
-          form.resetFields()
-          setFormSettings(formSettingsIncident(vehiclesSource))
-        }}>
+        <Button
+          key="back"
+          onClick={() => {
+            handleCancel(false)
+            form.resetFields()
+            setFormSettings(formSettingsIncident(vehiclesSource))
+          }}>
           Cancelar
         </Button>,
-        <Button
-          key="submit"
-          onClick={() => form.submit()}
-          type="primary">
+        <Button key="submit" onClick={() => form.submit()} type="primary">
           Salvar
         </Button>
       ]}
-      title={`${incidentSelected ? 'Editar' : 'Cadastrar novo'} incidente`}
-    >
+      title={`${incidentSelected ? 'Editar' : 'Cadastrar novo'} incidente`}>
       <Form
         form={form}
         layout="vertical"
         onValuesChange={onValuesChangeVisableFomItem}
         validateTrigger="onChange"
-        onFinish={values => {
-          if(incidentSelected) {
+        onFinish={(values) => {
+          if (incidentSelected) {
             handleEditSubmit({ ...incidentSelected, ...values })
           } else {
             handleSubmit(values)
@@ -126,8 +137,7 @@ const IncidentForm = ({
           setFormSettings(formSettingsIncident(vehiclesSource))
           form.resetFields()
         }}
-        initialValues={{ ...incidentSelected, incidentDate }}
-      >
+        initialValues={{ ...incidentSelected, incidentDate }}>
         {map(renderFormItems, formSettings)}
       </Form>
     </Modal>

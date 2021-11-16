@@ -1,7 +1,8 @@
 import React, { useState } from 'react'
-import { Row, Col, Card, Typography, Tag, Radio, Table, Button } from 'antd'
-import BarChart from './BarChart'
+import { Row, Col, Card, Typography, Radio, Table, Button } from 'antd'
 import { BarChartOutlined, DatabaseOutlined } from '@ant-design/icons'
+import { cnpj } from 'cpf-cnpj-validator'
+
 import {
   parseStatus,
   parseStatusColor,
@@ -10,15 +11,16 @@ import {
 } from '../../../utils/maintenanceOrder'
 import formattedDate from '../../../utils/parserDate'
 import diffTime from '../../../utils/permananceTime'
+import Tag from '../../../Components/Tag'
+import BarChart from './BarChart'
 
-import OrdersSvg from './orders.svg'
-import CustomersSvg from './customers.svg'
-import CheckoutSvg from './checkout.svg'
-import AvailableSVG from './available.svg'
-import { cnpj } from 'cpf-cnpj-validator'
+import OrdersSvg from '../../../Assets/orders.svg'
+import CustomersSvg from '../../../Assets/customers.svg'
+import CheckoutSvg from '../../../Assets/checkout.svg'
+import AvailableSVG from '../../../Assets/available.svg'
 
 import FilterMaintenence from '../../../Components/Filters/Maintenance'
-import CircleBar from '../../../Components/circleBar'
+import { CardStatus } from '../../../Components/CardStatus'
 
 const { Text, Title } = Typography
 
@@ -92,26 +94,6 @@ const columns = (gotoDetailOrder) => [
   }
 ]
 
-const CardStatus = ({ title, count, srcImage, total }) => (
-  <Card
-    style={{
-      borderRadius: 5,
-      boxShadow: '0px 4px 4px rgba(0, 0, 0, 0.1)'
-    }}>
-    <Row align="middle" justify="space-between">
-      <Col span={12}>
-        <Text style={{ fontSize: '1rem' }}>{title}</Text>
-        <Title level={1} style={{ margin: 0, padding: 0 }}>
-          {count > 0 ? count : '-'}
-        </Title>
-      </Col>
-      <Col span={12}>
-        <CircleBar icon={srcImage} total={total} count={count} />
-      </Col>
-    </Row>
-  </Card>
-)
-
 const Detail = ({
   operation,
   chartData,
@@ -184,8 +166,8 @@ const Detail = ({
 
       <Col span={6}>
         <CardStatus
-          title="Total de solicitações"
-          count={vehicleTotalSolicitacion?.count ?? '-'}
+          title="Solicitações"
+          count={vehicleTotalSolicitacion?.count ?? '0'}
           srcImage={CustomersSvg}
           total={total}
         />
@@ -193,8 +175,8 @@ const Detail = ({
 
       <Col span={6}>
         <CardStatus
-          title="Total de veículos"
-          count={vehicleTotal || '-'}
+          title="Em serviço"
+          count={vehicleTotal || '0'}
           srcImage={OrdersSvg}
           total={total}
         />
@@ -202,8 +184,8 @@ const Detail = ({
 
       <Col span={6}>
         <CardStatus
-          title="Total de liberado"
-          count={vehicleTotalAvailable?.count ?? '-'}
+          title="Liberados"
+          count={vehicleTotalAvailable?.count ?? '0'}
           srcImage={AvailableSVG}
           total={total}
         />
@@ -211,8 +193,8 @@ const Detail = ({
 
       <Col span={6}>
         <CardStatus
-          title="Total de concluídos"
-          count={vehicleTotalFinished?.count ?? '-'}
+          title="Concluídos"
+          count={vehicleTotalFinished?.count ?? '0'}
           srcImage={CheckoutSvg}
           total={total}
         />

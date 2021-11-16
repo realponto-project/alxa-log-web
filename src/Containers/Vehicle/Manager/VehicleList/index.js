@@ -1,6 +1,5 @@
 import React from 'react'
-import { Table, Button, Empty, ConfigProvider, Image, Space } from 'antd'
-import NoData from '../../../../Assets/noData.svg'
+import { Table, Button, Space } from 'antd'
 import formattedDate from '../../../../utils/parserDate'
 
 const columns = ({ handleClickEdit, goToDetail }) => [
@@ -56,26 +55,18 @@ const VehicleList = ({
   offset
 }) => {
   return (
-    <ConfigProvider
-      renderEmpty={() => (
-        <Empty
-          description="Não há dados"
-          image={<Image width={85} src={NoData} preview={false} />}
-        />
-      )}>
-      <Table
-        pagination={{
-          showSizeChanger: false,
-          pageSize: 20,
-          total: datasource.count,
-          current: offset
-        }}
-        onChange={handleChangeTableEvent}
-        columns={columns({ handleClickEdit, goToDetail })}
-        loading={loading}
-        dataSource={datasource.rows}
-      />
-    </ConfigProvider>
+    <Table
+      pagination={{
+        showSizeChanger: false,
+        pageSize: 20,
+        total: datasource.count,
+        current: offset
+      }}
+      onChange={handleChangeTableEvent}
+      columns={columns({ handleClickEdit, goToDetail })}
+      loading={loading}
+      dataSource={datasource.rows}
+    />
   )
 }
 

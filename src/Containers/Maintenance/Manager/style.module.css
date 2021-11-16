@@ -1,4 +1,4 @@
 .filterWrapper {
-  background-color: #f4f4f4;
+  backdrop-filter: invert(.03);
   padding: 14px;
 }

@@ -45,7 +45,7 @@ const Detail = ({ match }) => {
   const closeModalAddSerialNumber = () => setVisibleAddSerialNumber(false)
 
   const gotoDetail = (id) => {
-    history.push(`/logged/maintenance-detail/${id}`)
+    history.push(`/logged/maintenance/detail/${id}`)
   }
 
   const getAllMaintenance = async () => {

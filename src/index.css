@@ -8,6 +8,7 @@ body {
 
 * {
   font-family: 'Lato', sans-serif !important;
+  transition: all 0.1s ease 0.3s, color 0.05s ease 0s!important;
 }
 
 @page {
@@ -29,21 +30,4 @@ body {
   .print {
     display: block !important;
   }
-}
-
-.btn-active {
-  color: #40a9ff;
-  border-color: #40a9ff;
-}
-
-
-.ant-layout-sider-trigger{
-  top: 0;
-  text-align: end;
-  padding: 0 33px 0 0;
-  position: absolute
-}
-
-.ant-layout-sider-has-trigger{
-  position: relative
 }

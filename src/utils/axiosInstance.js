@@ -10,9 +10,9 @@ axiosInstance.interceptors.request.use((config) => ({
   ...config,
   headers: {
     ...config.headers,
-    Authorization: `Bearer ${localStorage.getItem('token')}`,
+    Authorization: `Bearer ${localStorage.getItem('token')}`
   },
-  paramsSerializer: qs.stringify,
+  paramsSerializer: qs.stringify
 }))
 
 axiosInstance.interceptors.response.use(
@@ -20,15 +20,14 @@ axiosInstance.interceptors.response.use(
     return response
   },
   (error) => {
-  const statusCode = pathOr(null, ['response', 'status'], error)
+    const statusCode = pathOr(null, ['response', 'status'], error)
 
-  if (statusCode === 401 || statusCode === 403) {
-    window.onerror(`authorization: ${statusCode}`, window.location.href)
-    window.location.href = '/#/login'
-  }
-  return Promise.reject(error.response);
+    if (statusCode === 401 || statusCode === 403) {
+      window.onerror(`authorization: ${statusCode}`, window.location.href)
+      window.location.href = '/#/login'
+    }
+    return Promise.reject(error.response)
 })
-
 
 
 export default axiosInstance

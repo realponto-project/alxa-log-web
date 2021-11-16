@@ -16,9 +16,4 @@ const getById = async (values) => {
   return await axiosIntance.get(`/vehicle-types/${values.id}`)
 }
 
-export { 
-  getAll, 
-  getById,
-  createVehicleType, 
-  updateVehicleType, 
-}
+export { getAll, getById, createVehicleType, updateVehicleType }

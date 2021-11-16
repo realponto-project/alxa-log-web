@@ -27,10 +27,12 @@ const ModalUpdateDates = ({
     }
   ]
 
-  const expireDates = driverSelected && filter(
-    ({ value: field }) => moment(driverSelected[field]) < moment(),
-    options
-  )
+  const expireDates =
+    driverSelected &&
+    filter(
+      ({ value: field }) => moment(driverSelected[field]) < moment(),
+      options
+    )
 
   return (
     <Modal

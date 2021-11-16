@@ -1,64 +1,64 @@
 const rules = [{ required: true, message: 'Este campo é obrigatório!' }]
 const formSettingsEvent = [
-{
-  label: 'Tipo de evento',
-  name: 'status',
-  rules,
-  placeholder: '',
-  show: true,
-  typeInput: 'select',
-  options: [
-    {
-      value: 'check-in',
-      label: 'Entrada'
-    },
-    {
-      value: 'avaiable',
-      label: 'Aguardando Retirada'
-    },
-    {
-      value: 'parking',
-      label: 'Estacionar'
-    },
-    {
-      value: 'courtyard',
-      label: 'Pátio'
-    }, 
-    {
-      value: 'awaiting_repair',
-      label: 'Aguardando peça'
-    },
-    {
-      value: 'dock',
-      label: 'Doca'
-    },
-    {
-      value: 'wash',
-      label: 'Lavar'
-    },
-    {
-      value: 'supply',
-      label: 'Abastecer'
-    },
-    {
-      value: 'check-out',
-      label: 'Saída'
-    },
-    {
-      value: 'external_service',
-      label: 'Serviços externos'
-    },
-  ]
-},
-{
-  label: 'Motorista',
-  name: 'driverId',
-  rules,
-  placeholder: '',
-  show: false,
-  typeInput: 'select',
-  options: []
-},
+  {
+    label: 'Tipo de evento',
+    name: 'status',
+    rules,
+    placeholder: '',
+    show: true,
+    typeInput: 'select',
+    options: [
+      {
+        value: 'check-in',
+        label: 'Entrada'
+      },
+      {
+        value: 'avaiable',
+        label: 'Aguardando Retirada'
+      },
+      {
+        value: 'parking',
+        label: 'Estacionar'
+      },
+      {
+        value: 'courtyard',
+        label: 'Pátio'
+      },
+      {
+        value: 'awaiting_repair',
+        label: 'Aguardando peça'
+      },
+      {
+        value: 'dock',
+        label: 'Doca'
+      },
+      {
+        value: 'wash',
+        label: 'Lavar'
+      },
+      {
+        value: 'supply',
+        label: 'Abastecer'
+      },
+      {
+        value: 'check-out',
+        label: 'Saída'
+      },
+      {
+        value: 'external_service',
+        label: 'Serviços externos'
+      }
+    ]
+  },
+  {
+    label: 'Motorista',
+    name: 'driverId',
+    rules,
+    placeholder: '',
+    show: false,
+    typeInput: 'select',
+    options: []
+  },
   {
     label: 'Combustível',
     name: 'fuel',
@@ -74,8 +74,9 @@ const formSettingsEvent = [
       {
         value: 'arlar',
         label: 'Arla'
-      }]
-  }, 
+      }
+    ]
+  },
   {
     label: 'Litros abastecido',
     name: 'totalLiters',
