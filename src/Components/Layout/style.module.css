@@ -14,6 +14,7 @@
 
 .companyName{
   overflow: hidden;
+  text-overflow: ellipsis;
   font-size: 18px;
   font-weight: bold;
   height: 48px;

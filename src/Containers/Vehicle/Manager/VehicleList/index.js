@@ -1,6 +1,7 @@
 import React from 'react'
 import { Table, Button, Space } from 'antd'
 import formattedDate from '../../../../utils/parserDate'
+import { map } from 'ramda'
 
 const columns = ({ handleClickEdit, goToDetail }) => [
   {
@@ -65,7 +66,7 @@ const VehicleList = ({
       onChange={handleChangeTableEvent}
       columns={columns({ handleClickEdit, goToDetail })}
       loading={loading}
-      dataSource={datasource.rows}
+      dataSource={map((row) => ({ ...row, key: row.id }), datasource.rows)}
     />
   )
 }

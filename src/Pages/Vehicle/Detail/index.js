@@ -1,11 +1,26 @@
 import React, { useEffect, useState } from 'react'
-import { isEmpty } from 'ramda'
+import {
+  applySpec,
+  filter,
+  includes,
+  isEmpty,
+  keys,
+  length,
+  map,
+  pipe,
+  prop,
+  propOr,
+  __
+} from 'ramda'
 import { Form } from 'antd'
+import qs from 'qs'
+import { useHistory, useLocation } from 'react-router-dom'
+import moment from 'moment'
 
 import DetailContainer from '../../../Containers/Vehicle/Detail'
 import { getById, updateVehicle } from '../../../Services/Vehicle'
 import { getAll as getAllMaintenances } from '../../../Services/MaintenanceOrders'
-import { useHistory } from 'react-router-dom'
+import { parseQueryParams } from '../../../utils/queryParams'
 
 const Detail = ({ match }) => {
   const history = useHistory()
@@ -18,7 +33,12 @@ const Detail = ({ match }) => {
     offset: 0,
     limit: 10
   })
+  const { search, pathname } = useLocation()
+  const [defaultMoreFilters, setDefaultMoreFilters] = useState(false)
 
+
+
+      
   const addSerialNumber = async (values) => {
     setLoading(true)
     try {
@@ -33,11 +53,21 @@ const Detail = ({ match }) => {
     }
   }
 
+  
+  
+  const changeQueryParams = (search) => {
+    return history.replace({
+      pathname,
+      search
+    })
+  }
+  
   const clearFilter = () => {
     setQuery({
       offset: 0,
       limit: 10
     })
+    changeQueryParams('')
     filterForm.resetFields()
     filterForm.setFieldsValue({ plate: vehicle.plate })
   }
@@ -79,32 +109,67 @@ const Detail = ({ match }) => {
   }
 
   const handleChangeTable = ({ current }) => {
-    setQuery({ ...query, offset: current - 1 })
+    setOffset(current)
+
+    const query = { offset: current - 1 }
+    const queryParams = parseQueryParams(search)
+
+    changeQueryParams(qs.stringify({ ...queryParams, ...query }))
   }
 
   const handleFilter = (values) => {
-    setQuery({ ...query, ...values, offset: 0 })
+    const queryParams = parseQueryParams(search)
+
+    changeQueryParams(qs.stringify({ ...queryParams, ...values }))
   }
 
   useEffect(() => {
     if (!isEmpty(vehicle)) {
       getAllMaintenance()
     }
-  }, [query, vehicle])
+  }, [search, vehicle])
 
   useEffect(() => {
     filterForm.setFieldsValue({ plate: vehicle.plate })
   }, [vehicle])
 
   useEffect(() => {
-    if (!isEmpty(match)) {
+    if (!isEmpty(match) && isEmpty(vehicle)) {
       getVehicle()
     }
   }, [match])
 
+  useEffect(() => {
+    const queryParams = parseQueryParams(search)
+
+    filterForm.setFieldsValue(
+      applySpec({
+        dates: pipe(
+          propOr([], 'dates'),
+          map((date) => moment(date))
+        ),
+        priorities: prop('priorities'),
+        services: prop('services'),
+        status: prop('status')
+      })(queryParams)
+    )
+
+    if (
+      length(
+        filter(
+          includes(__, ['status', 'services', 'priorities']),
+          keys(queryParams)
+        )
+      ) > 0
+    ) {
+      setDefaultMoreFilters(true)
+    }
+  }, [])
+
   return (
     <DetailContainer
       addSerialNumber={addSerialNumber}
+      defaultMoreFilters={defaultMoreFilters}
       clearFilter={clearFilter}
       closeModalAddSerialNumber={closeModalAddSerialNumber}
       filterForm={filterForm}

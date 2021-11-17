@@ -95,6 +95,7 @@ const Detail = ({
   showModalAddSerialNumber,
   vehicle,
   visibleAddSerialNumber,
+  defaultMoreFilters
 }) => {
   const tracks = pathOr([], ["tracks"], vehicle);
   const odometer = pathOr(0, [0, "odometer"], tracks);
@@ -211,6 +212,7 @@ const Detail = ({
       <Col span={24}>
         <Card>
           <FilterMaintenence
+            defaultMoreFilters={defaultMoreFilters}
             visibleSearchPlate={false}
             form={filterForm}
             handleFilter={handleFilter}
